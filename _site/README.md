@@ -6,7 +6,7 @@
 
 ![Thumbnail of Minimal](thumbnail.png)
 
-### Usage
+## Usage
 
 To use the Minimal theme:
 
