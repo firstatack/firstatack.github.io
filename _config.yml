@@ -15,5 +15,9 @@ plugins:
 ##mi id es 10000
 #hyvor_talk_website_id: 14
 #google_analytics: UA-NNNNNNNN-N
+<<<<<<< HEAD
 ##hyvor_talk_website_id: 10000
+=======
+hyvor_talk_website_id: 10000
+>>>>>>> b385b9c69fda5be4861430542b1bf5a04600f976
 ###google_analytics: UA-NNNNNNNN-N
