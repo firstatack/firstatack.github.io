@@ -2,9 +2,13 @@
 title: About
 layout: page
 ---
+Esta pagina solo pretende recoger los apuntes de lo que voy aprendiendo haciendo retos de ctf's.
 
-Hey! This is the "Leaf" Jekyll theme created by <a rel="me" target="_blank" href="https://twitter.com/_SupunKavinda">Supun Kavinda</a>.
+No pretendo que el uso de estas tecnicas sean usadas fuera de un ambiente de laboratrio , el uso que hagan queda exento de nuestra responsabilidad.
 
-You can find the source code of this theme at <a href="https://github.com/SupunKavinda/jekyll-theme-leaf">Github</a>
+Aprovecho y les dejo aqui los enlaces a alguna de las plataformas que permiten la descarga de maquinas virtuales:
 
-(Change this by editing `about.md` file)
+- <a href="https://hackmyvm.eu">HACKMYVM</a> Maquinas en descarga , laboratorios y retos.
+- <a href="https://www.vulnhub.com/">VULNHUB</a> Maquinas en descarga
+
+Aqui tienen el codigo fuente del tema que usa esa web , gracias al usuario por crearlo y compartirlo. <a href="https://github.com/SupunKavinda/jekyll-theme-leaf">Github</a>
