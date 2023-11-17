@@ -12,11 +12,8 @@ plugins:
  - jekyll-seo-tag
 
 ### comments & analytics
-<<<<<<< HEAD
 ##mi id es 10000
 #hyvor_talk_website_id: 14
 #google_analytics: UA-NNNNNNNN-N
-=======
-##hyvor_talk_website_id: 10000
+hyvor_talk_website_id: 10000
 ###google_analytics: UA-NNNNNNNN-N
->>>>>>> 645cabdfd5adc18d5abf8d4531a346f77f93f549
