@@ -4,7 +4,7 @@ author: Quino
 title: Drifting Blues 3 , HACKMYVM
 ---
 
-En este reto nos encontramos con enumeracion , escaneo , decodificacion de bas64 , log poisoning y  abuso del $PATH. 
+En este reto nos encontramos escaneo , decodificacion de bas64 , log poisoning y  abuso del $PATH. 
 
 No es un reto extremadamente dificil en el aprendemos como usar el path para escalar privilegios y comprobaremos lo delicado que es mostrar logs a traves de un usario.
 
@@ -17,7 +17,7 @@ No es un reto extremadamente dificil en el aprendemos como usar el path para esc
 - urlencoder
 - https://www.hackingarticles.in/linux-privilege-escalation-using-path-variable/
 
-### Enumeracion y escaneo
+### Escaneo
 
 Empezamos averiguando la ip de la maquina victima para ello ejecutamos la herramienta arp-scan nos fijamos en el resultado y buscamos la mac que empieza por 08:00 esa mac es de virtualbox.
 
@@ -52,6 +52,8 @@ El resultado de la primera decodificacion nos da otro codigo base64 , decodifica
 Vamos a la ruta que nos proporciono el codigo adminsfixit.php y vemos que es es el auth log ssh.
 
 ![800x600](assets/driftingblues3/ssh-auth-log.png)
+
+### Log poisoning
 
 Si intentamos login con cualuier usuario vemos que aparece reflejado en el log al refrescar la pagina.
 
@@ -90,6 +92,8 @@ Ya tenemos la shell en nuestra maquina ahora toca hacerla interactiva
 ```bash
 python3 -c 'import pty; pty.spawn("/bin/sh")'
 ```
+
+### Escalada de privilegios
 
 Encontramos un usario en home robertj el cual tiene el fichero user.txt el cual no podemos leer por permisos pues aun somos el usario  www-data.
 
