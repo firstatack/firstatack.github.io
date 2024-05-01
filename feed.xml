@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>A minimal, responsive and feature-rich Jekyll theme for technical writing.</subtitle>
-  <updated>2024-05-01T13:10:30-03:00</updated>
+  <updated>2024-05-01T13:22:11-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,54 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>Walkingcms , DockerLabs</title>
+    <link href="http://localhost:4000/posts/walkingcms/" rel="alternate" type="text/html" title="Walkingcms , DockerLabs" />
+    <published>2024-04-26T00:00:00-03:00</published>
+  
+    <updated>2024-04-26T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/walkingcms/</id>
+    <content src="http://localhost:4000/posts/walkingcms/" />
+    <author>
+      <name>Quino</name>
+    </author>
+
+  
+    
+    <category term="dockerlabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      Este es un reto clasificado como de dificultad easymuy facil de la plataforma Dockerlabs.
+
+Nos encontramos con las siguientes características y dificultades , en el tendremos que localizar la entrada al sistema , explotacion de ssh por fuerza bruta , movimiento lateral entre usuarios y escalada de privelegios.
+
+HERRAMIENTAS Y RECURSOS USADOS
+
+
+  nmap
+  hydra
+  searchbins
+
+
+Enumeracion
+
+Como al ...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -199,54 +247,6 @@ HERRAMIENTAS Y RECURSOS USADOS
 Enumeracion
 
 Como al ...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Trust , DOCKERLABS</title>
-    <link href="http://localhost:4000/posts/trust/" rel="alternate" type="text/html" title="Trust , DOCKERLABS" />
-    <published>2024-04-22T00:00:00-03:00</published>
-  
-    <updated>2024-04-22T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/trust/</id>
-    <content src="http://localhost:4000/posts/trust/" />
-    <author>
-      <name>Quino</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      Este es un reto clasificado como de dificultad easy de la plataforma dockerlabs.es .
-
-Nos encontramos con las siguientes características y dificultades , en el tendremos que localizar la entrada al sistema , explotacion de ssh por fuerza bruta y escalada de privelegios.
-
-HERRAMIENTAS Y RECURSOS USADOS
-
-
-  nmap
-  hydra
-  
-    Enumeracion
-  
-
-
-Como al arrancar la maquina ya nos dice la ip nos olv...
     </summary>
   
 
