@@ -1,0 +1,257 @@
+
+
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>http://localhost:4000/</id>
+  <title>CTF's Linux Apuntes</title>
+  <subtitle>A minimal, responsive and feature-rich Jekyll theme for technical writing.</subtitle>
+  <updated>2024-05-01T13:10:30-03:00</updated>
+  <author>
+    <name>first_atack</name>
+    <uri>http://localhost:4000/</uri>
+  </author>
+  <link rel="self" type="application/atom+xml" href="http://localhost:4000/feed.xml"/>
+  <link rel="alternate" type="text/html" hreflang="es"
+    href="http://localhost:4000/"/>
+  <generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator>
+  <rights> © 2024 first_atack </rights>
+  <icon>/assets/img/favicons/favicon.ico</icon>
+  <logo>/assets/img/favicons/favicon-96x96.png</logo>
+
+
+  
+  <entry>
+    <title>Capypenguin , DOCKERLABS</title>
+    <link href="http://localhost:4000/posts/capypenguin/" rel="alternate" type="text/html" title="Capypenguin , DOCKERLABS" />
+    <published>2024-04-25T00:00:00-03:00</published>
+  
+    <updated>2024-04-25T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/capypenguin/</id>
+    <content src="http://localhost:4000/posts/capypenguin/" />
+    <author>
+      <name>Quino</name>
+    </author>
+
+  
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      Este es un reto clasificado como de dificultad facil de la plataforma Dockerlabs.
+
+Nos encontramos con las siguientes características y dificultades , en el tendremos que localizar la entrada al sistema , revisar la web y su codigo , fuerza bruta contra mysql , revisar las bbdd y escalada
+
+HERRAMIENTAS Y RECURSOS USADOS
+
+
+  nmap
+  ncrack
+-searchbins
+
+
+Enumeracion
+
+Como al arrancar la maquina ya...
+    </summary>
+  
+
+  </entry>
+
+  
+  <entry>
+    <title>Nmap basico bien explicado</title>
+    <link href="http://localhost:4000/posts/Nmap_basico/" rel="alternate" type="text/html" title="Nmap basico bien explicado" />
+    <published>2024-04-25T00:00:00-03:00</published>
+  
+    <updated>2024-04-25T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/Nmap_basico/</id>
+    <content src="http://localhost:4000/posts/Nmap_basico/" />
+    <author>
+      <name>Quino</name>
+    </author>
+
+  
+    
+    <category term="Software" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      Este es un reto clasificado como de dificultad easymuy facil de la plataforma Dockerlabs.
+
+Nos encontramos con las siguientes características y dificultades , en el tendremos que localizar la entrada al sistema , explotacion de ssh por fuerza bruta , movimiento lateral entre usuarios y escalada de privelegios.
+
+HERRAMIENTAS Y RECURSOS USADOS
+
+
+  nmap
+  hydra
+  searchbins
+
+
+Enumeracion
+
+Como al ...
+    </summary>
+  
+
+  </entry>
+
+  
+  <entry>
+    <title>Upload , DOCKERLABS</title>
+    <link href="http://localhost:4000/posts/upload/" rel="alternate" type="text/html" title="Upload , DOCKERLABS" />
+    <published>2024-04-23T00:00:00-03:00</published>
+  
+    <updated>2024-04-23T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/upload/</id>
+    <content src="http://localhost:4000/posts/upload/" />
+    <author>
+      <name>Quino</name>
+    </author>
+
+  
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      Este es un reto clasificado como de dificultad muy facil de la plataforma Dockerlabs.
+
+Nos encontramos con las siguientes características y dificultades , en el tendremos que localizar la entrada al sistema , subir webshell , reverse shell y escalada de privelegios.
+
+HERRAMIENTAS Y RECURSOS USADOS
+
+
+  nmap
+  webshell
+  searchbins
+
+
+Enumeracion
+
+Como al arrancar la maquina ya nos dice la ip , no...
+    </summary>
+  
+
+  </entry>
+
+  
+  <entry>
+    <title>Vacaciones , DOCKERLABS</title>
+    <link href="http://localhost:4000/posts/vacaciones/" rel="alternate" type="text/html" title="Vacaciones , DOCKERLABS" />
+    <published>2024-04-22T00:00:00-03:00</published>
+  
+    <updated>2024-04-22T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/vacaciones/</id>
+    <content src="http://localhost:4000/posts/vacaciones/" />
+    <author>
+      <name>Quino</name>
+    </author>
+
+  
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      Este es un reto clasificado como de dificultad easymuy facil de la plataforma Dockerlabs.
+
+Nos encontramos con las siguientes características y dificultades , en el tendremos que localizar la entrada al sistema , explotacion de ssh por fuerza bruta , movimiento lateral entre usuarios y escalada de privelegios.
+
+HERRAMIENTAS Y RECURSOS USADOS
+
+
+  nmap
+  hydra
+  searchbins
+
+
+Enumeracion
+
+Como al ...
+    </summary>
+  
+
+  </entry>
+
+  
+  <entry>
+    <title>Trust , DOCKERLABS</title>
+    <link href="http://localhost:4000/posts/trust/" rel="alternate" type="text/html" title="Trust , DOCKERLABS" />
+    <published>2024-04-22T00:00:00-03:00</published>
+  
+    <updated>2024-04-22T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/trust/</id>
+    <content src="http://localhost:4000/posts/trust/" />
+    <author>
+      <name>Quino</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      Este es un reto clasificado como de dificultad easy de la plataforma dockerlabs.es .
+
+Nos encontramos con las siguientes características y dificultades , en el tendremos que localizar la entrada al sistema , explotacion de ssh por fuerza bruta y escalada de privelegios.
+
+HERRAMIENTAS Y RECURSOS USADOS
+
+
+  nmap
+  hydra
+  
+    Enumeracion
+  
+
+
+Como al arrancar la maquina ya nos dice la ip nos olv...
+    </summary>
+  
+
+  </entry>
+
+</feed>
+
+
