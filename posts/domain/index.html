@@ -277,7 +277,7 @@
 
 <aside aria-label="Sidebar" id="sidebar" class="d-flex flex-column align-items-end">
   <header class="profile-wrapper">
-    <a href="/" id="avatar" class="rounded-circle"></a>
+    <a href="/" id="avatar" class="rounded-circle"><img src="/assets/default-icon.png" width="112" height="112" alt="avatar" onerror="this.style.display='none'"></a>
 
     <h1 class="site-title">
       <a href="/">CTF's Linux Apuntes</a>
@@ -2013,6 +2013,59 @@ Nos encontramos con las siguientes características y dificultades , en el tendr
             
               
               <!--  The comments switcher -->
+
+  
+  <!-- The Disqus lazy loading. -->
+
+<div id="disqus_thread">
+  <p class="text-center text-muted small">Comments powered by <a href="https://disqus.com/">Disqus</a>.</p>
+</div>
+
+<script type="text/javascript">
+  var disqus_config = function () {
+    this.page.url = 'http://localhost:4000/posts/domain/';
+    this.page.identifier = '/posts/domain/';
+  };
+
+  /* Lazy loading */
+  var disqus_observer = new IntersectionObserver(
+    function (entries) {
+      if (entries[0].isIntersecting) {
+        (function () {
+          var d = document,
+            s = d.createElement('script');
+          s.src = 'https://firstatack.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+
+        disqus_observer.disconnect();
+      }
+    },
+    { threshold: [0] }
+  );
+
+  disqus_observer.observe(document.querySelector('#disqus_thread'));
+
+  /* Auto switch theme */
+  function reloadDisqus() {
+    if (event.source === window && event.data && event.data.direction === ModeToggle.ID) {
+      /* Disqus hasn't been loaded */
+      if (typeof DISQUS === 'undefined') {
+        return;
+      }
+
+      if (document.readyState == 'complete') {
+        DISQUS.reset({ reload: true, config: disqus_config });
+      }
+    }
+  }
+
+  if (document.querySelector('.mode-toggle')) {
+    window.addEventListener('message', reloadDisqus);
+  }
+</script>
+
 
 
             
