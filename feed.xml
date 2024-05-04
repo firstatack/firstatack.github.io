@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>A minimal, responsive and feature-rich Jekyll theme for technical writing.</subtitle>
-  <updated>2024-05-04T16:32:00-03:00</updated>
+  <updated>2024-05-04T17:13:58-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -94,20 +94,24 @@ Empezamos lanzando un nmap contra el objetivo , el cual nos devuelve que solo se
 
 
 
-      En este reto nos encontramos con escaneo de puertos para buscar una entrada al sistema
+      En este reto nos encontramos con escaneo de puertos para buscar una entrada al sistema , fuzzing , fuerza bruta y escalada.
 
 Herramientas y recursos usados
 
 
   nmap
   feroxbuster
-  wpscanhttp://127.0.0.1:4000/assets/walkingcms/feroxbuster.png
+  wpscan
 -searchbins
 
 
 Enumeracion
 
-Empezamos lanzando un nmap contra el objetivo , el cual nos devuelve que solo se encuentra el 80 abierto , podemos ver la web mientras hacemos fuzzing de directorio...
+Empezamos lanzando un nmap contra el objetivo , el cual nos devuelve que solo se encuentra el 80 abierto , podemos ver la web mientras hacemos fuzzing de directorios.
+
+Reporte nmap
+
+...
     </summary>
   
 
