@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>A minimal, responsive and feature-rich Jekyll theme for technical writing.</subtitle>
-  <updated>2024-05-01T19:11:53-03:00</updated>
+  <updated>2024-05-04T16:32:00-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -20,16 +20,16 @@
 
   
   <entry>
-    <title>Walkingcms , DockerLabs</title>
-    <link href="http://localhost:4000/posts/walkingcms/" rel="alternate" type="text/html" title="Walkingcms , DockerLabs" />
-    <published>2024-04-26T00:00:00-03:00</published>
+    <title>Hidden , DockerLabs</title>
+    <link href="http://localhost:4000/posts/hidden-docker/" rel="alternate" type="text/html" title="Hidden , DockerLabs" />
+    <published>2024-04-27T00:00:00-03:00</published>
   
-    <updated>2024-04-26T00:00:00-03:00</updated>
+    <updated>2024-04-27T00:00:00-03:00</updated>
   
-    <id>http://localhost:4000/posts/walkingcms/</id>
-    <content src="http://localhost:4000/posts/walkingcms/" />
+    <id>http://localhost:4000/posts/hidden-docker/</id>
+    <content src="http://localhost:4000/posts/hidden-docker/" />
     <author>
-      <name>Quino</name>
+      <name>Firstatack</name>
     </author>
 
   
@@ -47,9 +47,119 @@
 
 
       
-  ———-PROXIMAMENTE…….
+
+En este reto nos encontramos con escaneo de puertos para buscar una entrada al sistema  , enumeracion con con gobuster y busqueda de subdominios con wfuzz , revshell , movimientos laterales y escalada final.
+
+Herramientas y recursos usados
 
 
+  nmap
+  gobuster
+  wfuzz
+
+
+Enumeracion
+
+Empezamos lanzando un nmap contra el objetivo , el cual nos devuelve que solo se encuentra el 80 abierto y podem...
+    </summary>
+  
+
+  </entry>
+
+  
+  <entry>
+    <title>walkingcms , DockerLabs</title>
+    <link href="http://localhost:4000/posts/walkingcms/" rel="alternate" type="text/html" title="walkingcms , DockerLabs" />
+    <published>2024-04-26T00:00:00-03:00</published>
+  
+    <updated>2024-04-26T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/walkingcms/</id>
+    <content src="http://localhost:4000/posts/walkingcms/" />
+    <author>
+      <name>Firstatack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      En este reto nos encontramos con escaneo de puertos para buscar una entrada al sistema
+
+Herramientas y recursos usados
+
+
+  nmap
+  feroxbuster
+  wpscanhttp://127.0.0.1:4000/assets/walkingcms/feroxbuster.png
+-searchbins
+
+
+Enumeracion
+
+Empezamos lanzando un nmap contra el objetivo , el cual nos devuelve que solo se encuentra el 80 abierto , podemos ver la web mientras hacemos fuzzing de directorio...
+    </summary>
+  
+
+  </entry>
+
+  
+  <entry>
+    <title>Hackpenguin , DockerLabs</title>
+    <link href="http://localhost:4000/posts/hackpenguin/" rel="alternate" type="text/html" title="Hackpenguin , DockerLabs" />
+    <published>2024-04-26T00:00:00-03:00</published>
+  
+    <updated>2024-04-26T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/hackpenguin/</id>
+    <content src="http://localhost:4000/posts/hackpenguin/" />
+    <author>
+      <name>Firstatack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      En este reto nos encontramos con el tipico escaneo de puertos para buscar una entrada al sistema , fuzzing , steganografia
+
+Herramientas y recursos usados
+
+
+  nmap
+  gobuster
+  stegseek
+
+
+Enumeracion
+
+Empezamos lanzando un nmap contra el objetivo , el cual nos devuelve como puertos abiertos el shh y el http.
+
+
+
+Reporte nmap
+
+Mientras revisamos la pagina por default en el 80 , lanzamos gobuster ...
     </summary>
   
 
@@ -135,102 +245,6 @@ Como al arrancar la maquina ya...
 
 nmap -A &amp;lt;objetivo&amp;gt;: Realiza un escaneo completo del objetivo especificado, incluyendo la detección del sistema operativo, la detección de servicios y la detección de versiones.
 nmap -p &amp;lt;rango_de_puertos&amp;gt; &amp;lt;objetivo&amp;gt;...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Upload , DOCKERLABS</title>
-    <link href="http://localhost:4000/posts/upload/" rel="alternate" type="text/html" title="Upload , DOCKERLABS" />
-    <published>2024-04-23T00:00:00-03:00</published>
-  
-    <updated>2024-04-23T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/upload/</id>
-    <content src="http://localhost:4000/posts/upload/" />
-    <author>
-      <name>Quino</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      Este es un reto clasificado como de dificultad muy facil de la plataforma Dockerlabs.
-
-Nos encontramos con las siguientes características y dificultades , en el tendremos que localizar la entrada al sistema , subir webshell , reverse shell y escalada de privelegios.
-
-HERRAMIENTAS Y RECURSOS USADOS
-
-
-  nmap
-  webshell
-  searchbins
-
-
-Enumeracion
-
-Como al arrancar la maquina ya nos dice la ip , no...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Vacaciones , DOCKERLABS</title>
-    <link href="http://localhost:4000/posts/vacaciones/" rel="alternate" type="text/html" title="Vacaciones , DOCKERLABS" />
-    <published>2024-04-22T00:00:00-03:00</published>
-  
-    <updated>2024-04-22T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/vacaciones/</id>
-    <content src="http://localhost:4000/posts/vacaciones/" />
-    <author>
-      <name>Fiorstatack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      Este es un reto clasificado como de dificultad easymuy facil de la plataforma Dockerlabs.
-
-Nos encontramos con las siguientes características y dificultades , en el tendremos que localizar la entrada al sistema , explotacion de ssh por fuerza bruta , movimiento lateral entre usuarios y escalada de privelegios.
-
-HERRAMIENTAS Y RECURSOS USADOS
-
-
-  nmap
-  hydra
-  searchbins
-
-
-Enumeracion
-
-Como al ...
     </summary>
   
 
