@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>A minimal, responsive and feature-rich Jekyll theme for technical writing.</subtitle>
-  <updated>2024-05-04T17:38:24-03:00</updated>
+  <updated>2024-05-04T21:08:09-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,61 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>Summervibes , DockerLabs</title>
+    <link href="http://localhost:4000/posts/summervibes/" rel="alternate" type="text/html" title="Summervibes , DockerLabs" />
+    <published>2024-04-29T00:00:00-03:00</published>
+  
+    <updated>2024-04-29T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/summervibes/</id>
+    <content src="http://localhost:4000/posts/summervibes/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+En este reto nos encontramos con escaneo de puertos para buscar una entrada al sistema  , enumeracion con con gobuster , explotacion de cve , revshell y escalada
+
+Herramientas y recursos usados
+
+
+  nmap
+  gobuster
+  hydra
+  cve
+
+
+Enumeracion
+
+Empezamos lanzando un nmap contra el objetivo .
+
+sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -vvv 172.17.0.2 -oX summervibes 
+
+Reporte nmap
+
+Revisamos ...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -211,43 +266,6 @@ HERRAMIENTAS Y RECURSOS USADOS
 Enumeracion
 
 Como al arrancar la maquina ya...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Nmap basico bien explicado</title>
-    <link href="http://localhost:4000/posts/Nmap_basico/" rel="alternate" type="text/html" title="Nmap basico bien explicado" />
-    <published>2024-04-25T00:00:00-03:00</published>
-  
-    <updated>2024-04-25T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/Nmap_basico/</id>
-    <content src="http://localhost:4000/posts/Nmap_basico/" />
-    <author>
-      <name>Firstatack</name>
-    </author>
-
-  
-    
-    <category term="Software" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      Para comenzar, es esencial familiarizarse con algunos comandos básicos de Nmap. A continuación, se presenta una breve descripción de algunos de los más utilizados:
-
-nmap -A &amp;lt;objetivo&amp;gt;: Realiza un escaneo completo del objetivo especificado, incluyendo la detección del sistema operativo, la detección de servicios y la detección de versiones.
-nmap -p &amp;lt;rango_de_puertos&amp;gt; &amp;lt;objetivo&amp;gt;...
     </summary>
   
 
