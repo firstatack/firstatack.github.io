@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>A minimal, responsive and feature-rich Jekyll theme for technical writing.</subtitle>
-  <updated>2024-05-04T21:08:09-03:00</updated>
+  <updated>2024-05-06T10:28:29-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,59 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>Whereismywebshell , DockerLabs</title>
+    <link href="http://localhost:4000/posts/whereismywebshell/" rel="alternate" type="text/html" title="Whereismywebshell , DockerLabs" />
+    <published>2024-04-30T00:00:00-03:00</published>
+  
+    <updated>2024-04-30T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/whereismywebshell/</id>
+    <content src="http://localhost:4000/posts/whereismywebshell/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema  , fuzzing de directorios y de parametros y por ultimo escalada.
+
+Herramientas y recursos usados
+
+
+  nmap
+  wfuzz
+
+
+Enumeracion
+
+Empezamos lanzando un nmap contra el objetivo .
+
+sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -vvv 172.17.0.2 -oX whereis
+
+Reporte nmap
+
+Revisamos la web a ver que enco...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -218,54 +271,6 @@ Empezamos lanzando un nmap contra el objetivo , el cual nos devuelve como puerto
 Reporte nmap
 
 Mientras revisamos la pagina por default en el 80 , lanzamos gobuster ...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Capypenguin , DOCKERLABS</title>
-    <link href="http://localhost:4000/posts/capypenguin/" rel="alternate" type="text/html" title="Capypenguin , DOCKERLABS" />
-    <published>2024-04-25T00:00:00-03:00</published>
-  
-    <updated>2024-04-25T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/capypenguin/</id>
-    <content src="http://localhost:4000/posts/capypenguin/" />
-    <author>
-      <name>Quino</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      Este es un reto clasificado como de dificultad facil de la plataforma Dockerlabs.
-
-Nos encontramos con las siguientes características y dificultades , en el tendremos que localizar la entrada al sistema , revisar la web y su codigo , fuerza bruta contra mysql , revisar las bbdd y escalada
-
-HERRAMIENTAS Y RECURSOS USADOS
-
-
-  nmap
-  ncrack
--searchbins
-
-
-Enumeracion
-
-Como al arrancar la maquina ya...
     </summary>
   
 

