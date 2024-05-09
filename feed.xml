@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>A minimal, responsive and feature-rich Jekyll theme for technical writing.</subtitle>
-  <updated>2024-05-07T12:34:25-03:00</updated>
+  <updated>2024-05-08T21:04:13-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,101 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>Inclusion , DockerLabs</title>
+    <link href="http://localhost:4000/posts/inclusion/" rel="alternate" type="text/html" title="Inclusion , DockerLabs" />
+    <published>2024-05-08T00:00:00-03:00</published>
+  
+    <updated>2024-05-08T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/inclusion/</id>
+    <content src="http://localhost:4000/posts/inclusion/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+En este reto de DockerLabs  nos encontramos con escaneo de puertos , path traversal , fuerza bruta y escalada final.
+
+Herramientas y recursos usados
+
+
+  nmap
+  Path traversal
+  hydra
+  Movimiento lateral
+  searchbins
+
+
+Enumeracion
+
+Empezamos lanzando un nmap contra el objetivo .
+
+sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -vvv 172.17.0.2 -oX inclusion
+
+
+Reporte nmap
+
+Nmap nos indica que ten...
+    </summary>
+  
+
+  </entry>
+
+  
+  <entry>
+    <title>Analytics en chirpy jekyll</title>
+    <link href="http://localhost:4000/posts/gajekill/" rel="alternate" type="text/html" title="Analytics en chirpy jekyll" />
+    <published>2024-05-08T00:00:00-03:00</published>
+  
+    <updated>2024-05-08T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/gajekill/</id>
+    <content src="http://localhost:4000/posts/gajekill/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="Software" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+Aqui vamos a explicar como tengo configurado mi entorno de jekill con el theme chirpy 6.5.5 y google analytics funcionando.
+
+Me encontraba el siguiente problema;al tratar de configurarlo todos los manuales hablan de añadir al head el trocito de script que te proporciona google pues bien en el directorio de donde hacemos el build no hay layouts ni include en este tema, otros que he probado si ...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -169,108 +264,6 @@ Herramientas y recursos usados
 Enumeracion
 
 Empezamos lanzando un nmap contra el objetivo , el cual nos devuelve que solo se encuentra el 80 abierto y podem...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>walkingcms , DockerLabs</title>
-    <link href="http://localhost:4000/posts/walkingcms/" rel="alternate" type="text/html" title="walkingcms , DockerLabs" />
-    <published>2024-04-26T00:00:00-03:00</published>
-  
-    <updated>2024-04-26T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/walkingcms/</id>
-    <content src="http://localhost:4000/posts/walkingcms/" />
-    <author>
-      <name>Firstatack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      En este reto nos encontramos con escaneo de puertos para buscar una entrada al sistema , fuzzing , fuerza bruta y escalada.
-
-Herramientas y recursos usados
-
-
-  nmap
-  feroxbuster
-  wpscan
-  searchbins
-
-
-Enumeracion
-
-Empezamos lanzando un nmap contra el objetivo , el cual nos devuelve que solo se encuentra el 80 abierto , podemos ver la web mientras hacemos fuzzing de directorios.
-
-Reporte nmap
-...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Hackpenguin , DockerLabs</title>
-    <link href="http://localhost:4000/posts/hackpenguin/" rel="alternate" type="text/html" title="Hackpenguin , DockerLabs" />
-    <published>2024-04-26T00:00:00-03:00</published>
-  
-    <updated>2024-04-26T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/hackpenguin/</id>
-    <content src="http://localhost:4000/posts/hackpenguin/" />
-    <author>
-      <name>Firstatack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      En este reto nos encontramos con el tipico escaneo de puertos para buscar una entrada al sistema , fuzzing , steganografia
-
-Herramientas y recursos usados
-
-
-  nmap
-  gobuster
-  stegseek
-
-
-Enumeracion
-
-Empezamos lanzando un nmap contra el objetivo , el cual nos devuelve como puertos abiertos el shh y el http.
-
-
-
-Reporte nmap
-
-Mientras revisamos la pagina por default en el 80 , lanzamos gobuster ...
     </summary>
   
 
