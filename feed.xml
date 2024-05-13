@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2024-05-13T10:19:20-03:00</updated>
+  <updated>2024-05-13T12:51:06-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -182,14 +182,14 @@ Nos dice que t...
 
   
   <entry>
-    <title>HiddenCat , DockerLabs</title>
-    <link href="http://localhost:4000/posts/hiddencat/" rel="alternate" type="text/html" title="HiddenCat , DockerLabs" />
+    <title>Asucar , DockerLabs</title>
+    <link href="http://localhost:4000/posts/asucar/" rel="alternate" type="text/html" title="Asucar , DockerLabs" />
     <published>2024-05-10T00:00:00-03:00</published>
   
     <updated>2024-05-10T00:00:00-03:00</updated>
   
-    <id>http://localhost:4000/posts/hiddencat/</id>
-    <content src="http://localhost:4000/posts/hiddencat/" />
+    <id>http://localhost:4000/posts/asucar/</id>
+    <content src="http://localhost:4000/posts/asucar/" />
     <author>
       <name>first_atack</name>
     </author>
@@ -210,23 +210,26 @@ Nos dice que t...
 
       
 
-En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema  , fuzzing de directorios , explotacion de jenkins , obtencion de hashes ,crak password , escalada con python.
+En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema , explotacion LFI wordpres ,fuerza bruta ssh y escalada final muy curiosa .
 
 Herramientas y recursos usados
 
 
   nmap
-  Feroxbuster
-  John the riper
-  scp
-  Python Library hijacking
+  nslookup
+  wpscan
+  puttygen
 
 
 Enumeracion
 
 Empezamos lanzando un nmap contra el objetivo .
 
-sudo nmap -p- -sS...
+sudo nmap -p- -sS -sC -sV -n -oX asucar 172.17.0.2
+
+Reporte nmap
+
+Nmap nos informa qu...
     </summary>
   
 

