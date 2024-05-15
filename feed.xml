@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2024-05-13T19:26:50-03:00</updated>
+  <updated>2024-05-15T11:16:10-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,61 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>Stranger , DockerLabs</title>
+    <link href="http://localhost:4000/posts/stranger/" rel="alternate" type="text/html" title="Stranger , DockerLabs" />
+    <published>2024-05-14T00:00:00-03:00</published>
+  
+    <updated>2024-05-14T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/stranger/</id>
+    <content src="http://localhost:4000/posts/stranger/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema, enumeracion de directorios ,desencriptacion
+
+Herramientas y recursos usados
+
+
+  Nmap
+  feroxbuster
+  file
+  openssl
+
+
+Enumeracion
+
+Empezamos lanzando un nmap contra el objetivo .
+
+nmap -p 21,22,80 -sCV  --min-rate 5000 172.17.0.2 -oX stranger  
+
+Reporte nmap
+
+Como podemos extraer del reporte de ...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -70,6 +125,59 @@ nmap -p 21,22,80 -sCV  --min-rate 5000 172.17.0.2 -oX nmapok
 Reporte nmap
 
 Como...
+    </summary>
+  
+
+  </entry>
+
+  
+  <entry>
+    <title>Amor , DockerLabs</title>
+    <link href="http://localhost:4000/posts/amor/" rel="alternate" type="text/html" title="Amor , DockerLabs" />
+    <published>2024-05-13T00:00:00-03:00</published>
+  
+    <updated>2024-05-13T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/amor/</id>
+    <content src="http://localhost:4000/posts/amor/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema, steganografia en imagenes y otros ficheros, decodificacion.
+
+Herramientas y recursos usados
+
+
+  Nmap
+  stegseek
+
+
+Enumeracion
+
+Empezamos lanzando un nmap contra el objetivo .
+
+nmap -p 22,80 -sCV -n -oX amor 172.17.0.2
+
+Reporte nmap
+
+Como podemos extraer del reporte de nmap disponemos de servicio...
     </summary>
   
 
@@ -177,116 +285,6 @@ Enumeracion
 Empezamos lanzando un nmap contra el objetivo .
 
 sudo nmap -p- -sS...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Library , DockerLabs</title>
-    <link href="http://localhost:4000/posts/library/" rel="alternate" type="text/html" title="Library , DockerLabs" />
-    <published>2024-05-10T00:00:00-03:00</published>
-  
-    <updated>2024-05-10T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/library/</id>
-    <content src="http://localhost:4000/posts/library/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema  , fuzzing de directorios , library path hijacking python.
-
-Herramientas y recursos usados
-
-
-  nmap
-  Feroxbuster
-  Hydra
-  Python
-
-
-Enumeracion
-
-Empezamos lanzando un nmap contra el objetivo .
-
-sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -vvv 172.17.0.2 -oX library
-
-Reporte nmap
-
-Nos dice que t...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Asucar , DockerLabs</title>
-    <link href="http://localhost:4000/posts/asucar/" rel="alternate" type="text/html" title="Asucar , DockerLabs" />
-    <published>2024-05-10T00:00:00-03:00</published>
-  
-    <updated>2024-05-10T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/asucar/</id>
-    <content src="http://localhost:4000/posts/asucar/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema , explotacion LFI wordpres ,fuerza bruta ssh y escalada final muy curiosa .
-
-Herramientas y recursos usados
-
-
-  nmap
-  nslookup
-  wpscan
-  puttygen
-
-
-Enumeracion
-
-Empezamos lanzando un nmap contra el objetivo .
-
-sudo nmap -p- -sS -sC -sV -n -oX asucar 172.17.0.2
-
-Reporte nmap
-
-Nmap nos informa qu...
     </summary>
   
 
