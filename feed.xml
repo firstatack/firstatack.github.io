@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2024-05-15T11:16:10-03:00</updated>
+  <updated>2024-05-19T11:48:53-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,198 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>Olvida netflix hbo disney ....</title>
+    <link href="http://localhost:4000/posts/vide2m3u/" rel="alternate" type="text/html" title="Olvida netflix hbo disney ...." />
+    <published>2024-05-18T00:00:00-03:00</published>
+  
+    <updated>2024-05-18T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/vide2m3u/</id>
+    <content src="http://localhost:4000/posts/vide2m3u/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="Software" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+VIDEO TO M3U
+
+
+  Aporte antiguo pero aun vigente en muchas maquinas seguimos listando.
+
+
+En el siguiente script nos aprovechamos de que apache nos deje listar los directorios donde han subido peliculas o series.
+
+Para buscar lo que nos interesa podemos hacer uso de google-dorks os dejo un ejemplo sencillo.
+
+inurl: "index of /cine"
+
+
+Podeis complicarlo como querais ese dork a mi ese ya me apor...
+    </summary>
+  
+
+  </entry>
+
+  
+  <entry>
+    <title>Picadilly , DockerLabs</title>
+    <link href="http://localhost:4000/posts/picadilly/" rel="alternate" type="text/html" title="Picadilly , DockerLabs" />
+    <published>2024-05-17T00:00:00-03:00</published>
+  
+    <updated>2024-05-17T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/picadilly/</id>
+    <content src="http://localhost:4000/posts/picadilly/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema, decodificacion , webshell y escalada.
+
+Herramientas y recursos usados
+
+
+  nmap
+  dcode.fr
+
+
+Enumeracion
+
+Empezamos lanzando un nmap contra el objetivo .
+
+nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX picadilly 172.17.0.2  
+
+Reporte nmap
+
+Como vemos en el reporte de namp nos muestra dos web una...
+    </summary>
+  
+
+  </entry>
+
+  
+  <entry>
+    <title>Script escaneo nmap preconfigurado</title>
+    <link href="http://localhost:4000/posts/nmap-command/" rel="alternate" type="text/html" title="Script escaneo nmap preconfigurado" />
+    <published>2024-05-17T00:00:00-03:00</published>
+  
+    <updated>2024-05-17T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/nmap-command/</id>
+    <content src="http://localhost:4000/posts/nmap-command/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="Software" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+Este script es una pequeña automatizacion de los comandos mas comunes y usales en los ctf’s de modo que no tengamos que tipear todo el comando.
+
+Va a estar en constante evolucion , cada vez que encuentre un comando que nos ayude ire agreagndolo de a poco una vez este comprobada su utilidad para el aprendizaje que necesitamos.
+
+El script en cuestion es una ligera modificacion del que hizo el p...
+    </summary>
+  
+
+  </entry>
+
+  
+  <entry>
+    <title>DockerLabs , DockerLabs</title>
+    <link href="http://localhost:4000/posts/dockerlabs/" rel="alternate" type="text/html" title="DockerLabs , DockerLabs" />
+    <published>2024-05-16T00:00:00-03:00</published>
+  
+    <updated>2024-05-16T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/dockerlabs/</id>
+    <content src="http://localhost:4000/posts/dockerlabs/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema, enumeracion de directorios y ficheros , file bypass , revshell y escalada final.
+
+Herramientas y recursos usados
+
+
+  Nmap
+  feroxbuster
+  bypass en control de archivos
+
+
+Enumeracion
+
+Empezamos lanzando un nmap contra el objetivo .
+
+nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX dockerlabs 172.1...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -68,223 +260,6 @@ nmap -p 21,22,80 -sCV  --min-rate 5000 172.17.0.2 -oX stranger
 Reporte nmap
 
 Como podemos extraer del reporte de ...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Fileception , DockerLabs</title>
-    <link href="http://localhost:4000/posts/fileception/" rel="alternate" type="text/html" title="Fileception , DockerLabs" />
-    <published>2024-05-13T00:00:00-03:00</published>
-  
-    <updated>2024-05-13T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/fileception/</id>
-    <content src="http://localhost:4000/posts/fileception/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema, steganografia en imagenes y otros ficheros, decodificacion.
-
-Herramientas y recursos usados
-
-
-  Nmap
-  stegseek
-  steghide
-  Cyberchef
-  strings
-  file
-
-
-Enumeracion
-
-Empezamos lanzando un nmap contra el objetivo .
-
-nmap -p 21,22,80 -sCV  --min-rate 5000 172.17.0.2 -oX nmapok
-
-Reporte nmap
-
-Como...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Amor , DockerLabs</title>
-    <link href="http://localhost:4000/posts/amor/" rel="alternate" type="text/html" title="Amor , DockerLabs" />
-    <published>2024-05-13T00:00:00-03:00</published>
-  
-    <updated>2024-05-13T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/amor/</id>
-    <content src="http://localhost:4000/posts/amor/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema, steganografia en imagenes y otros ficheros, decodificacion.
-
-Herramientas y recursos usados
-
-
-  Nmap
-  stegseek
-
-
-Enumeracion
-
-Empezamos lanzando un nmap contra el objetivo .
-
-nmap -p 22,80 -sCV -n -oX amor 172.17.0.2
-
-Reporte nmap
-
-Como podemos extraer del reporte de nmap disponemos de servicio...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>BreakMySsh , DockerLabs</title>
-    <link href="http://localhost:4000/posts/breakssh/" rel="alternate" type="text/html" title="BreakMySsh , DockerLabs" />
-    <published>2024-05-11T00:00:00-03:00</published>
-  
-    <updated>2024-05-11T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/breakssh/</id>
-    <content src="http://localhost:4000/posts/breakssh/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema  , explotacion de ssh , decryt md5 y login.
-
-Herramientas y recursos usados
-
-
-  Nmap
-  hydra
-  Python
-  Google
-
-
-Enumeracion
-
-Empezamos lanzando un nmap contra el objetivo .
-
-sudo nmap -p 1-100 --open -sC 172.17.0.2 -oX breaknmap
-
-Reporte nmap
-
-Nmap nos informa que solo tenemos el 22 abierto y co...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>SecretJenkins , DockerLabs</title>
-    <link href="http://localhost:4000/posts/secretjenkins/" rel="alternate" type="text/html" title="SecretJenkins , DockerLabs" />
-    <published>2024-05-10T00:00:00-03:00</published>
-  
-    <updated>2024-05-10T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/secretjenkins/</id>
-    <content src="http://localhost:4000/posts/secretjenkins/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema  , fuzzing de directorios , explotacion de jenkins , obtencion de hashes ,crak password , escalada con python.
-
-Herramientas y recursos usados
-
-
-  nmap
-  Feroxbuster
-  John the riper
-  scp
-  Python Library hijacking
-
-
-Enumeracion
-
-Empezamos lanzando un nmap contra el objetivo .
-
-sudo nmap -p- -sS...
     </summary>
   
 
