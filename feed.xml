@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2024-05-19T16:32:53-03:00</updated>
+  <updated>2024-05-25T10:32:12-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,58 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>Verdejo , DockerLabs</title>
+    <link href="http://localhost:4000/posts/verdejo/" rel="alternate" type="text/html" title="Verdejo , DockerLabs" />
+    <published>2024-05-24T00:00:00-03:00</published>
+  
+    <updated>2024-05-24T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/verdejo/</id>
+    <content src="http://localhost:4000/posts/verdejo/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+En este reto de DockerLabs tenemos un escaneo de puertos , un server side template injectiony escalada de privilegios.
+
+Herramientas y recursos usados
+
+
+  NMAP
+  SSTIMAP
+  hacktricks
+
+
+Enumeracion
+
+Como siempre primero lanzamos nmap.
+
+reporte
+
+En el reporte observamos 3 puertos abiertos, el 22 por la version tan nueva y dado que no tenemos ni pass ni user lo descartamos , en el 80 vemos la pl...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -208,56 +260,6 @@ Este script es una pequeña automatizacion de los comandos mas comunes y usales 
 Va a estar en constante evolucion , cada vez que encuentre un comando que nos ayude ire agreagndolo de a poco una vez este comprobada su utilidad para el aprendizaje que necesitamos.
 
 El script en cuestion es una ligera modificacion del que hizo el p...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>DockerLabs , DockerLabs</title>
-    <link href="http://localhost:4000/posts/dockerlabs/" rel="alternate" type="text/html" title="DockerLabs , DockerLabs" />
-    <published>2024-05-16T00:00:00-03:00</published>
-  
-    <updated>2024-05-16T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/dockerlabs/</id>
-    <content src="http://localhost:4000/posts/dockerlabs/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema, enumeracion de directorios y ficheros , file bypass , revshell y escalada final.
-
-Herramientas y recursos usados
-
-
-  Nmap
-  feroxbuster
-  bypass en control de archivos
-
-
-Enumeracion
-
-Empezamos lanzando un nmap contra el objetivo .
-
-nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX dockerlabs 172.1...
     </summary>
   
 
