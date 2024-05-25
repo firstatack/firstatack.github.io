@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2024-05-25T10:32:12-03:00</updated>
+  <updated>2024-05-25T18:52:24-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -65,6 +65,60 @@ Como siempre primero lanzamos nmap.
 reporte
 
 En el reporte observamos 3 puertos abiertos, el 22 por la version tan nueva y dado que no tenemos ni pass ni user lo descartamos , en el 80 vemos la pl...
+    </summary>
+  
+
+  </entry>
+
+  
+  <entry>
+    <title>Pinguinazo , DockerLabs</title>
+    <link href="http://localhost:4000/posts/pinguinazo/" rel="alternate" type="text/html" title="Pinguinazo , DockerLabs" />
+    <published>2024-05-21T00:00:00-03:00</published>
+  
+    <updated>2024-05-21T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/pinguinazo/</id>
+    <content src="http://localhost:4000/posts/pinguinazo/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema,un server side template inyection , revshell y escalada.
+
+Herramientas y recursos usados
+
+
+  Nmap
+  Revshell java
+  revshell
+
+
+Enumeracion
+
+Empezamos lanzando un nmap contra el objetivo .
+
+nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX pinguinazo 172.17.0.2  
+
+Reporte nmap
+
+Podemos ver clarament...
     </summary>
   
 
@@ -220,46 +274,6 @@ nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX picadilly 172.17.0.2
 Reporte nmap
 
 Como vemos en el reporte de namp nos muestra dos web una...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Script escaneo nmap preconfigurado</title>
-    <link href="http://localhost:4000/posts/nmap-command/" rel="alternate" type="text/html" title="Script escaneo nmap preconfigurado" />
-    <published>2024-05-17T00:00:00-03:00</published>
-  
-    <updated>2024-05-17T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/nmap-command/</id>
-    <content src="http://localhost:4000/posts/nmap-command/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="Software" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-Este script es una pequeña automatizacion de los comandos mas comunes y usales en los ctf’s de modo que no tengamos que tipear todo el comando.
-
-Va a estar en constante evolucion , cada vez que encuentre un comando que nos ayude ire agreagndolo de a poco una vez este comprobada su utilidad para el aprendizaje que necesitamos.
-
-El script en cuestion es una ligera modificacion del que hizo el p...
     </summary>
   
 
