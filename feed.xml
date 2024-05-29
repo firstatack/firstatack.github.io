@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2024-05-25T18:52:24-03:00</updated>
+  <updated>2024-05-29T08:34:36-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,65 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>BorazuwarahCTF , DockerLabs</title>
+    <link href="http://localhost:4000/posts/borazu/" rel="alternate" type="text/html" title="BorazuwarahCTF , DockerLabs" />
+    <published>2024-05-29T00:00:00-03:00</published>
+  
+    <updated>2024-05-29T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/borazu/</id>
+    <content src="http://localhost:4000/posts/borazu/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+En este reto de DockerLabs  nos encontramos una maquina sencilla ideal para los primeros pasos de quien este aprendiendo.
+
+Herramientas y recursos usados
+
+
+  Nmap
+  feroxbuster
+  exiftool
+  hydra
+
+
+Enumeracion
+
+Como siempre lanzamos nmap.
+
+reporte
+
+Nos muestra que solo tenemos el 22 de ssh y el 80 con apache.
+
+Primero revisamos la web.
+
+
+
+Vemos que solo hay una imagen y no hay comentarios ni ...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -221,59 +280,6 @@ inurl: "index of /cine"
 
 
 Podeis complicarlo como querais ese dork a mi ese ya me apor...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Picadilly , DockerLabs</title>
-    <link href="http://localhost:4000/posts/picadilly/" rel="alternate" type="text/html" title="Picadilly , DockerLabs" />
-    <published>2024-05-17T00:00:00-03:00</published>
-  
-    <updated>2024-05-17T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/picadilly/</id>
-    <content src="http://localhost:4000/posts/picadilly/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema, decodificacion , webshell y escalada.
-
-Herramientas y recursos usados
-
-
-  nmap
-  dcode.fr
-
-
-Enumeracion
-
-Empezamos lanzando un nmap contra el objetivo .
-
-nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX picadilly 172.17.0.2  
-
-Reporte nmap
-
-Como vemos en el reporte de namp nos muestra dos web una...
     </summary>
   
 
