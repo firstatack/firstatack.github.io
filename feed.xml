@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2024-05-29T08:34:36-03:00</updated>
+  <updated>2024-05-30T10:19:03-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,59 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>Database , DockerLabs</title>
+    <link href="http://localhost:4000/posts/database/" rel="alternate" type="text/html" title="Database , DockerLabs" />
+    <published>2024-05-30T00:00:00-03:00</published>
+  
+    <updated>2024-05-30T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/database/</id>
+    <content src="http://localhost:4000/posts/database/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      En este reto de DockerLabs nos encontramos con el tipico escaneo de puertos , enumeracion de samba , sql injection , movimiento lateral entre usuarios y escalada final.
+
+Herramientas y recursos
+
+
+  nmap
+  enum4linux
+  Exploit notes
+
+
+Enumeracion
+
+Lanzamos nmap con los parametros de costumbre en un ctf.
+
+sudo _nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX database 172.17.0.2
+
+
+reporte
+
+Observa...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -231,55 +284,6 @@ nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX pingpong 172.17.0.2
 Reporte nmap
 
 Como podemos extraer del rep...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Olvida netflix hbo disney ....</title>
-    <link href="http://localhost:4000/posts/vide2m3u/" rel="alternate" type="text/html" title="Olvida netflix hbo disney ...." />
-    <published>2024-05-18T00:00:00-03:00</published>
-  
-    <updated>2024-05-18T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/vide2m3u/</id>
-    <content src="http://localhost:4000/posts/vide2m3u/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="Software" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-VIDEO TO M3U
-
-
-  Aporte antiguo pero aun vigente en muchas maquinas seguimos listando.
-
-
-En el siguiente script nos aprovechamos de que apache nos deje listar los directorios donde han subido peliculas o series.
-
-Para buscar lo que nos interesa podemos hacer uso de google-dorks os dejo un ejemplo sencillo.
-
-inurl: "index of /cine"
-
-
-Podeis complicarlo como querais ese dork a mi ese ya me apor...
     </summary>
   
 
