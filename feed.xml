@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2024-05-30T10:19:03-03:00</updated>
+  <updated>2024-05-31T09:51:44-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,59 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>Vivifytech , HackMyVm</title>
+    <link href="http://localhost:4000/posts/vivfytech/" rel="alternate" type="text/html" title="Vivifytech , HackMyVm" />
+    <published>2024-05-30T00:00:00-03:00</published>
+  
+    <updated>2024-05-30T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/vivfytech/</id>
+    <content src="http://localhost:4000/posts/vivfytech/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="HackMyVm" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+Herramientas y recursos usados
+
+
+  Nmap
+  feroxbuster
+  wpscan
+
+
+Enumeracion
+
+Empezamos lanzando un nmap contra el objetivo .
+
+nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX vivfytech 192.168.0.104
+
+Reporte nmap
+
+Como nos indica el reporte de nmap disponemos de varios puntos que revisar 22 ssh , 80 http y 3306 , 33060 que paracen ambos mysql
+En el 80 lo unico que encontramos es la plantilla ...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -231,59 +284,6 @@ nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX pinguinazo 172.17.0.2
 Reporte nmap
 
 Podemos ver clarament...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>PingPong , DockerLabs</title>
-    <link href="http://localhost:4000/posts/pingpong/" rel="alternate" type="text/html" title="PingPong , DockerLabs" />
-    <published>2024-05-19T00:00:00-03:00</published>
-  
-    <updated>2024-05-19T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/pingpong/</id>
-    <content src="http://localhost:4000/posts/pingpong/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema, bypass en webshell, movimiento lateral a morir y escalada final.
-
-Herramientas y recursos usados
-
-
-  nmap
-  searchbins
-
-
-Enumeracion
-
-Empezamos lanzando un nmap contra el objetivo .
-
-nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX pingpong 172.17.0.2  
-
-Reporte nmap
-
-Como podemos extraer del rep...
     </summary>
   
 

@@ -1,6 +1,23 @@
 [
   
   {
+    "title": "Vivifytech , HackMyVm",
+    "url": "/posts/vivfytech/",
+    "categories": "HackMyVm",
+    "tags": "ctf, hacking, etico",
+    "date": "2024-05-30 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "Herramientas y recursos usados  Nmap  feroxbuster  wpscanEnumeracionEmpezamos lanzando un nmap contra el objetivo .nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX vivfytech 192.168.0.104Reporte nma...",
+    "content": "Herramientas y recursos usados  Nmap  feroxbuster  wpscanEnumeracionEmpezamos lanzando un nmap contra el objetivo .nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX vivfytech 192.168.0.104Reporte nmapComo nos indica el reporte de nmap disponemos de varios puntos que revisar 22 ssh , 80 http y 3306 , 33060 que paracen ambos mysqlEn el 80 lo unico que encontramos es la plantilla por defecto de apache pero como tambien parece estar mysql deberia de haber algo mas.Fuzzeamos un poco tanto con gobuster como con feroxbuster.Con cada uno encuentro cosas interesantes.Feroxbuster me indica que tenemos uploads , wp-includes listable desde la web.feroxbuster -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -t 400 -e -x php,txt,html,jpg,js -u http://192.168.0.104Gobuster me dice que dentro de wp-includes hay un fichero llamado secrets.txt , lo descargamos y revisamos su contenido , no se si son usuarios o posibles passwords.RARO ES QUE SE PUEDA LISTAR INCLUDESRevisando la web vemos que hay un editor que se llama sancelisso lo cual podria ser un posible usuario revisamos tambien sus posts por si hay alguna pista extra si no tiraremos de hydra con sancelisso y la lista secrets.txt.Asi que me abro un txt en la maquina atacante y anoto sancelisso.Uno de los posts de este usuario nos cuenta que hay detras de la empresa vivfytech y lo que cuenta promete pues hay un ,ogollon de nombres de usuario lo cual me indica que secrets.txt son passwords.Anotamos todos los nombres sin dejarnos ningunoEn este punto podemos lanzar hydra contra ssh o probar a explotar wordpress.Yo pruebo primero con wpscan dado que es mas rapido que un ataque al protocolo ssh.wpscan --url http://192.168.0.104/wordpress/ -U users.txt -P secrets.txt  No hubo suerte asi que no queda otra que tratar con hydra.Debe ser una madriguera de conejo.hydra -L /home/quino/Maquinas_hack/hackmyvm/vivifytech/skills/user.txt -P /home/quino/Maquinas_hack/hackmyvm/vivifytech/skills/secrets.txt ssh://192.168.0.104 -t 4Tenemos suerte y nos encuentra un pass rapidisimo asi que hacemos login con las credenciales proporcionadas por hydra.InfiltracionNos conectamos via ssh y listamos para obtener la primera flag si os interesa.Vemos que existe un directorio llamado private con un fichero el cual contiene las tareas que debe realizar en la empresa y tambien un usario y passProbamos el login con esos credenciales.Conseguimos entrar , ahora debemos buscar como escalar privilegios quien me sigue sabe que siempre ejecuto primero sudo -l y en esta ocasion estamos de suerte nos han proporcionado el binario git con permisos de superusuario.Escalada finalMaquina lista.Muy divertida y jodida porque en varias ocasiones te hace pensar que la resolucion va por otro lugar….Gracias por leerGracias por leer."
+  },
+  
+  {
     "title": "Database , DockerLabs",
     "url": "/posts/database/",
     "categories": "DockerLabs",
