@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2024-06-02T11:01:54-03:00</updated>
+  <updated>2024-06-02T18:31:34-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,67 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>UserSearch , DockerLabs</title>
+    <link href="http://localhost:4000/posts/usersearch/" rel="alternate" type="text/html" title="UserSearch , DockerLabs" />
+    <published>2024-06-02T00:00:00-03:00</published>
+  
+    <updated>2024-06-02T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/usersearch/</id>
+    <content src="http://localhost:4000/posts/usersearch/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+En este reto de DockerLabs aprendemos.
+
+
+  Scan de puertos
+  sqli
+
+
+Herramientas y recursos
+
+
+  nmap
+  feroxbuster
+  sqlmap
+
+
+Enumeracion
+
+Lanzamos nmap con los parametros de costumbre en un ctf.
+
+sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX usersearch 172.18.0.2
+
+
+reporte
+
+Como vemos en el reporte nos encontramos con ssh y el apache accesible.
+Mientras reviso la web nos lanzamos fero...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -241,58 +302,6 @@ Primero revisamos la web.
 
 
 Vemos que solo hay una imagen y no hay comentarios ni ...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Verdejo , DockerLabs</title>
-    <link href="http://localhost:4000/posts/verdejo/" rel="alternate" type="text/html" title="Verdejo , DockerLabs" />
-    <published>2024-05-24T00:00:00-03:00</published>
-  
-    <updated>2024-05-24T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/verdejo/</id>
-    <content src="http://localhost:4000/posts/verdejo/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-En este reto de DockerLabs tenemos un escaneo de puertos , un server side template injectiony escalada de privilegios.
-
-Herramientas y recursos usados
-
-
-  NMAP
-  SSTIMAP
-  hacktricks
-
-
-Enumeracion
-
-Como siempre primero lanzamos nmap.
-
-reporte
-
-En el reporte observamos 3 puertos abiertos, el 22 por la version tan nueva y dado que no tenemos ni pass ni user lo descartamos , en el 80 vemos la pl...
     </summary>
   
 
