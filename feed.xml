@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2024-05-31T09:51:44-03:00</updated>
+  <updated>2024-06-02T11:01:54-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,69 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>StrongJenkins , DockerLabs</title>
+    <link href="http://localhost:4000/posts/strongjenkins/" rel="alternate" type="text/html" title="StrongJenkins , DockerLabs" />
+    <published>2024-06-01T00:00:00-03:00</published>
+  
+    <updated>2024-06-01T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/strongjenkins/</id>
+    <content src="http://localhost:4000/posts/strongjenkins/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+En este reto de DockerLabs aprendemos.
+
+
+  Scan de puertos
+  Fuerza bruta
+  Scripting con Groovy
+  Tratamiento de terminal
+
+
+Herramientas y recursos
+
+
+  nmap
+  whatweb
+  feroxbuster
+  ffuf
+
+
+Enumeracion
+
+Lanzamos nmap con los parametros de costumbre en un ctf.
+
+sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX StrongJenkins 172.17.0.2
+
+
+reporte
+
+Como nos indica nmap en este caso solo encon...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -230,60 +293,6 @@ Como siempre primero lanzamos nmap.
 reporte
 
 En el reporte observamos 3 puertos abiertos, el 22 por la version tan nueva y dado que no tenemos ni pass ni user lo descartamos , en el 80 vemos la pl...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Pinguinazo , DockerLabs</title>
-    <link href="http://localhost:4000/posts/pinguinazo/" rel="alternate" type="text/html" title="Pinguinazo , DockerLabs" />
-    <published>2024-05-21T00:00:00-03:00</published>
-  
-    <updated>2024-05-21T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/pinguinazo/</id>
-    <content src="http://localhost:4000/posts/pinguinazo/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema,un server side template inyection , revshell y escalada.
-
-Herramientas y recursos usados
-
-
-  Nmap
-  Revshell java
-  revshell
-
-
-Enumeracion
-
-Empezamos lanzando un nmap contra el objetivo .
-
-nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX pinguinazo 172.17.0.2  
-
-Reporte nmap
-
-Podemos ver clarament...
     </summary>
   
 
