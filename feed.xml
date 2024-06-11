@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2024-06-02T18:31:34-03:00</updated>
+  <updated>2024-06-11T07:31:34-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,128 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>Bashpariencias , DockerLabs</title>
+    <link href="http://localhost:4000/posts/bashparencias/" rel="alternate" type="text/html" title="Bashpariencias , DockerLabs" />
+    <published>2024-06-09T00:00:00-03:00</published>
+  
+    <updated>2024-06-09T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/bashparencias/</id>
+    <content src="http://localhost:4000/posts/bashparencias/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+En este reto de DockerLabs aprendemos.
+
+
+  Scan de puertos
+  Bash scripting basico
+  Abuso de sudo
+
+
+Herramientas y recursos
+
+
+  nmap
+  Bucles for
+  Mario
+  Password cracking john zip2john
+
+
+Reconocimiento y enumeracion
+
+Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.
+
+sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX bashpariencias 172.18.0.2
+
+
+reporte
+
+Como ob...
+    </summary>
+  
+
+  </entry>
+
+  
+  <entry>
+    <title>Eclipse , DockerLabs</title>
+    <link href="http://localhost:4000/posts/eclipse/" rel="alternate" type="text/html" title="Eclipse , DockerLabs" />
+    <published>2024-06-08T00:00:00-03:00</published>
+  
+    <updated>2024-06-08T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/eclipse/</id>
+    <content src="http://localhost:4000/posts/eclipse/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+En este reto de DockerLabs aprendemos.
+
+
+  Scan de puertos
+  Explotacion Slor 8.3.0
+
+
+Herramientas y recursos
+
+
+  nmap
+  msfconsole
+  script
+
+
+Reconocimiento y enumeracion
+
+Lanzamos nmap con los parámetros de costumbre en un ctf.
+
+sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX eclipse 172.17.0.2
+
+
+reporte
+
+Después de revisar el reporte de nmap nos encontramos con el puerto 80 el cual co...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -190,118 +312,6 @@ Reporte nmap
 
 Como nos indica el reporte de nmap disponemos de varios puntos que revisar 22 ssh , 80 http y 3306 , 33060 que paracen ambos mysql
 En el 80 lo unico que encontramos es la plantilla ...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Database , DockerLabs</title>
-    <link href="http://localhost:4000/posts/database/" rel="alternate" type="text/html" title="Database , DockerLabs" />
-    <published>2024-05-30T00:00:00-03:00</published>
-  
-    <updated>2024-05-30T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/database/</id>
-    <content src="http://localhost:4000/posts/database/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      En este reto de DockerLabs nos encontramos con el tipico escaneo de puertos , enumeracion de samba , sql injection , movimiento lateral entre usuarios y escalada final.
-
-Herramientas y recursos
-
-
-  nmap
-  enum4linux
-  Exploit notes
-
-
-Enumeracion
-
-Lanzamos nmap con los parametros de costumbre en un ctf.
-
-sudo _nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX database 172.17.0.2
-
-
-reporte
-
-Observa...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>BorazuwarahCTF , DockerLabs</title>
-    <link href="http://localhost:4000/posts/borazu/" rel="alternate" type="text/html" title="BorazuwarahCTF , DockerLabs" />
-    <published>2024-05-29T00:00:00-03:00</published>
-  
-    <updated>2024-05-29T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/borazu/</id>
-    <content src="http://localhost:4000/posts/borazu/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-En este reto de DockerLabs  nos encontramos una maquina sencilla ideal para los primeros pasos de quien este aprendiendo.
-
-Herramientas y recursos usados
-
-
-  Nmap
-  feroxbuster
-  exiftool
-  hydra
-
-
-Enumeracion
-
-Como siempre lanzamos nmap.
-
-reporte
-
-Nos muestra que solo tenemos el 22 de ssh y el 80 con apache.
-
-Primero revisamos la web.
-
-
-
-Vemos que solo hay una imagen y no hay comentarios ni ...
     </summary>
   
 
