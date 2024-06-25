@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2024-06-17T15:34:42-03:00</updated>
+  <updated>2024-06-25T10:07:29-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,65 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>ChocolateFire, DockerLabs</title>
+    <link href="http://localhost:4000/posts/chocolatefire/" rel="alternate" type="text/html" title="ChocolateFire, DockerLabs" />
+    <published>2024-06-25T00:00:00-03:00</published>
+  
+    <updated>2024-06-25T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/chocolatefire/</id>
+    <content src="http://localhost:4000/posts/chocolatefire/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+En este reto de DockerLabs practicamos.
+
+
+  Scan de puertos
+  Uso de metasploit RCE
+
+
+Herramientas y recursos
+
+
+  nmap
+  metasploit
+
+
+Reconocimiento y enumeracion
+
+Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.
+
+sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX chocolatefire 172.18.0.2
+
+
+reporte
+
+Como vemos en el reporte en esta ocasión nos han dejado un montón...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -253,67 +312,6 @@ sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX eclipse 172.17.0.2
 reporte
 
 Después de revisar el reporte de nmap nos encontramos con el puerto 80 el cual co...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>UserSearch , DockerLabs</title>
-    <link href="http://localhost:4000/posts/usersearch/" rel="alternate" type="text/html" title="UserSearch , DockerLabs" />
-    <published>2024-06-02T00:00:00-03:00</published>
-  
-    <updated>2024-06-02T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/usersearch/</id>
-    <content src="http://localhost:4000/posts/usersearch/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-En este reto de DockerLabs aprendemos.
-
-
-  Scan de puertos
-  sqli
-
-
-Herramientas y recursos
-
-
-  nmap
-  feroxbuster
-  sqlmap
-
-
-Enumeracion
-
-Lanzamos nmap con los parametros de costumbre en un ctf.
-
-sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX usersearch 172.18.0.2
-
-
-reporte
-
-Como vemos en el reporte nos encontramos con ssh y el apache accesible.
-Mientras reviso la web nos lanzamos fero...
     </summary>
   
 

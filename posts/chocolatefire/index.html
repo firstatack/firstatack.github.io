@@ -44,25 +44,25 @@
 
   <!-- Begin Jekyll SEO tag v2.8.0 -->
 <meta name="generator" content="Jekyll v4.3.3" />
-<meta property="og:title" content="Picadilly , DockerLabs" />
+<meta property="og:title" content="ChocolateFire, DockerLabs" />
 <meta property="og:locale" content="es" />
 <meta name="description" content="Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell" />
 <meta property="og:description" content="Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell" />
-<link rel="canonical" href="http://localhost:4000/posts/picadilly/" />
-<meta property="og:url" content="http://localhost:4000/posts/picadilly/" />
+<link rel="canonical" href="http://localhost:4000/posts/chocolatefire/" />
+<meta property="og:url" content="http://localhost:4000/posts/chocolatefire/" />
 <meta property="og:site_name" content="CTF’s Linux Apuntes" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2024-05-17T00:00:00-03:00" />
+<meta property="article:published_time" content="2024-06-25T00:00:00-03:00" />
 <meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Picadilly , DockerLabs" />
+<meta property="twitter:title" content="ChocolateFire, DockerLabs" />
 <meta name="twitter:site" content="@firstatack" />
 <meta name="google-site-verification" content="W-9NcBppWJit0_JSlb-tSEccz0fimupFf4latnvZtZQ" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2024-05-17T00:00:00-03:00","datePublished":"2024-05-17T00:00:00-03:00","description":"Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell","headline":"Picadilly , DockerLabs","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/posts/picadilly/"},"url":"http://localhost:4000/posts/picadilly/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2024-06-25T00:00:00-03:00","datePublished":"2024-06-25T00:00:00-03:00","description":"Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell","headline":"ChocolateFire, DockerLabs","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/posts/chocolatefire/"},"url":"http://localhost:4000/posts/chocolatefire/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
-  <title>Picadilly , DockerLabs | CTF's Linux Apuntes
+  <title>ChocolateFire, DockerLabs | CTF's Linux Apuntes
   </title>
 
   <!--
@@ -478,7 +478,7 @@
         
           
             
-              <span>Picadilly , DockerLabs</span>
+              <span>ChocolateFire, DockerLabs</span>
             
 
           
@@ -567,22 +567,6 @@
     
     
 
-    
-      
-
-      
-      
-      
-
-      
-    
-      
-
-      
-      
-      
-
-      
     
       
 
@@ -1005,28 +989,6 @@
 
       
     
-      
-
-      
-      
-
-      
-      
-      
-
-      
-    
-      
-
-      
-      
-
-      
-      
-      
-
-      
-    
 
     
   
@@ -1056,7 +1018,7 @@
 
 <article class="px-1">
   <header>
-    <h1 data-toc-skip>Picadilly , DockerLabs</h1>
+    <h1 data-toc-skip>ChocolateFire, DockerLabs</h1>
 
     <div class="post-meta text-muted">
       <!-- published date -->
@@ -1072,13 +1034,13 @@
 
 <time
   
-  data-ts="1715914800"
+  data-ts="1719284400"
   data-df="ll"
   
     data-bs-toggle="tooltip" data-bs-placement="bottom"
   
 >
-  May 17, 2024
+  Jun 25, 2024
 </time>
 
       </span>
@@ -1123,7 +1085,7 @@
   class="readtime"
   data-bs-toggle="tooltip"
   data-bs-placement="bottom"
-  title="242 words"
+  title="165 words"
 >
   <em>1 min</em> read</span>
 
@@ -1134,62 +1096,60 @@
   </header>
 
   <div class="content">
-    <p><a href="/assets/logo-dockerlabs.png" class="popup img-link  shimmer"><img src="/assets/logo-dockerlabs.png" alt="logodocker" width="200" height="200" loading="lazy"></a></p>
+    <p><a href="/assets/chocolatefire/portada.png" class="popup img-link  shimmer"><img src="/assets/chocolatefire/portada.png" alt="portada" loading="lazy"></a></p>
 
-<p>En este reto de <a href="https://dockerlabs.es" title="dockerlabs">DockerLabs</a>  encontramos con escaneo de puertos para buscar una entrada al sistema, decodificacion , webshell y escalada.</p>
+<p>En este reto de <a href="https://dockerlabs.es" title="DockerLabs">DockerLabs</a> practicamos.</p>
 
-<h2 id="herramientas-y-recursos-usados"><span class="me-2">Herramientas y recursos usados</span><a href="#herramientas-y-recursos-usados" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2>
+<ul>
+  <li>Scan de puertos</li>
+  <li>Uso de metasploit RCE</li>
+</ul>
+
+<h2 id="herramientas-y-recursos"><span class="me-2">Herramientas y recursos</span><a href="#herramientas-y-recursos" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2>
 
 <ul>
   <li>nmap</li>
-  <li>dcode.fr</li>
+  <li>metasploit</li>
 </ul>
 
-<h2 id="enumeracion"><span class="me-2">Enumeracion</span><a href="#enumeracion" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2>
+<h2 id="reconocimiento-y-enumeracion"><span class="me-2">Reconocimiento y enumeracion</span><a href="#reconocimiento-y-enumeracion" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2>
 
-<p>Empezamos lanzando un nmap contra el objetivo .</p>
+<p>Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.</p>
 
 <div class="language-bash highlighter-rouge"><div class="code-header">
         <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span>
       <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre>nmap <span class="nt">-p-</span> <span class="nt">-sS</span> <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">--min-rate</span><span class="o">=</span>5000 <span class="nt">-n</span> <span class="nt">-Pn</span> <span class="nt">-oX</span> picadilly 172.17.0.2  
+</pre></td><td class="rouge-code"><pre><span class="nb">sudo </span>nmap <span class="nt">-p-</span> <span class="nt">-sS</span> <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">--min-rate</span><span class="o">=</span>5000 <span class="nt">-n</span> <span class="nt">-Pn</span> <span class="nt">-oX</span> chocolatefire 172.18.0.2
 </pre></td></tr></tbody></table></code></div></div>
-<p><a href="/reporte/picadilly.html" title="reportesnmap">Reporte nmap</a></p>
 
-<p>Como vemos en el reporte de namp nos muestra dos web una en puerto 80 y otra en el 443.
-Revisamos la del puerto 80 primero y nos lista un archivo txt.</p>
+<p><a href="/reporte/chocolatefire.html">reporte</a></p>
 
-<p><a href="/assets/picadilly/nota.png" class="popup img-link  shimmer"><img src="/assets/picadilly/nota.png" alt="txt" loading="lazy"></a></p>
+<p>Como vemos en el reporte en esta ocasión nos han dejado un montón de puertos para investigar yo a por el primero que he ido ha sido el 9090 que es el que devolvía claramente un 200 ok.</p>
 
-<h2 id="decodeando"><span class="me-2">Decodeando</span><a href="#decodeando" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2>
+<p>Nos devuelve un login en el cual tenemos acceso con pass y user <strong>admin</strong></p>
 
-<p>De esa nota extraemos un posible usuario y un posible password el cual esta codificado , en este punto nos vamos a <a href="https://www.dcode.fr" title="dcode.fr">dcode</a></p>
+<p><a href="/assets/chocolatefire/login.png" class="popup img-link  shimmer"><img src="/assets/chocolatefire/login.png" alt="login" loading="lazy"></a></p>
 
-<p><a href="/assets/picadilly/passmateo.png" class="popup img-link  shimmer"><img src="/assets/picadilly/passmateo.png" alt="decodeado" loading="lazy"></a></p>
+<p>Revisando por internet vemos que hay varias formas de explotación y de versiones explotables en este caso estamos frete a una <strong>4.7.4</strong>.
+No me caliento mucho y voy directo a usar msfconsole.</p>
 
-<p>De  momento ya tenemos eso, para donde nos servira no tengo idea, asi que avanzamos hacia la web con ssl.</p>
+<h2 id="infiltración"><span class="me-2">Infiltración</span><a href="#infiltración" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2>
 
-<h2 id="infiltracion"><span class="me-2">Infiltracion</span><a href="#infiltracion" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2>
+<p><a href="/assets/chocolatefire/search.png" class="popup img-link  shimmer"><img src="/assets/chocolatefire/search.png" alt="search" loading="lazy"></a></p>
 
-<p>Dandole un vistazo rapido veo que permite tambien la subida de archivos asi que le tiro una webshell.php y la sube sin problemas asi que nos vamos al directorio uploads y la cargamos y nos ponemos en escucha para recibir la revshell.</p>
+<p>Nos aporta dos posibilidades , elijan el <strong>RCE</strong>.</p>
 
-<p><a href="/assets/picadilly/webshell.png" class="popup img-link  shimmer"><img src="/assets/picadilly/webshell.png" alt="webshell" loading="lazy"></a></p>
+<p>Vemos que opciones hay que configurar y procedemos.</p>
 
-<p>Una vez recibida la shell nos cambiamos rapidamente al usario maeto del cual obtuvimos el pass en dcode , hice todas posibles combinaciones y el unico resultado coherente  estaba mal ,hay que sacarle la x.</p>
+<p><a href="/assets/chocolatefire/options.png" class="popup img-link  shimmer"><img src="/assets/chocolatefire/options.png" alt="options" loading="lazy"></a></p>
 
-<p><a href="/assets/picadilly/sudo.png" class="popup img-link  shimmer"><img src="/assets/picadilly/sudo.png" alt="sudo" loading="lazy"></a></p>
+<p><a href="/assets/chocolatefire/configurado.png" class="popup img-link  shimmer"><img src="/assets/chocolatefire/configurado.png" alt="config" loading="lazy"></a></p>
 
-<p>Con sudo podemos escalar privilegios.
-Por otro lado no se que utilidad tiene que el archivo post.txt tenga permisos de ejecucion para todos.
-Aprevechemos php.</p>
+<p>Una vez todo listo solo que correr el exploit con <strong>RUN o EXPLOIT</strong>.</p>
 
-<h2 id="escalada"><span class="me-2">Escalada</span><a href="#escalada" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2>
+<p><a href="/assets/chocolatefire/root.png" class="popup img-link  shimmer"><img src="/assets/chocolatefire/root.png" alt="root" loading="lazy"></a></p>
 
-<p><a href="/assets/picadilly/root.png" class="popup img-link  shimmer"><img src="/assets/picadilly/root.png" alt="root" loading="lazy"></a></p>
-
-<p>Otra completa gracias por leer comenten dudas o errores que vean</p>
-
-<p>Saludos…</p>
+<p>Gracias por leer</p>
 
 
   </div>
@@ -1223,6 +1183,11 @@ Aprevechemos php.</p>
             href="/tags/etico/"
             class="post-tag no-text-decoration"
           >etico</a>
+        
+          <a
+            href="/tags/openfire-cms/"
+            class="post-tag no-text-decoration"
+          >Openfire cms</a>
         
       </div>
     
@@ -1258,21 +1223,21 @@ Aprevechemos php.</p>
 
       
 
-      <a href="https://twitter.com/intent/tweet?text=Picadilly%20,%20DockerLabs%20-%20CTF's%20Linux%20Apuntes&url=http%3A%2F%2Flocalhost%3A4000%2Fposts%2Fpicadilly%2F" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="Twitter" aria-label="Twitter">
+      <a href="https://twitter.com/intent/tweet?text=ChocolateFire,%20DockerLabs%20-%20CTF's%20Linux%20Apuntes&url=http%3A%2F%2Flocalhost%3A4000%2Fposts%2Fchocolatefire%2F" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="Twitter" aria-label="Twitter">
         <i class="fa-fw fa-brands fa-square-x-twitter"></i>
       </a>
     
 
       
 
-      <a href="https://www.facebook.com/sharer/sharer.php?title=Picadilly%20,%20DockerLabs%20-%20CTF's%20Linux%20Apuntes&u=http%3A%2F%2Flocalhost%3A4000%2Fposts%2Fpicadilly%2F" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="Facebook" aria-label="Facebook">
+      <a href="https://www.facebook.com/sharer/sharer.php?title=ChocolateFire,%20DockerLabs%20-%20CTF's%20Linux%20Apuntes&u=http%3A%2F%2Flocalhost%3A4000%2Fposts%2Fchocolatefire%2F" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="Facebook" aria-label="Facebook">
         <i class="fa-fw fab fa-facebook-square"></i>
       </a>
     
 
       
 
-      <a href="https://t.me/share/url?url=http%3A%2F%2Flocalhost%3A4000%2Fposts%2Fpicadilly%2F&text=Picadilly%20,%20DockerLabs%20-%20CTF's%20Linux%20Apuntes" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="Telegram" aria-label="Telegram">
+      <a href="https://t.me/share/url?url=http%3A%2F%2Flocalhost%3A4000%2Fposts%2Fchocolatefire%2F&text=ChocolateFire,%20DockerLabs%20-%20CTF's%20Linux%20Apuntes" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="Telegram" aria-label="Telegram">
         <i class="fa-fw fab fa-telegram"></i>
       </a>
     
@@ -1867,151 +1832,151 @@ Aprevechemos php.</p>
   
 
   
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
     
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
   
 
   
@@ -2357,8 +2322,7 @@ Enumeracion
 
 Empezamos lanzando un nmap contra el objetivo .
 
-1
-nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX vivfytech 192.168....
+nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX vivfytech 192.168.0....
                 </p>
               </div>
             </div>
@@ -2474,22 +2438,18 @@ Herramientas y recursos usados
 
   
     <a
-      href="/posts/nmap-command/"
+      href="/posts/herebash/"
       class="btn btn-outline-primary"
       aria-label="Older"
     >
-      <p>Script escaneo nmap preconfigurado</p>
+      <p>HereBash , DockerLabs</p>
     </a>
   
 
   
-    <a
-      href="/posts/vide2m3u/"
-      class="btn btn-outline-primary"
-      aria-label="Newer"
-    >
-      <p>Olvida netflix hbo disney ....</p>
-    </a>
+    <div class="btn btn-outline-primary disabled" aria-label="Newer">
+      <p>-</p>
+    </div>
   
 </nav>
 
@@ -2506,8 +2466,8 @@ Herramientas y recursos usados
 
 <script type="text/javascript">
   var disqus_config = function () {
-    this.page.url = 'http://localhost:4000/posts/picadilly/';
-    this.page.identifier = '/posts/picadilly/';
+    this.page.url = 'http://localhost:4000/posts/chocolatefire/';
+    this.page.identifier = '/posts/chocolatefire/';
   };
 
   /* Lazy loading */
