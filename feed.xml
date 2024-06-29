@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2024-06-25T11:55:47-03:00</updated>
+  <updated>2024-06-29T11:47:42-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,69 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>Veneno , DockerLabs</title>
+    <link href="http://localhost:4000/posts/veneno/" rel="alternate" type="text/html" title="Veneno , DockerLabs" />
+    <published>2024-06-26T00:00:00-03:00</published>
+  
+    <updated>2024-06-26T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/veneno/</id>
+    <content src="http://localhost:4000/posts/veneno/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+En este reto de DockerLabs practicamos.
+
+
+  Scan de puertos
+  LFI to RCE
+  Log poisoning
+  find
+
+
+Herramientas y recursos
+
+
+  nmap
+  feroxbuster
+  wfuzz
+  exiftool
+
+
+Reconocimiento y enumeracion
+
+Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.
+
+sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX veneno  172.18.0.2
+
+
+reporte
+
+En este caso nos encontramos  con el pr...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -251,68 +314,6 @@ Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.
 sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX whoiam 172.18.0.2
 
 ...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Bashpariencias , DockerLabs</title>
-    <link href="http://localhost:4000/posts/bashparencias/" rel="alternate" type="text/html" title="Bashpariencias , DockerLabs" />
-    <published>2024-06-09T00:00:00-03:00</published>
-  
-    <updated>2024-06-09T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/bashparencias/</id>
-    <content src="http://localhost:4000/posts/bashparencias/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-En este reto de DockerLabs aprendemos.
-
-
-  Scan de puertos
-  Bash scripting basico
-  Abuso de sudo
-
-
-Herramientas y recursos
-
-
-  nmap
-  Bucles for
-  Mario
-  Password cracking john zip2john
-
-
-Reconocimiento y enumeracion
-
-Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.
-
-sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX bashpariencias 172.18.0.2
-
-
-reporte
-
-Como ob...
     </summary>
   
 
