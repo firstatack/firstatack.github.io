@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2024-07-02T22:00:43-03:00</updated>
+  <updated>2024-07-03T13:07:26-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,62 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>Master , DockerLabs</title>
+    <link href="http://localhost:4000/posts/master/" rel="alternate" type="text/html" title="Master , DockerLabs" />
+    <published>2024-07-02T00:00:00-03:00</published>
+  
+    <updated>2024-07-02T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/master/</id>
+    <content src="http://localhost:4000/posts/master/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+En este reto de DockerLabs practicamos.
+
+
+  Scan de puertos
+  Busqueda de vulnerabilidad en wordpress
+  wp-automatic 3.92 ultima vulnerable
+  Inyeccion de comandos a script de bash
+
+
+Herramientas y recursos
+
+
+  nmap
+  sudo
+
+
+Reconocimiento y enumeracion
+
+Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.
+
+sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX master 172...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -257,65 +313,6 @@ sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX chocolatefire 172.18.0.2
 reporte
 
 Como vemos en el reporte en esta ocasión nos han dejado un montón...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>HereBash , DockerLabs</title>
-    <link href="http://localhost:4000/posts/herebash/" rel="alternate" type="text/html" title="HereBash , DockerLabs" />
-    <published>2024-06-17T00:00:00-03:00</published>
-  
-    <updated>2024-06-17T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/herebash/</id>
-    <content src="http://localhost:4000/posts/herebash/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      En este reto de DockerLabs practicamos.
-
-
-  Un poco de nmap
-  Bash
-  Esteganografia
-
-
-Herramientas y recursos
-
-
-  nmap
-  steghide
-  John th ripper
-
-
-Reconocimiento y enumeracion
-
-Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.
-
-sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX nuevo 172.17.0.2
-
-
-reporte
-
-Como vemos en el reporte disponemos de dos puertos abiertos ...
     </summary>
   
 
