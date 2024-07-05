@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2024-07-03T13:07:26-03:00</updated>
+  <updated>2024-07-05T11:35:08-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,67 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>NodeClimb , DockerLabs</title>
+    <link href="http://localhost:4000/posts/nodeclimb/" rel="alternate" type="text/html" title="NodeClimb , DockerLabs" />
+    <published>2024-07-05T00:00:00-03:00</published>
+  
+    <updated>2024-07-05T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/nodeclimb/</id>
+    <content src="http://localhost:4000/posts/nodeclimb/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+En este reto de DockerLabs practicamos.
+
+
+  Scan de puertos
+  Cracking password zip
+  Re0vshell node
+
+
+Herramientas y recursos
+
+
+  nmap
+  John the ripper
+  Revshells
+
+
+Reconocimiento y enumeracion
+
+Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.
+
+sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX nodeclimb  172.17.0.2
+
+
+reporte
+
+En este caso nos encontramos solo ...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -254,65 +315,6 @@ sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX obsession 172.17.0.2
 reporte
 
 Como vemos en el reporte disponemos de tres puertos abiertos u...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>ChocolateFire, DockerLabs</title>
-    <link href="http://localhost:4000/posts/chocolatefire/" rel="alternate" type="text/html" title="ChocolateFire, DockerLabs" />
-    <published>2024-06-25T00:00:00-03:00</published>
-  
-    <updated>2024-06-25T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/chocolatefire/</id>
-    <content src="http://localhost:4000/posts/chocolatefire/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-En este reto de DockerLabs practicamos.
-
-
-  Scan de puertos
-  Uso de metasploit RCE
-
-
-Herramientas y recursos
-
-
-  nmap
-  metasploit
-
-
-Reconocimiento y enumeracion
-
-Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.
-
-sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX chocolatefire 172.18.0.2
-
-
-reporte
-
-Como vemos en el reporte en esta ocasión nos han dejado un montón...
     </summary>
   
 
