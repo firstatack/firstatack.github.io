@@ -1,0 +1,114 @@
+<p>Este es un reto clasificado como de dificultad facil de la plataforma <a href="https://dockerlabs.es" title="dockerlabs">Dockerlabs</a>.</p>
+
+<p>Nos encontramos con las siguientes características y dificultades , en el tendremos que localizar la entrada al sistema , revisar la web y su codigo , fuerza bruta contra mysql , revisar las bbdd y escalada</p>
+
+<h2 id="herramientas-y-recursos-usados">HERRAMIENTAS Y RECURSOS USADOS</h2>
+
+<ul>
+  <li>nmap</li>
+  <li>ncrack
+-searchbins</li>
+</ul>
+
+<h2 id="enumeracion">Enumeracion</h2>
+
+<p>Como al arrancar la maquina ya nos dice la ip , nos olvidamos de arp-scan , comprobamos la conexion con un ping.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+ping <span class="nt">-c1</span> 172.17.0.2
+
+</code></pre></div></div>
+
+<p>Ahora realizamos un nmap como de costumbre sin preocuparnos del ruido pues estamos en entorno de pruebas.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>nmap <span class="nt">-p-</span> <span class="nt">-sS</span> <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">--min-rate</span><span class="o">=</span>5000 <span class="nt">-n</span> <span class="nt">-vvv</span>  172.17.0.2 <span class="nt">-oX</span> puertos
+</code></pre></div></div>
+
+<p><a href="/reporte/capipenguin_nmap.html" title="Reporte nmap">Reporte</a></p>
+
+<p>Observamos el resultado y vemos que solo tiene el ssh 22, el http 80, y el 3306 de mysql.</p>
+
+<p>Empecemos por revisar la web no se pq motivo a mi me carga de forma incorrecta y leyendo el codigo veo lo siguiente (eso tambien deberia de verse de forma visual o eso creo).</p>
+
+<p><img src="assets/capypenguin/webuser.png" alt="codigoweb" /></p>
+
+<p>Como se entiende a la perfecion creo que no hace falta explicarlo tenemos al usuario capybarauser y la pass en el final del rockyou</p>
+
+<blockquote>
+  <p>Ademas nos tira un comando a usar</p>
+</blockquote>
+
+<p>Yo me voy a llevar las ultimas 100000 lineas del rockyou par empezar con la fuerza bruta y si no seran  1000000 , porque este que tengo lo destripe un par de veces y la cage.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">tail</span> <span class="nt">--lines</span> 100000 ../../../rockyou.txt <span class="o">&gt;</span> 1000.txt
+</code></pre></div></div>
+
+<p>Ahora ya con el mini rock podemos empezar el ataque , si el usuario lo hubiese extraido de otro lugar haria fuerza bruta tanto a ssh como a mysql pero nos lo ha dado la web asi que vamos primero contra mysql.</p>
+
+<p>OJO PARECE QUE SE BLOQUEA LA BASE DE DATOS</p>
+
+<p><img src="assets/capypenguin/mysqlerror.png" alt="flush_user" /></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ncrack <span class="nt">-u</span> capybarauser <span class="nt">-P</span> Maquinas_hack/Dockerlabs.es/capypenguin/1000.txt 172.17.0.2:3306 mysql
+</code></pre></div></div>
+
+<p><img src="assets/capypenguin/ncrakmysql.png" alt="ncark" /></p>
+
+<h2 id="infiltración">Infiltración</h2>
+
+<p>Llego la hora de mandarnos a la base de datos.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql <span class="nt">-h</span> 172.17.0.2 <span class="nt">-u</span> capybarauser <span class="nt">-p</span>
+</code></pre></div></div>
+<p>Listamos las bases de datos</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SHOW DATABASES<span class="p">;</span>
+</code></pre></div></div>
+
+<p><img src="assets/capypenguin/showddbb.png" alt="BBDD" /></p>
+
+<p>Le indicamos cual queremos cargar y tambien que nos la muestre</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>USE pinguinasio_db<span class="p">;</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SHOW TABLES<span class="p">;</span>
+</code></pre></div></div>
+
+<p><img src="assets/capypenguin/showtables.png" alt="tables" /></p>
+
+<p>Y por ultimo y para visualizar el contenido de la tabla ejecutamos</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT <span class="k">*</span> FROM <span class="nb">users</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p><img src="assets/capypenguin/selectdb.png" alt="passbbdd" /></p>
+
+<p>Ya tenemos un usario y contraseña a probar ssh</p>
+
+<h2 id="escalada-de-privilegios">Escalada de privilegios</h2>
+
+<p>Una vez dentro listamos directorios importantes y tambien lo primero es ejecutar como de costumbre find y sudo que nos buscaran ficheros con permisos erroneos.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>find / <span class="nt">-perm</span> <span class="nt">-4000</span> 2&gt;/dev/null
+<span class="nb">sudo</span> <span class="nt">-l</span>
+</code></pre></div></div>
+
+<p><img src="assets/capypenguin/sudo.png" alt="salida_sudo" /></p>
+
+<p>Sudo nos arroja el binario nano disponible para escalar hasta root.</p>
+
+<p>Lo buscamos en searchbins para saber como ejecutarlo y nos hacemos root</p>
+
+<p><img src="assets/capypenguin/searchbins.png" alt="searchbins" /></p>
+
+<p>Nano no se lleva bien</p>
+
+<p><img src="assets/capypenguin/errorkitty.png" alt="error" /></p>
+
+<p>Lo soluciono cambiando de terminal</p>
+
+<p><img src="assets/capypenguin/root.png" alt="root" /></p>
+
+<p>Gracias por leer</p>
+

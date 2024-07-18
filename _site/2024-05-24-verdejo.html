@@ -1,0 +1,94 @@
+<p><img src="assets/verdejo/logomaq.png" alt="logodocker" w="400" h="400" /></p>
+
+<p>En este reto de <a href="https://dockerlabs.es" title="dockerlabs">DockerLabs</a> tenemos un escaneo de puertos , un server side template injectiony escalada de privilegios.</p>
+
+<h2 id="herramientas-y-recursos-usados">Herramientas y recursos usados</h2>
+
+<ul>
+  <li>NMAP</li>
+  <li>SSTIMAP</li>
+  <li><a href="https://book.hacktricks.xyz/pentesting-web/ssti-server-side-template-injection" title="Info necesaria">hacktricks</a></li>
+</ul>
+
+<h2 id="enumeracion">Enumeracion</h2>
+
+<p>Como siempre primero lanzamos nmap.</p>
+
+<p><a href="/reporte/verdejo.html">reporte</a></p>
+
+<p>En el reporte observamos 3 puertos abiertos, el 22 por la version tan nueva y dado que no tenemos ni pass ni user lo descartamos , en el 80 vemos la plantilla de apache y en el 8089 tenemos un Werkzeug/2.2.2 Python/3.11.2 asi que vamos a mirar bien ese puerto.</p>
+
+<p><img src="assets/verdejo/web8089.png" alt="web" /></p>
+
+<p>Hacemos una comprobacion por si traga un ssti .</p>
+
+<p><img src="assets/verdejo/ssticomprobacion.png" alt="ssti" /></p>
+
+<p>Como vemos,  ejecuta la operacion que le indicamos por tanto tenemos un ssti.</p>
+
+<blockquote>
+  <p>Llegados a este punto he de aclarar que no es nada facil saber distinguir entre estas vulnerabilidades, es casi un prueba y error.</p>
+</blockquote>
+
+<p>Fase de identificación</p>
+
+<p>Identificar el motor de la plantilla implica analizar mensajes de error o probar manualmente varias cargas útiles específicas del idioma. Las cargas útiles comunes que causan errores incluyen ${7/0}, {{7/0}} , y &lt;%= 7/0 %&gt;. Observar la respuesta del servidor a las operaciones matemáticas ayuda a identificar el motor de plantilla específico.</p>
+
+<p>Ahora que tenemos claro que tenemos un ssti procedemos a explotarlo , se podria hacer manualmente , con scripts incluso con burpsuit.
+Yo en este caso opto por probar con un script SSTIMAP.</p>
+
+<h2 id="explotacion">Explotacion</h2>
+
+<p>Cuando hacemos uso de script debemos aportar la ruta completa es decir , no podemos darle solo la ip y el puerto , le debemos indicar cual es el archivo contra el que trabaja.</p>
+
+<p>Como explican en el enlace que comparti dependiendo de la respuesta de la carga util nos indica frete a que estamos.</p>
+
+<p>Me lanzo un tinja y observo los resultados.</p>
+
+<p><img src="assets/verdejo/tinja.png" alt="tinja" /></p>
+
+<p>Ahora que mas o menos tenemos claro que es me lanzo sstimap para realizar la explotacion , repito podeis hacerlo manualmente desde la misma web leyendo algun fichero que os proporcione nombre de usuario para atacar por ssh con hydra , yo opto por este metodo.</p>
+
+<p>Como gracias a tinja ya sabemos que hay lanzo este comando directo.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python3 sstimap.py <span class="nt">-u</span> http://172.17.0.2:8089/<span class="se">\?</span>user<span class="se">\=</span> <span class="nt">--interactive</span>
+</code></pre></div></div>
+
+<p>Una vez abierto y conectado hago que me abra una sesion en la propia maquina.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>run
+os
+</code></pre></div></div>
+<p>Si nos fijamos en la imagen de abajo podemos ver que poligloto utilizo este script para saber frente a que se encontraba</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Jinja2 plugin has confirmed injection with tag <span class="s1">'*'</span>
+</code></pre></div></div>
+<p><img src="assets/verdejo/poliglot.png" alt="poliglot" /></p>
+
+<p>Ya estamos dentro y somo el usuario verdejo , ahora empezemos buscando binarios scripts , lo que sea que nos permita escalar privelegios , yo como siempre empiezo con sudo -l.</p>
+
+<p><img src="assets/verdejo/sudol.png" alt="sudol" /></p>
+
+<p><img src="assets/verdejo/searchbins.png" alt="search" /></p>
+
+<p>Tenemo el binario base 64 para ejecutar como root y searchbins nos dice que lee un fichero lo codifica y luego nos lo presentara decodificado.
+Pues bien para resolver este acertijo nos falta saber que archivo leer y si sudo se ejecuta como root debe ser algun archivo suyo tambien podemos leer shadow y tirar con john para extraer las contraseñas de ambos usuarios.
+Pero vamos a tratar de averiguar si teine clave ssh root.</p>
+
+<p>Tenemos suerte y nos la muestra</p>
+
+<p><img src="assets/verdejo/idroot.png" alt="idroot" /></p>
+
+<p>Una vez la tenemos nos la copiamos a nuestra maquina y la preparamos para pasarle john y que nos de el passphrase que nos hace falta.
+Recordemos primero la hasheamos con ssh2john y posterior lanzamos john junto a rockyou.</p>
+
+<p><img src="assets/verdejo/john.png" alt="john" /></p>
+
+<p>Una vez ya tenemos el passphrasse cambiamos los permisos del id_rsa e ingresamos.</p>
+
+<p><img src="assets/verdejo/root.png" alt="root" /></p>
+
+<p>YA somo root y la maquina queda a nuestra disposicion.</p>
+
+<p>Muchas gracias por leer.</p>
+

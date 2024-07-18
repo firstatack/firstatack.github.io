@@ -1,0 +1,136 @@
+<p><img src="assets/whoiam/portada.png" alt="portada" /></p>
+
+<p>En este reto de <a href="https://dockerlabs.es" title="DockerLabs">DockerLabs</a> practicamos.</p>
+
+<ul>
+  <li>Reconocimiento</li>
+  <li>Explotacion de wordpress</li>
+  <li>Movimiento lateral de ususarios con sudo</li>
+  <li>Inyeccion bash scripting</li>
+</ul>
+
+<h2 id="herramientas-y-recursos">Herramientas y recursos</h2>
+
+<ul>
+  <li>nmap</li>
+  <li>wpscan</li>
+  <li>feroxbuster</li>
+</ul>
+
+<h2 id="reconocimiento-y-enumeracion">Reconocimiento y enumeracion</h2>
+
+<p>Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>nmap <span class="nt">-p-</span> <span class="nt">-sS</span> <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">--min-rate</span><span class="o">=</span>5000 <span class="nt">-n</span> <span class="nt">-Pn</span> <span class="nt">-oX</span> whoiam 172.18.0.2
+</code></pre></div></div>
+
+<p><a href="/reporte/whoiam.html">reporte</a></p>
+
+<p>Como vemos en el reporte solo en esta ocasión solo tenemos el puerto 80 abierto abierto por tanto la intrusión y el error si o si están el web.</p>
+
+<p>Con la extensión wappalizer ya sabemos que hay presumiblemente un wordpres así que primero buscamos vulns con wpscan.</p>
+
+<p><img src="assets/whoiam/pluginvul.png" alt="plug" /></p>
+
+<p><img src="assets/whoiam/users.png" alt="users" /></p>
+
+<p>Con fuerza bruta no conseguimos nada con ninguno de esos usuarios.</p>
+
+<p>Parece que quien desarrollo el plugin trabajaba de espía para la competencia.
+Justo es lo que yo buscaba para practicar xss hay de todos los colores , pero en este caso vamos a probar para empezar el <strong>Authenticated Arbitrary File Upload leading to RCE</strong>.</p>
+
+<p>En casi todas las vías de explotación necesitamos estar autenticados excepto en CVE-2021-24146 pero solo nos devuelve info con las publicaciones realizadas , tampoco tuve suerte con el <strong>blindsql</strong>.</p>
+
+<p>En definitiva como si o si hay que estar autenticado en la web lanzamos feroxbuster buscando mas directorios por si se escondió alguna pista.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>feroxbuster <span class="nt">-w</span> /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt <span class="nt">-t</span> 400 <span class="nt">-u</span> http://172.18.0.2
+</code></pre></div></div>
+<p><img src="assets/whoiam/ferox.png" alt="ferox" /></p>
+
+<p>Con feroxbuster encontramos un directorio llamado backups y un archivo prometedor dentro lo descargamos.</p>
+
+<p><img src="assets/whoiam/backups.png" alt="back" /></p>
+
+<p>Resulto un zip con un asci en su interior que contenía el pass de developer.</p>
+
+<p><img src="assets/whoiam/pass.png" alt="pass" /></p>
+
+<p>Procedemos a logearnos.</p>
+
+<h2 id="intrusion">Intrusion</h2>
+
+<p>Entramos sin problemas ahora busco un poco de info para saber como es la explotación con dicho plugin.</p>
+
+<blockquote class="prompt-info">
+  <p>Se me olvido la versión del plugin y lanze de wpscan pero sin token, no fue capaz de encontrar las vulns.</p>
+</blockquote>
+
+<p>Realizamos una búsqueda en searchploit</p>
+
+<p><img src="assets/whoiam/search.png" alt="search" /></p>
+
+<p>El que nos interesa es el 50082.py , lo lanzamos.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python 50082.py <span class="nt">-T</span> 172.18.0.2 <span class="nt">-P</span> 80 <span class="nt">-U</span> / <span class="nt">-u</span> developer <span class="nt">-p</span> 2wmy3KrGDRD%RsA7Ty5n71L^
+</code></pre></div></div>
+<p>Obteniendo una webshell para ejecutar comandos.</p>
+
+<p><img src="assets/whoiam/webshell.png" alt="webshell" /></p>
+
+<p>Ahora es momento de mandarnos una revshell para trabajar mas gusto y sin limitaciones.
+Nos ponemos a la escuche , la mandamos y realizamos el tratamiento a la tty.</p>
+
+<h2 id="movimiento-lateral-usuarios">Movimiento lateral usuarios</h2>
+
+<p>Nos encontramos con que somos www-data y disponemos de permisos para ejecutar find con sudo como el usuario rafa.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo</span> <span class="nt">-u</span> rafa find <span class="nb">.</span> <span class="nt">-exec</span> /bin/sh <span class="se">\;</span> <span class="nt">-quit</span>
+</code></pre></div></div>
+
+<p><img src="assets/whoiam/find.png" alt="find" /></p>
+
+<p>Ahora a ver que nos han dejado siendo rafa.
+Encuentra debugfs buscamos como se hace.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>debugfs
+<span class="o">!</span>/bin/sh
+</code></pre></div></div>
+
+<p><img src="assets/whoiam/debugfs.png" alt="debugfs" /></p>
+
+<p>Somos ruben ,seguimos para convertimos en root pues solo habían dos usuarios.</p>
+
+<h2 id="escalada-final">Escalada final</h2>
+
+<p>Esta ultima parte es mas interesante pues nos han dejado un script veamos que contiene , los permisos y si nos deja modificarlo o deberemos abusar del path.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;Right&gt;#!/bin/bash
+
+<span class="nb">read</span> <span class="nt">-rp</span> <span class="s2">"Enter guess: "</span> num
+
+<span class="k">if</span> <span class="o">[[</span> <span class="nv">$num</span> <span class="nt">-eq</span> 42 <span class="o">]]</span>
+<span class="k">then
+  </span><span class="nb">echo</span> <span class="s2">"Correct"</span>
+<span class="k">else
+  </span><span class="nb">echo</span> <span class="s2">"Wrong"</span>
+<span class="k">fi</span>
+</code></pre></div></div>
+<p>Como vemos el script es muy sencillo lo unico que hace es comprobar el numero ingresado y dependiendo de si aciertas te dice si es correcto o no.</p>
+
+<p>Hasta aquí fui bien pero no conseguí no hallar la manera de meter un comando que me permita ser root , puede copiar bash con permisos de suid pero después fue imposible ejecutar esa bash manteniendo los permisos elevados.
+Sin mas acudí a un <a href="https://github.com/haw441kings/DockerLabsWriteUps/blob/main/Faciles/Whoiam.md" title="writeup">writeup</a>  para poder ver como inyectaban el comando en el script de bash.</p>
+
+<p>La carga útil por así llamarla es</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>a[<span class="si">$(</span>/bin/bash&gt;&amp;2<span class="si">)</span><span class="o">]</span>
+</code></pre></div></div>
+<p><img src="assets/whoiam/root.png" alt="root" /></p>
+
+<p>Para mi por esta ultima parte la hubiese metido en dificiltad media.</p>
+
+<p>Como me gusta romperme los cuernos buena maquina.</p>
+
+<p>Enlace al blog de <a href="https://pylonet.gitbook.io/pylonblog" title="pylon">pylon</a> creador de la maquina.</p>
+
+<p>Gracias por leer</p>
+

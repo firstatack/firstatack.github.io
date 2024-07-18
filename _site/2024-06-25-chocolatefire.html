@@ -1,0 +1,52 @@
+<p><img src="assets/chocolatefire/portada.png" alt="portada" /></p>
+
+<p>En este reto de <a href="https://dockerlabs.es" title="DockerLabs">DockerLabs</a> practicamos.</p>
+
+<ul>
+  <li>Scan de puertos</li>
+  <li>Uso de metasploit RCE</li>
+</ul>
+
+<h2 id="herramientas-y-recursos">Herramientas y recursos</h2>
+
+<ul>
+  <li>nmap</li>
+  <li>metasploit</li>
+</ul>
+
+<h2 id="reconocimiento-y-enumeracion">Reconocimiento y enumeracion</h2>
+
+<p>Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>nmap <span class="nt">-p-</span> <span class="nt">-sS</span> <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">--min-rate</span><span class="o">=</span>5000 <span class="nt">-n</span> <span class="nt">-Pn</span> <span class="nt">-oX</span> chocolatefire 172.18.0.2
+</code></pre></div></div>
+
+<p><a href="/reporte/chocolatefire.html">reporte</a></p>
+
+<p>Como vemos en el reporte en esta ocasión nos han dejado un montón de puertos para investigar yo a por el primero que he ido ha sido el 9090 que es el que devolvía claramente un 200 ok.</p>
+
+<p>Nos devuelve un login en el cual tenemos acceso con pass y user <strong>admin</strong></p>
+
+<p><img src="assets/chocolatefire/login.png" alt="login" /></p>
+
+<p>Revisando por internet vemos que hay varias formas de explotación y de versiones explotables en este caso estamos frete a una <strong>4.7.4</strong>.
+No me caliento mucho y voy directo a usar msfconsole.</p>
+
+<h2 id="infiltración">Infiltración</h2>
+
+<p><img src="assets/chocolatefire/search.png" alt="search" /></p>
+
+<p>Nos aporta dos posibilidades , elijan el <strong>RCE</strong>.</p>
+
+<p>Vemos que opciones hay que configurar y procedemos.</p>
+
+<p><img src="assets/chocolatefire/options.png" alt="options" /></p>
+
+<p><img src="assets/chocolatefire/configurado.png" alt="config" /></p>
+
+<p>Una vez todo listo solo que correr el exploit con <strong>RUN o EXPLOIT</strong>.</p>
+
+<p><img src="assets/chocolatefire/root.png" alt="root" /></p>
+
+<p>Gracias por leer</p>
+

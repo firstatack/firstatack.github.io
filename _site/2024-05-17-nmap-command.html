@@ -1,0 +1,157 @@
+<p><img src="assets/nmap.jpg" alt="logonmap" w="200" h="200" /></p>
+
+<p>Este script es una pequeña automatizacion de los comandos mas comunes y usales en los ctf’s de modo que no tengamos que tipear todo el comando.</p>
+
+<p>Va a estar en constante evolucion , cada vez que encuentre un comando que nos ayude ire agreagndolo de a poco una vez este comprobada su utilidad para el aprendizaje que necesitamos.</p>
+
+<p>El script en cuestion es una ligera modificacion del que hizo el pinguino de mario , a mi personalmente me ayuda muchisimo el ver como otros han creado sus scripts , de hecho creo que es la forma correcta de aprender ,leer codigo y modifcarlo a tus necesidades.</p>
+
+<p>El modo de uso es muy simple ejecutas el script y el mismo te pide que le indiques la ip de la victima y el nombre del archivo de salida y posteriormente te crea un tambien un html porque  para mi esa es la mejor manera de visualizar los resultado de nmap.</p>
+
+<p><a href="https://github.com/firstatack/nmap_automated" title="Github script modificado">nmap_command</a></p>
+
+<p><a href="https://github.com/Maalfer" title="Aqui el repo de Mario">Maalfer</a></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+
+<span class="c">#Configuramos los colores</span>
+<span class="nv">rojo</span><span class="o">=</span><span class="s1">'\e[0;31m\033[1m'</span>
+<span class="nv">sincolor</span><span class="o">=</span><span class="s1">'\033[0m'</span>
+<span class="nv">cyan_luminoso</span><span class="o">=</span><span class="s1">'\033[1;36m'</span>
+
+
+
+
+<span class="c"># Llamamos a esta función desde el trap finalizar SIGINT (En caso de que el usuario presione control + c para salir)</span>
+finalizar<span class="o">()</span> <span class="o">{</span>
+    <span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="se">\e</span><span class="s2">[1;31m</span><span class="se">\n</span><span class="s2">Finalizando el script</span><span class="se">\e</span><span class="s2">[0m"</span>
+    <span class="nb">exit</span>
+<span class="o">}</span>
+
+<span class="nb">trap </span>finalizar SIGINT
+
+<span class="c">#Comprobamos si es root</span>
+<span class="k">if</span> <span class="o">[</span> <span class="si">$(</span><span class="nb">id</span> <span class="nt">-u</span><span class="si">)</span> <span class="nt">-ne</span> 0 <span class="o">]</span><span class="p">;</span> <span class="k">then
+</span><span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="k">${</span><span class="nv">rojo</span><span class="k">}</span><span class="s2">Tienes que ser root para ejecutarlo."</span>
+<span class="nb">exit
+</span><span class="k">fi</span>
+
+<span class="c"># Verificar si Nmap está instalado</span>
+<span class="k">if</span> <span class="o">!</span> <span class="nb">command</span> <span class="nt">-v</span> nmap &amp;&gt; /dev/null<span class="p">;</span> <span class="k">then
+</span><span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="k">${</span><span class="nv">cyan_luminoso</span><span class="k">}</span><span class="s2">Nmap no está instalado.</span><span class="k">${</span><span class="nv">sincolor</span><span class="k">}</span><span class="s2">"</span>
+<span class="nb">read</span> <span class="nt">-p</span> <span class="s2">"¿Deseas instalar Nmap ahora? (s/n): "</span> respuesta
+<span class="k">if</span> <span class="o">[[</span> <span class="nv">$respuesta</span> <span class="o">=</span>~ ^[Ss]<span class="nv">$ </span><span class="o">]]</span><span class="p">;</span> <span class="k">then
+</span>instalar_nmap
+<span class="k">else
+</span><span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="k">${</span><span class="nv">rojo</span><span class="k">}</span><span class="s2">Nmap es necesario para ejecutar este script. Por favor, instala Nmap y vuelve a intentarlo.</span><span class="k">${</span><span class="nv">sincolor</span><span class="k">}</span><span class="s2">"</span>
+<span class="nb">exit
+</span><span class="k">fi
+fi</span>
+
+<span class="c"># verificamos que distribucion linux este usando</span>
+instalar_nmap<span class="o">()</span> <span class="o">{</span>
+<span class="nv">distribucion</span><span class="o">=</span><span class="si">$(</span><span class="nb">cat</span> /etc/<span class="k">*</span><span class="nt">-release</span> | <span class="nb">grep</span> <span class="s2">"^ID="</span> | <span class="nb">awk</span> <span class="nt">-F</span><span class="s1">'='</span> <span class="s1">'{print $2}'</span> | <span class="nb">tr</span> <span class="nt">-d</span> <span class="s1">'"'</span><span class="si">)</span>
+
+<span class="c"># Empezamos con la instalacionen para cada una de las distibuciones de linux.</span>
+<span class="k">case</span> <span class="nv">$distribucion</span> <span class="k">in
+</span>ubuntu|debian<span class="p">)</span>
+apt-get update
+apt-get <span class="nb">install</span> <span class="nt">-y</span> nmap
+<span class="p">;;</span>
+centos|fedora<span class="p">)</span>
+yum update
+yum <span class="nb">install</span> <span class="nt">-y</span> nmap
+<span class="p">;;</span>
+<span class="nb">arch</span><span class="p">)</span>
+pacman <span class="nt">-Syu</span> <span class="nt">--noconfirm</span> nmap
+<span class="p">;;</span>
+<span class="k">*</span><span class="p">)</span>
+<span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="k">${</span><span class="nv">rojo</span><span class="k">}</span><span class="s2">No se pudo determinar la distribución de Linux. Por favor, instala Nmap manualmente.</span><span class="k">${</span><span class="nv">sincolor</span><span class="k">}</span><span class="s2">"</span>
+<span class="nb">exit</span>
+<span class="p">;;</span>
+<span class="k">esac</span>
+<span class="o">}</span>
+
+<span class="c">#Empezamos con las opciones de ejecucion de nmap , limpiamos pantalla y arrancamos.</span>
+clear
+<span class="nb">echo</span> <span class="nt">-e</span> <span class="s1">'┏┓╻┏┳┓┏━┓┏━┓   ┏━┓┏━╸┏━┓╻┏━┓╺┳╸   ┏━╸┏━┓┏━┓   ╺┳┓╻ ╻┏┳┓┏┳┓╻ ╻┏━┓
+┃┗┫┃┃┃┣━┫┣━┛   ┗━┓┃  ┣┳┛┃┣━┛ ┃    ┣╸ ┃ ┃┣┳┛    ┃┃┃ ┃┃┃┃┃┃┃┗┳┛┗━┓
+╹ ╹╹ ╹╹ ╹╹     ┗━┛┗━╸╹┗╸╹╹   ╹    ╹  ┗━┛╹┗╸   ╺┻┛┗━┛╹ ╹╹ ╹ ╹ ┗━┛
+  
+  
+Script original por EL PINGUINO DE MARIO  https://github.com/maalfer
+  
+ \n
+  '</span>
+  
+<span class="nb">read</span> <span class="nt">-p</span> <span class="s2">"Introduce la IP a escanear: "</span> ip
+
+<span class="nb">read</span> <span class="nt">-p</span> <span class="s2">"Indica el nombre de salida del archivo: "</span> nombre
+
+<span class="k">while </span><span class="nb">true</span><span class="p">;</span> <span class="k">do
+</span><span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">1) Puertos abiertos con versiones y servicios "</span>
+<span class="nb">echo</span> <span class="s2">"2) Buscar en los 65535 sin versiones ni servicios"</span>
+<span class="nb">echo</span> <span class="s2">"3) Limitamos a los 100 puertos comunes"</span>
+<span class="nb">echo</span> <span class="s2">"4) Buscamos vulnerabilidades scripts nse por defecto en todos los puertos"</span>
+<span class="nb">echo</span> <span class="s2">"5) Escaneo de puertos UDP"</span>
+<span class="nb">echo</span> <span class="s2">"6) Hay firewall? probemos."</span>
+<span class="nb">echo</span> <span class="s2">"7) For CTF'S."</span>
+<span class="nb">echo</span> <span class="s2">"8) Enumeracion share samba"</span>
+<span class="nb">echo</span> <span class="s2">"9) Salir"</span>
+<span class="nb">read</span> <span class="nt">-p</span> <span class="s2">"Selecciona una opción: "</span> opcion
+
+<span class="k">case</span> <span class="nv">$opcion</span> <span class="k">in
+</span>1<span class="p">)</span>
+clear <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"Escaneando..."</span> <span class="o">&amp;&amp;</span> nmap <span class="nt">-A</span> <span class="nv">$ip</span> <span class="nt">-oX</span> <span class="nv">$nombre</span> <span class="o">&gt;</span> <span class="nv">$nombre</span>.txt <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="k">${</span><span class="nv">cyan_luminoso</span><span class="k">}</span><span class="s2">Guardando el archivo </span><span class="nv">$nombre</span><span class="s2">.txt</span><span class="k">${</span><span class="nv">sincolor</span><span class="k">}</span><span class="s2">"</span> <span class="o">&amp;&amp;</span> xsltproc <span class="nv">$nombre</span> <span class="o">&gt;</span> <span class="nv">$nombre</span>.html <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="k">${</span><span class="nv">cyan_luminoso</span><span class="k">}</span><span class="s2">Convertido el archivo xml a html  </span><span class="k">${</span><span class="nv">sincolor</span><span class="k">}</span><span class="s2">"</span>
+<span class="nb">exit</span>
+<span class="p">;;</span>
+
+2<span class="p">)</span>
+clear <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"Escaneando..."</span> <span class="o">&amp;&amp;</span> nmap <span class="nt">-p-</span> <span class="nt">-open</span> <span class="nv">$ip</span> <span class="nt">-oX</span> <span class="nv">$nombre</span> <span class="o">&gt;</span> <span class="nv">$nombre</span>.txt <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="k">${</span><span class="nv">cyan_luminoso</span><span class="k">}</span><span class="s2">Guardando el archivo </span><span class="nv">$nombre</span><span class="s2">.txt</span><span class="k">${</span><span class="nv">sincolor</span><span class="k">}</span><span class="s2">"</span> <span class="o">&amp;&amp;</span> xsltproc <span class="nv">$nombre</span> <span class="o">&gt;</span> <span class="nv">$nombre</span>.html <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="k">${</span><span class="nv">cyan_luminoso</span><span class="k">}</span><span class="s2">Convertido el archivo xml a html  </span><span class="k">${</span><span class="nv">sincolor</span><span class="k">}</span><span class="s2">"</span>
+<span class="nb">exit</span>
+<span class="p">;;</span>
+
+3<span class="p">)</span>
+clear <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"Escaneando..."</span> <span class="o">&amp;&amp;</span> nmap <span class="nt">-p-</span> <span class="nt">--open</span> <span class="nt">--top-ports</span> 100 <span class="nv">$ip</span> <span class="nt">-oX</span> <span class="nv">$nombre</span> <span class="o">&gt;</span> <span class="nv">$nombre</span>.txt <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="k">${</span><span class="nv">cyan_luminoso</span><span class="k">}</span><span class="s2">Guardando el archivo </span><span class="nv">$nombre</span><span class="s2">.txt</span><span class="k">${</span><span class="nv">sincolor</span><span class="k">}</span><span class="s2">"</span> <span class="o">&amp;&amp;</span> xsltproc <span class="nv">$nombre</span> <span class="o">&gt;</span> <span class="nv">$nombre</span>.html <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="k">${</span><span class="nv">cyan_luminoso</span><span class="k">}</span><span class="s2">Convertido el archivo xml a html  </span><span class="k">${</span><span class="nv">sincolor</span><span class="k">}</span><span class="s2">"</span>
+<span class="nb">exit</span>
+<span class="p">;;</span>
+
+4<span class="p">)</span>
+clear <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"Escaneando..."</span> <span class="o">&amp;&amp;</span> nmap <span class="nt">-p-</span> <span class="nt">-sV</span> <span class="nv">$ip</span> <span class="nt">-oX</span> <span class="nv">$nombre</span> <span class="o">&gt;</span> <span class="nv">$nombre</span>.txt <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="k">${</span><span class="nv">cyan_luminoso</span><span class="k">}</span><span class="s2">Guardando el archivo </span><span class="nv">$nombre</span><span class="s2">.txt</span><span class="k">${</span><span class="nv">sincolor</span><span class="k">}</span><span class="s2">"</span> <span class="o">&amp;&amp;</span> xsltproc <span class="nv">$nombre</span> <span class="o">&gt;</span> <span class="nv">$nombre</span>.html <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="k">${</span><span class="nv">cyan_luminoso</span><span class="k">}</span><span class="s2">Convertido el archivo xml a html  </span><span class="k">${</span><span class="nv">sincolor</span><span class="k">}</span><span class="s2">"</span>
+<span class="nb">exit</span>
+<span class="p">;;</span>
+
+5<span class="p">)</span>
+clear <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"Escaneando..."</span> <span class="o">&amp;&amp;</span> nmap <span class="nt">-p-</span> <span class="nt">-sU</span> <span class="nv">$ip</span> <span class="nt">-oX</span> <span class="nv">$nombre</span> <span class="o">&gt;</span> <span class="nv">$nombre</span>.txt <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="k">${</span><span class="nv">cyan_luminoso</span><span class="k">}</span><span class="s2">Guardando el archivo </span><span class="nv">$nombre</span><span class="s2">.txt</span><span class="k">${</span><span class="nv">sincolor</span><span class="k">}</span><span class="s2">"</span> <span class="o">&amp;&amp;</span> xsltproc <span class="nv">$nombre</span> <span class="o">&gt;</span> <span class="nv">$nombre</span>.html <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="k">${</span><span class="nv">cyan_luminoso</span><span class="k">}</span><span class="s2">Convertido el archivo xml a html  </span><span class="k">${</span><span class="nv">sincolor</span><span class="k">}</span><span class="s2">"</span>
+<span class="nb">exit</span>
+<span class="p">;;</span>
+
+6<span class="p">)</span>
+clear <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"Escaneando..."</span> <span class="o">&amp;&amp;</span> nmap <span class="nt">-sA</span> <span class="nv">$ip</span> <span class="nt">-oX</span> <span class="nv">$nombre</span> <span class="o">&gt;</span> <span class="nv">$nombre</span>.txt <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="k">${</span><span class="nv">cyan_luminoso</span><span class="k">}</span><span class="s2">Guardando el archivo </span><span class="nv">$nombre</span><span class="s2">.txt</span><span class="k">${</span><span class="nv">sincolor</span><span class="k">}</span><span class="s2">"</span> <span class="o">&amp;&amp;</span> xsltproc <span class="nv">$nombre</span> <span class="o">&gt;</span> <span class="nv">$nombre</span>.html <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="k">${</span><span class="nv">cyan_luminoso</span><span class="k">}</span><span class="s2">Convertido el archivo xml a html  </span><span class="k">${</span><span class="nv">sincolor</span><span class="k">}</span><span class="s2">"</span>
+<span class="nb">exit</span>
+<span class="p">;;</span>
+
+7<span class="p">)</span>
+clear <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"Escaneando..."</span> <span class="o">&amp;&amp;</span> nmap <span class="nt">-p-</span> <span class="nt">-sS</span> <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">--min-rate</span><span class="o">=</span>5000 <span class="nt">-n</span> <span class="nt">-Pn</span> <span class="nv">$ip</span> <span class="nt">-oX</span> <span class="nv">$nombre</span> <span class="o">&gt;</span> <span class="nv">$nombre</span>.txt <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="k">${</span><span class="nv">cyan_luminoso</span><span class="k">}</span><span class="s2">Guardando el archivo </span><span class="nv">$nombre</span><span class="s2">.txt</span><span class="k">${</span><span class="nv">sincolor</span><span class="k">}</span><span class="s2">"</span> <span class="o">&amp;&amp;</span> xsltproc <span class="nv">$nombre</span> <span class="o">&gt;</span> <span class="nv">$nombre</span>.html <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="k">${</span><span class="nv">cyan_luminoso</span><span class="k">}</span><span class="s2">Convertido el archivo xml a html  </span><span class="k">${</span><span class="nv">sincolor</span><span class="k">}</span><span class="s2">"</span>
+<span class="nb">exit</span>
+<span class="p">;;</span>
+
+8<span class="p">)</span>
+clear <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"Escaneando..."</span> <span class="o">&amp;&amp;</span> nmap <span class="nt">-p</span> 139,445 <span class="nt">--script</span> smb-enum-shares <span class="nv">$ip</span> <span class="nt">-oX</span> <span class="nv">$nombre</span> <span class="o">&gt;</span> <span class="nv">$nombre</span>.txt <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="k">${</span><span class="nv">cyan_luminoso</span><span class="k">}</span><span class="s2">Guardando el archivo </span><span class="nv">$nombre</span><span class="s2">.txt</span><span class="k">${</span><span class="nv">sincolor</span><span class="k">}</span><span class="s2">"</span> <span class="o">&amp;&amp;</span> xsltproc <span class="nv">$nombre</span> <span class="o">&gt;</span> <span class="nv">$nombre</span>.html <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="k">${</span><span class="nv">cyan_luminoso</span><span class="k">}</span><span class="s2">Convertido el archivo xml a html  </span><span class="k">${</span><span class="nv">sincolor</span><span class="k">}</span><span class="s2">"</span>
+<span class="nb">exit</span>
+<span class="p">;;</span>
+
+9<span class="p">)</span>
+<span class="nb">break</span>
+<span class="p">;;</span>
+
+<span class="k">*</span><span class="p">)</span>
+<span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="k">${</span><span class="nv">rojo</span><span class="k">}</span><span class="se">\n</span><span class="s2">Opción incorrecta, elige el tipo de escaneo correcto."</span><span class="k">${</span><span class="nv">sincolor</span><span class="k">}</span>
+<span class="p">;;</span>
+<span class="k">esac</span>
+<span class="k">done</span>
+
+</code></pre></div></div>
+
+<p>Acepto sugerencias e ideas , me gustaria transformarlo y declarar funciones pero eso sera cuando sepa mas.</p>
+

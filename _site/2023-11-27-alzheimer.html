@@ -1,0 +1,102 @@
+<p>En esta maquina encontramos scan , port knoking ,  escalada de privilegios. 
+Como siempre vamos a empezar por localizar la maquina victima y realizar un scan de puertos.</p>
+
+<p><img src="assets/img_alzheimer/portada.png" alt="portada" /></p>
+
+<h2 id="herramientas-y-recursos-web-utilizados">Herramientas y recursos web utilizados</h2>
+
+<ul>
+  <li>arp-scan</li>
+  <li>nmap</li>
+  <li>gtofbins</li>
+</ul>
+
+<h3 id="escaneo">Escaneo</h3>
+
+<p>Empezamos averiguando la ip de la maquina victima para ello ejecutamos la herramienta arp-scan nos fijamos en el resultado y buscamos la mac que empieza por 08:00 esa mac es de virtualbox.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>arp-scan <span class="nt">-l</span>
+</code></pre></div></div>
+
+<p><img src="assets/img_alzheimer/arp-scan.png" alt="arp-scan" /></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nmap <span class="nt">-A</span> <span class="nt">-n</span> <span class="nv">$ipvictima</span>
+</code></pre></div></div>
+
+<p><img src="assets/img_alzheimer/nmap.png" alt="nmap" /></p>
+
+<p>Como podemos observar nos muestra tres puertos el 22 y el 80 estan filtrados y el 21 abierto , así que de momento vamos al ftp ya que permite login anonimo.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ftp <span class="nv">$ipvictima</span>
+</code></pre></div></div>
+
+<p><img src="assets/img_alzheimer/ftp.png" alt="ftp" /></p>
+
+<p>Una vez dentro de la ftp vemos que encontramos un archivo interensante y oculto.</p>
+
+<p><img src="assets/img_alzheimer/secretnote.png" alt="secretnote" /></p>
+
+<p>Vemos su contenido y anotamos las indicaciones asi como el mensaje repetido que es algo raro.” Ihavebeenalwayshere!!! “</p>
+
+<p>Nos dice que hay que hacer port knocking  en los puertos especificados , para ello instalamos knock si no lo tenemos lo instalamos y procedemos ha hacer lo que nos indica en los puertos indicados.
+El firewall abrira los puertos  ,  por lo general cuando se golpean los puertos de determinada manera se desactivan los filtros.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>knock 192.168.0.101 1000 2000 3000 <span class="nt">-v</span> <span class="nt">-d</span> 1000
+</code></pre></div></div>
+
+<p>En el primer golpeo ya nos abre el 80 ahora falta el 22 asi que seguimos con knocking que lo abre a la tercera llamada.</p>
+
+<p><img src="assets/img_alzheimer/21-80-open.png" alt="21-80" /></p>
+
+<p><img src="assets/img_alzheimer/knocking.png" alt="knock" /></p>
+
+<p><img src="assets/img_alzheimer/all-open.png" alt="allopen" /></p>
+
+<p>Una vez tengo todos los puerto abiertos me voy a chusmear la web.</p>
+
+<p><img src="assets/img_alzheimer/index-html.png" alt="index-html" /></p>
+
+<p>Vemos que contiene un mensaje firmado por medusa que puede ser usuario ya podriamos tirar con hidra y el rockyou , aunque si analizamos lo que dice es que la pass esta en un txt  y el unico txt hasta el momento era el .secretnote.txt y aparate de las instruciones venia un frase.</p>
+
+<p>Directo a ssh</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh medusa@192.168.0.101
+</code></pre></div></div>
+<h3 id="escalada-de-privilegios">ESCALADA DE PRIVILEGIOS</h3>
+
+<p>Perfecto estamos ya en el usuario.
+Yo personalmente uso kitty como terminal y me da algunos errores como clear  , tab , etc…. asi que ejecuto :</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">TERM</span><span class="o">=</span>xterm
+</code></pre></div></div>
+<p><img src="assets/img_alzheimer/login_medusa.png" alt="login" /></p>
+
+<p>El resto no me molesta asi que tiro para adelante
+Una vez dentro como siempre haremos lo mas básico buscar con sudo -l  o binarios suid</p>
+
+<p>El comando sudo -l nos arroja un /bin/id con esa informacion me acerco a gtofbins y no me arroja nada bueno y no tengo de lejos el nivel para averiguar por mi mismo si ese binario serviria para escalar .</p>
+
+<p>Ahora toca el plan B del para ello usamos find</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>find /  <span class="nt">-perm</span> /4000 2&gt;/dev/null
+</code></pre></div></div>
+
+<p><img src="assets/img_alzheimer/sudo_find.png" alt="sudo" /></p>
+
+<p>Del listado que vemos tambien podriamos usar mount para escalar si este estuviera para ser ejecutado a traves de sudo , el binario en cuestion que usaremos en esta prueba es /usr/bin/capsh vamos a gtofbins para ver como se hace.</p>
+
+<blockquote>
+  <p>Si el binario tiene el bit de SUID establecido, no deja caer los privilegios elevados y puede ser abusado para acceder al sistema de archivos, escalar o mantener el acceso privilegiado como una puerta trasera SUID. Si se usa para correr <code class="language-plaintext highlighter-rouge">sh -p</code>, omit the <code class="language-plaintext highlighter-rouge">-p</code>argumento en sistemas como Debian (o= Stretch) que permiten el valor predeterminado <code class="language-plaintext highlighter-rouge">sh</code>para correr con privilegios SUID.
+Este ejemplo crea una copia local SUID del binario y la dirige para mantener privilegios elevados. Para interactuar con un binario SUID existente omita el primer comando y ejecutar el programa usando su ruta original.</p>
+</blockquote>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="nb">sudo install</span> <span class="nt">-m</span> <span class="o">=</span>xs <span class="si">$(</span>which capsh<span class="si">)</span> <span class="nb">.</span>
+    
+    ./capsh <span class="nt">--gid</span><span class="o">=</span>0 <span class="nt">--uid</span><span class="o">=</span>0 <span class="nt">--</span>
+</code></pre></div></div>
+
+<p>Una vez ejecutado ya somo root y podemos dedicarmos a buscar las flags o lo que te interese.</p>
+
+<p><img src="assets/img_alzheimer/capsh.png" alt="capsh" /></p>
+
+<p>Muchas gracias por leer.</p>

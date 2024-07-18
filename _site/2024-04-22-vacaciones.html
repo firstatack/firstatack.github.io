@@ -1,0 +1,80 @@
+<p>Este es un reto clasificado como de dificultad easymuy facil de la plataforma <a href="https://dockerlabs.es" title="dockerlabs">Dockerlabs</a>.</p>
+
+<p>Nos encontramos con las siguientes características y dificultades , en el tendremos que localizar la entrada al sistema , explotacion de ssh por fuerza bruta , movimiento lateral entre usuarios y escalada de privelegios.</p>
+
+<h2 id="herramientas-y-recursos-usados">HERRAMIENTAS Y RECURSOS USADOS</h2>
+
+<ul>
+  <li>nmap</li>
+  <li>hydra</li>
+  <li>searchbins</li>
+</ul>
+
+<h2 id="enumeracion">Enumeracion</h2>
+
+<p>Como al arrancar la maquina ya nos dice la ip , nos olvidamos de arp-scan , comprobamos la conexion con un ping.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+ping <span class="nt">-c1</span> 172.17.0.2
+
+</code></pre></div></div>
+
+<p>Ahora realizamos un nmap como de costumbre sin preocuparnos del ruido pues estamos en entorno de pruebas.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>nmap <span class="nt">-p-</span> <span class="nt">-sS</span> <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">--min-rate</span><span class="o">=</span>5000 <span class="nt">-n</span> <span class="nt">-vvv</span> <span class="nt">-Pn</span> 172.17.0.2 <span class="nt">-oX</span> puertos
+</code></pre></div></div>
+
+<p><a href="/reporte/vacaciones_nmap.html" title="Reporte nmap">Reporte</a></p>
+
+<p>Observamos el resultado y vemos que solo tiene el 22 y el 80 abiertos .</p>
+
+<p>Empecemos por revisar la web y nos encontramos con una web totalmente en blanco asi que directos a ver la fuente.</p>
+
+<p><img src="assets/vacaciones/web.png" alt="web" /></p>
+
+<p>Empezamos por un ataque de fuerza bruta contra el usario camilo porque contra camilo pq entiendo que el receptor del mail es un usario seguro de la maquina.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hydra <span class="nt">-l</span> camilo <span class="nt">-P</span> rockyou.txt <span class="nt">-vV</span> 172.17.02 ssh
+</code></pre></div></div>
+
+<p><img src="assets/vacaciones/hydra.png" alt="hydra" /></p>
+
+<h2 id="infiltración">Infiltración</h2>
+
+<p>Ahora que ya tenemos todo listo pasamos a conectarnos a la maquina con el usario y la contraseña proporcionada por hydra.</p>
+
+<p><img src="assets/vacaciones/logincamilo.png" alt="login_ssh" /></p>
+
+<h2 id="escalada-de-privilegios">Escalada de privilegios</h2>
+
+<p>Una vez dentro listamos directorios importantes y tambien lo primero es ejecutar como de costumbre find y sudo que nos buscaran ficheros con permisos erroneos.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>find / <span class="nt">-perm</span> <span class="nt">-4000</span> 2&gt;/dev/null
+<span class="nb">sudo</span> <span class="nt">-l</span>
+</code></pre></div></div>
+
+<p><img src="assets/vacaciones/sudonova.png" alt="salida_sudo" /></p>
+
+<p>Como vemos ninguno de los dos comandos nos arroja luz pero recordemos lo que tenemos hasta ahora la web y los users y la web nos hablaba de juan y un correo a camilo.
+Momento de buscar el mail.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat</span> /var/mail/camilo.txt
+</code></pre></div></div>
+
+<p><img src="assets/vacaciones/mail.png" alt="mail" /></p>
+
+<p>Ahi tenemos en texto plano la pass de juan , accedamos</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>su juan
+</code></pre></div></div>
+<p>Una vez como juan volvemos a usar sudo y find y esta vez tenemos positivo con ruby.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo</span> <span class="nt">-l</span>
+</code></pre></div></div>
+
+<p><img src="assets/vacaciones/root.png" alt="root" /></p>
+
+<p>Pobre pedro no pasamos por su cuenta , no nos va a dar acceso o si ya eres root.</p>
+
+<p>Gracias por leer</p>
+

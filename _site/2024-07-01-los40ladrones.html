@@ -1,0 +1,102 @@
+<p><img src="assets/els40lladres/portada.png" alt="portada" /></p>
+
+<p>En este reto de <a href="https://dockerlabs.es" title="DockerLabs">DockerLabs</a> practicamos.</p>
+
+<ul>
+  <li>Scan de puertos</li>
+  <li>Brute Force</li>
+  <li>Port knocking</li>
+</ul>
+
+<h2 id="herramientas-y-recursos">Herramientas y recursos</h2>
+
+<ul>
+  <li>nmap</li>
+  <li>feroxbuster</li>
+  <li>knocking</li>
+</ul>
+
+<h2 id="reconocimiento-y-enumeracion">Reconocimiento y enumeracion</h2>
+
+<p>Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>nmap <span class="nt">-p-</span> <span class="nt">-sS</span> <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">--min-rate</span><span class="o">=</span>5000 <span class="nt">-n</span> <span class="nt">-Pn</span> <span class="nt">-oX</span> losladrones  172.18.0.2
+</code></pre></div></div>
+
+<p><a href="/reporte/losladrones.html">reporte</a></p>
+
+<p>En este caso y con el comando habitual solo detecta el puerto <strong>80 http</strong> abierto,  así que procedemos a revisar la web pese a lo que aparenta.</p>
+
+<p><img src="assets/els40lladres/web.png" alt="web" /></p>
+
+<p>Lanzamos un poco de fuzzing</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>feroxbuster <span class="nt">-w</span> /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt <span class="nt">-t</span> 400 <span class="nt">-u</span> http://172.17.0.2 
+</code></pre></div></div>
+
+<p>No encuentra ningún directorio pasamos a buscar ficheros.</p>
+
+<p>Busquemos ficheros.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>feroxbuster <span class="nt">-w</span> /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt <span class="nt">-t</span> 400 <span class="nt">-x</span> php,txt,jpg <span class="nt">-u</span> http://172.17.0.2
+</code></pre></div></div>
+
+<p><img src="assets/els40lladres/qdefense.png" alt="qdefense" /></p>
+
+<p>Con la búsqueda de ficheros hemos tenido mas éxito y no encentra un txt , miremos lo para ver que tenemos.</p>
+
+<p><img src="assets/els40lladres/txtqdefense.png" alt="txtqdefense" /></p>
+
+<p>Como vemos tenemos un posible usuario <strong>toctoc</strong> y si tiene trastorno obsesivo compulsivo pues se volvió loco buscando como entrar.</p>
+
+<p>Es obvio que algo se nos paso si  nos están dando un usuario y lo que parecen ser puertos , deberemos de localizar donde esta ssh y en que estado esta el puerto.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nmap <span class="nt">--top-ports</span> 25T <span class="nt">-n</span> <span class="nt">-Pn</span> 172.17.0.2 
+</code></pre></div></div>
+<p>Decido ejecutarlo así por si aparte de estar filtrado lo hubiesen también cambiado de puerto cosa no descabellada.
+En este caso parece estar en el 22.</p>
+
+<p><img src="assets/els40lladres/nmap.png" alt="nmap" /></p>
+
+<p>Sin mas lanzamos un golpeteo contra los puertos que indica el fichero qdefense.txt</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>knock 172.17.0.2 7000 8000 9000 <span class="nt">-v</span> 
+</code></pre></div></div>
+<p><img src="assets/els40lladres/knock.png" alt="knock" /></p>
+
+<p>Como vemos en la imagen después del golpeteo ya figura el estado de abierto y podemos empezar con la fuerza bruta y el usuario toctoc.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hydra <span class="nt">-l</span> toctoc <span class="nt">-P</span> /home/quino/rockyou.txt ssh://172.17.0.2 <span class="nt">-t</span> 64 <span class="nt">-VI</span> 
+</code></pre></div></div>
+
+<p><img src="assets/els40lladres/hydra.png" alt="hydra" /></p>
+
+<p>Nos logeamos con el user toctoc y empezamos a buscar como escalar privilegios.</p>
+
+<p>Lo primero que ejecuto es <strong>sudo -l</strong></p>
+
+<p><img src="assets/els40lladres/sudol.png" alt="sudol" /></p>
+
+<p>Tenemos suerte revisamos pero algo no cuadra y hay que seguir buscando.</p>
+
+<p>Posteriormente encontramos.</p>
+
+<p><img src="assets/els40lladres/backdoor.png" alt="backdoor" /></p>
+
+<p>Viendo esas instrucciones halladas en una funcioncita en bashrc nos trasladamos a la maquina atacante y knocking de nuevo.</p>
+
+<p><img src="assets/els40lladres/bashp.png" alt="copibash" /></p>
+
+<p>Retornamos a la victima y buscamos que ha sucedido y ahora tendremos el bash con permisos suid.</p>
+
+<h2 id="escalada-final">Escalada final</h2>
+
+<p><img src="assets/els40lladres/opt.png" alt="opt" /></p>
+
+<p>Asi que …………</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo</span> /opt/bash <span class="nt">-p</span>
+</code></pre></div></div>
+<p><img src="assets/els40lladres/root.png" alt="root" /></p>
+
+<p>Muchas gracias por leer ayuda y comparte conocimiento.</p>
+

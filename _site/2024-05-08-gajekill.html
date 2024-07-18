@@ -1,0 +1,49 @@
+<p><img src="assets/ga/logo.png" alt="logojekyll" w="200" h="200" /></p>
+
+<p>Aqui vamos a explicar como tengo configurado mi entorno de jekill con el theme chirpy 6.5.5 y google analytics funcionando.</p>
+
+<p>Me encontraba el siguiente problema;al tratar de configurarlo todos los manuales hablan de añadir al head el trocito de script que te proporciona google pues bien en el directorio de donde hacemos el build no hay layouts ni include en este tema, otros que he probado si los incluyen en el mismo directorio.</p>
+
+<p>Para este tema en concreto todo lo que encontre era que tenia que editar el _confyg.yml estableciendo el site verification y id de google analytics.</p>
+
+<p>Haciendo solo esas dos ediciones solo me aparecia el site verification cuando consultaba el codigo resultante despues de hacer el build.</p>
+
+<p>Esta claro que el error era que no se estaba incluyendo en el head el codigo necesario.
+Algunos sugieren crear los archivos y los directorios pero si el sitio se construye correctamente y sin errores significa que en algun lugar tienes los archivos.
+Asi que busquemos con find donde pueden estar, eso dependera de tu config de rubi puede ser en tu usuario o /usr/share/ .
+Buscamos por el nombre del directorio donde deberian estar los archivos que tenemos que ver y trabajar.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>find / <span class="nt">-type</span> d <span class="nt">-name</span> _layouts 2&gt;/dev/null
+</code></pre></div></div>
+
+<h2 id="directorio-de-desarollo">Directorio de desarollo</h2>
+
+<p><img src="assets/ga/trabajo.png" alt="carpetatrabajo" /></p>
+
+<h2 id="directorio-de-instalacion-del-theme">Directorio de instalacion del theme</h2>
+
+<p><img src="assets/ga/directorios.png" alt="carpetainstalacion" /></p>
+
+<p>Como podemos ver en la segunda foto tenemos todo y no tenemos necesidad de crear directorios ni archivos , solo editaremos dos archivos el _config.yml y en el caso del tema chirpy si queremos que haga seguimiento de de todo el site el default.hmtl</p>
+
+<p>Primero insertamos los datos en el yml.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>google_site_verification : Tu codigo
+google_analytics:
+    <span class="nb">id</span>: tu <span class="nb">id </span>para la recogida de datos.
+
+</code></pre></div></div>
+<p>Luego editamos el archivo default.html qu se ubica en _layouts añadiendo el segundo include que ven en la imagen de abajo.</p>
+
+<p><img src="assets/ga/include.png" alt="include" /></p>
+
+<p>Ahora solo nos queda construir y probar localmente si todo a ido bien.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bundle <span class="nb">exec </span>jekyll serve
+</code></pre></div></div>
+<p>Si todo a ido bien nos vamos a la web y buscamos su codigo fuente.</p>
+
+<p><img src="assets/ga/fuente.png" alt="fuente" /></p>
+
+<p>Ahora ya esta todo bien de la parte de jekyll si falla algo de la parte de configuracion de analytics</p>
+

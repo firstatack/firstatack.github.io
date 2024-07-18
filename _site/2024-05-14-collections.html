@@ -1,0 +1,101 @@
+<p><img src="assets/logo-dockerlabs.png" alt="logodocker" w="200" h="200" /></p>
+
+<p>En este reto de <a href="https://dockerlabs.es" title="dockerlabs">DockerLabs</a>  encontramos con escaneo de puertos para buscar una entrada al sistema, enumeracion de directorios , busqueda de dominio , wordpress lfi, movimiento lateral y escalada final.</p>
+
+<h2 id="herramientas-y-recursos-usados">Herramientas y recursos usados</h2>
+
+<ul>
+  <li>Nmap</li>
+  <li>feroxbuster</li>
+  <li>wpscan</li>
+  <li>hydra <strong>sin exito con el form</strong></li>
+  <li>mongo</li>
+</ul>
+
+<h2 id="enumeracion">Enumeracion</h2>
+
+<p>Empezamos lanzando un nmap contra el objetivo .</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nmap <span class="nt">-p-</span> <span class="nt">-sS</span> <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">--min-rate</span><span class="o">=</span>5000 <span class="nt">-n</span> <span class="nt">-Pn</span> <span class="nt">-oX</span> collections 172.17.0.2  
+</code></pre></div></div>
+<p><a href="/reporte/collections.html" title="reportesnmap">Reporte nmap</a></p>
+
+<p>Como podemos extraer del reporte de nmap disponemos de servicio ssh , apache y y una bbdd de mongodb.</p>
+
+<p>Revismos la web y lo primero que encontramos al acceder es la pagina por defecto de apache pero recordemos que nmap nos dijo que habia una db por tanto hay algo mas.</p>
+
+<p>Lanzamos Feroxbuster en busca de directorios.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>feroxbuster <span class="nt">-w</span> /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt <span class="nt">-t</span> 400 <span class="nt">-e</span> <span class="nt">-x</span> php,txt,html,jpg,js <span class="nt">-u</span> http://172.17.0.2/
+</code></pre></div></div>
+
+<p><img src="assets/collections/ferox.png" alt="ferox" /></p>
+
+<p>Como vemos nos muestra que hay un wordpress , al entrar a la nueva ruta vemos que no carga bien los estilos asi que miramos el codigo para ver el dominio.</p>
+
+<p><img src="assets/collections/subdomain.png" alt="subdomain" /></p>
+
+<p>Lo añadimos a <strong>etc/hosts</strong> y lanzo wpscan para que busque vulnerabilidades y usuarios.</p>
+
+<p><img src="assets/collections/user.png" alt="user" /></p>
+
+<p><img src="assets/collections/site_editor.png" alt="site" /></p>
+
+<p>Tenemos suerte y nos encuentra un user y nos indica que tenemos un local file inclusion, uno que ya conocemos de otra maquina ,esta vez voy a interntar otra forma de alcanzar el objetivo.</p>
+
+<p><a href="https://www.exploit-db.com/exploits/44340" title="PoC">PoC</a></p>
+
+<p>Vamos a seguir haciendo fuerza bruta contra wordpress usando wpscan</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wpscan <span class="nt">--url</span> http://collections.dl/wordpress/ <span class="nt">-U</span> chocolate <span class="nt">-P</span> /home/quino/Descargas/rockyou/rockyou.txt
+</code></pre></div></div>
+
+<p><img src="assets/collections/wpuser.png" alt="wpuser" /></p>
+
+<p>Tenemos login en wordpress ,  pero vamos al lfi antes de intentar acceder hemos de acostumbrarnos a mirar todo lo posible.</p>
+
+<h2 id="explotacion-lfi">Explotacion LFI</h2>
+
+<p>Descargo un scrypt python desde <a href="https://github.com/jessisec/CVE-2018-7422/blob/main/CVE-2018-7422.py" title="LFI-CVE-2018-7422">lfi</a></p>
+
+<p>Siguo las instruciones y ejecuto buscando usuarios propios del sistema no de la web.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python3 CVE-2018-7422.py <span class="nt">-u</span> http://collections.dl/wordpress/ <span class="nt">-f</span> /etc/passwd | <span class="nb">grep</span> /bin/bash
+</code></pre></div></div>
+<p><img src="assets/collections/etc.png" alt="etc" /></p>
+
+<blockquote>
+  <p>Automatiza un poco mas la tarea.</p>
+</blockquote>
+
+<p>Lo que vemos es que tenemos tres usarios en el sistema y tambien esta chocolate, primero contra el, y con la misma pass que en la web pero no tengo exito, asi que hydra.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hydra <span class="nt">-l</span> chocolate <span class="nt">-P</span> ../../../../../quino/rockyou.txt ssh://172.17.0.2 <span class="nt">-t</span> 4
+</code></pre></div></div>
+
+<p><img src="assets/collections/hydra.png" alt="hydra" /></p>
+
+<p>Accedemos al sistema con los credenciales proporcionados.</p>
+
+<p>Ejecutamos los comandos tipicos y no nos proporcionan nada , recordemos que nmap nos dijo que habia un db asi que a ella accedemos con mongosh.
+Como es la primera vez que uso este tipo de base de datos me equivoque en un comando y al retroceder con la la flecha arriba para ver que comando habia ejecutado, no se pq aparecio el insert qu ele hizo mario a la bbdd asi que de momento me quedo sin saber como mostrar el contemido de esa tabla.
+La cuestion es que tengo otro user y pass.</p>
+
+<p><img src="assets/collections/mongo.png" alt="mongo" /></p>
+
+<p>Nos monvemos al otro usuario.</p>
+
+<p><img src="assets/collections/dbadmin.png" alt="logindb" /></p>
+
+<p>Como siempre probamos lo tipico sin exito .</p>
+
+<p><img src="assets/collections/ps.png" alt="ps" /></p>
+
+<p>Antes de empezar a transferirnos algun archivo probamos las contraseñas que hemos obtenido y para sorpresa mia tenemos suerte , lo caul me ha sorprendido pq el usuario chocolate no tenia la misma en la web que en el sistema.</p>
+
+<p><img src="assets/collections/root.png" alt="root" /></p>
+
+<p>Buena maquina e interesante pq no consegui acertar con el payloadcorrecto para reventar wordpress con hydra http-post-form.</p>
+
+<p>Gracias por leer.</p>
+

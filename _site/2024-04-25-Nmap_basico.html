@@ -1,0 +1,52 @@
+<p>Para comenzar, es esencial familiarizarse con algunos comandos básicos de Nmap. A continuación, se presenta una breve descripción de algunos de los más utilizados:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nmap -A &lt;objetivo&gt;: Realiza un escaneo completo del objetivo especificado, incluyendo la detección del sistema operativo, la detección de servicios y la detección de versiones.
+nmap -p &lt;rango_de_puertos&gt; &lt;objetivo&gt;: Escanea un rango específico de puertos en el objetivo indicado.
+nmap -sT &lt;objetivo&gt;: Realiza un escaneo TCP SYN, útil para identificar hosts activos.
+nmap -sU &lt;objetivo&gt;: Realiza un escaneo UDP, útil para identificar hosts que ejecutan servicios UDP.
+nmap -v &lt;objetivo&gt;: Aumenta el nivel de verbosidad de la salida.
+</code></pre></div></div>
+
+<p>Ejemplos de uso</p>
+
+<p>Para ilustrar el uso de Nmap, consideremos algunos ejemplos prácticos:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Escaneo completo de un host:
+</code></pre></div></div>
+
+<p>nmap -A 192.168.1.100</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Escaneo de un rango de puertos:
+</code></pre></div></div>
+
+<p>nmap -p 1-1000 192.168.1.0/24</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Escaneo TCP SYN:
+</code></pre></div></div>
+
+<p>nmap -sT 192.168.1.0/24</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Escaneo UDP:
+</code></pre></div></div>
+
+<p>nmap -sU 192.168.1.0/24</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Escaneo detallado con verbosidad alta:
+</code></pre></div></div>
+
+<p>nmap -v 192.168.1.100</p>
+
+<p>Uso de scripts</p>
+
+<p>Nmap ofrece la posibilidad de ampliar sus funcionalidades mediante la utilización de scripts. Estos scripts permiten realizar tareas específicas, como la detección de vulnerabilidades o la identificación de software instalado. Para utilizar scripts, es necesario contar con la biblioteca Nmap Scripting Engine (NSE).</p>
+
+<p>Conclusión</p>
+
+<p>Nmap se posiciona como una herramienta fundamental para la exploración de redes y la auditoría de seguridad en entornos Linux. Su amplia gama de comandos y la posibilidad de utilizar scripts la convierten en un recurso invaluable para profesionales de la informática y la seguridad. La comprensión de los conceptos básicos de Nmap y su aplicación práctica permiten obtener información crucial sobre la infraestructura de red y detectar posibles vulnerabilidades.</p>
+
+<p>Recursos adicionales</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Página oficial de Nmap: https://nmap.org/download
+Documentación de Nmap: https://nmap.org/docs.html
+Tutoriales de Nmap: https://www.freecodecamp.org/news/what-is-nmap-and-how-to-use-it-a-tutorial-for-the-greatest-scanning-tool-of-all-time/
+</code></pre></div></div>

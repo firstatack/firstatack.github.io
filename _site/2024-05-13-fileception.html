@@ -1,0 +1,114 @@
+<p><img src="assets/logo-dockerlabs.png" alt="logodocker" w="200" h="200" /></p>
+
+<p>En este reto de <a href="https://dockerlabs.es" title="dockerlabs">DockerLabs</a>  encontramos con escaneo de puertos para buscar una entrada al sistema, steganografia en imagenes y otros ficheros, decodificacion.</p>
+
+<h2 id="herramientas-y-recursos-usados">Herramientas y recursos usados</h2>
+
+<ul>
+  <li>Nmap</li>
+  <li>stegseek</li>
+  <li>steghide</li>
+  <li>Cyberchef</li>
+  <li>strings</li>
+  <li>file</li>
+</ul>
+
+<h2 id="enumeracion">Enumeracion</h2>
+
+<p>Empezamos lanzando un nmap contra el objetivo .</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nmap <span class="nt">-p</span> 21,22,80 <span class="nt">-sCV</span>  <span class="nt">--min-rate</span> 5000 172.17.0.2 <span class="nt">-oX</span> nmapok
+</code></pre></div></div>
+<p><a href="/reporte/fileception_nmap.html" title="reportesnmap">Reporte nmap</a></p>
+
+<p>Como podemos extraer del reporte de nmap disponemos de servicio ftp , apache y ssh.
+Como vemos nos va tocar recabar info de varios lugares asi que para empezar y dado que nmap dice que el ftp nos admite anonimos , vamos a ver que tenemos ahi.</p>
+
+<blockquote class="prompt-info">
+  <p>Por cierto el fuzzing no me encontro nada</p>
+</blockquote>
+
+<p>Entramos por ftp.</p>
+
+<p><img src="assets/fileception/ftplogin.png" alt="loginftp" /></p>
+
+<p>Hay una imagen descargemosla.</p>
+
+<p>Al tratar de ver si hay algo me dice que no encuentra la palabra clave , es decir , la imagen esconde algo y ademas necesita de un codigo para ver el contenido.</p>
+
+<h2 id="steganografia">steganografia</h2>
+
+<p><img src="assets/fileception/steekno.png" alt="stegseek" /></p>
+
+<p>En el ftp no queda nada, a mirar la web , que creo es lo primero en comprabar pero bueno sigamos.</p>
+
+<p>Nos encontramos con la pagina de apache por defecto pero revisando el codigo fuente se ve que dejaron comentario.</p>
+
+<p><img src="assets/fileception/comentario.png" alt="comentario" /></p>
+
+<p>Primero nos dice un usario <strong>Peter</strong> y despues nos habla de estego osea confirma lo que sabiamos de la foto y despues nos da una clave que dice es base ..32..64..quien sabe , 64 no es eso seguro.</p>
+
+<p>Nos abrimos cyberchef y buscamos un resultado coherente con la pista que nos dio.</p>
+
+<p><img src="assets/fileception/cyber.png" alt="cyber" /></p>
+
+<p>Ya tenemos la clave para exponer el contenido de la imagen sin crakear nada , podemos extralo de forma habitual.</p>
+
+<p><img src="assets/fileception/steghide.png" alt="steghide" /></p>
+
+<p>Cual es mi sorpresa al extralo me encuentro con todo esto</p>
+
+<p><img src="assets/fileception/ok.png" alt="ok" /></p>
+
+<p>San google amigos…</p>
+
+<p><img src="assets/fileception/quees.png" alt="que" /></p>
+
+<p>Ahora que sabemos que es,  a decodificar ,yo voy a <a href="https://www.dcode.fr/">dcode.fr</a> siempre me acuerdo de ella por un cifrado rosacruz que me encontre en otra maquina.</p>
+
+<p><img src="assets/fileception/dcode.png" alt="dcode" /></p>
+
+<p>Si recapitulamos tenemos el nombre de user y una password a ver si funcionan</p>
+
+<h2 id="infiltracion">Infiltracion</h2>
+
+<p>Estamos dentro, con peter ahora hacemos lo tipico hasta que encontremos algo.</p>
+
+<p><img src="assets/fileception/ls.png" alt="ls" /></p>
+
+<p><img src="assets/fileception/nota.png" alt="nota" /></p>
+
+<p>Vamos a tmp y encontramos dos archivos un txt y un odt , me descargo los dos lanzando python3.</p>
+
+<p>Miro el contenido de los dos y es el mismo salvo que me detecta algo raro el libre ofice cuando lanzo el <strong>odt</strong>.</p>
+
+<p>Revisamos mas a fondo ese archivo.</p>
+
+<p><img src="assets/fileception/file.png" alt="file" /></p>
+
+<p>Con strings tambien sacamos algo mas de info.</p>
+
+<p><img src="assets/fileception/strings.png" alt="strings" /></p>
+
+<p>Ahora que sabemos que es cambiamos la extension , descomprimimos y revisamos el contenido.</p>
+
+<p><img src="assets/fileception/zipls.png" alt="lslocal" /></p>
+
+<p><img src="assets/fileception/passroot.png" alt="root" /></p>
+
+<p>En el segundo archivo que reviso tengo suerte me arroja usuario y un password en base64.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="nt">-n</span> <span class="s1">'ODBoMjM4MGgzNHVvdW8zaDQ='</span> | <span class="nb">base64</span> <span class="nt">-d</span>
+</code></pre></div></div>
+
+<p>Hacemos ssh con octopus y el password decodeado y seguimos como siempre, directorio local , sudo , find …</p>
+
+<p>Con sudo tenemos todo ,listo….</p>
+
+<p><img src="assets/fileception/rootroot.png" alt="root" /></p>
+
+<p>Enroscada la maquina esta no me imagino vuestras cabezas creando estos juegos en fin muchas gracias por ello.</p>
+
+<p>Aprender asi da gusto</p>
+
+<p>Saludos</p>

@@ -1,0 +1,54 @@
+<p><img src="assets/logo-dockerlabs.png" alt="logodocker" w="200" h="200" /></p>
+
+<p>En este reto de <a href="https://dockerlabs.es" title="dockerlabs">DockerLabs</a>  encontramos con escaneo de puertos para buscar una entrada al sistema, decodificacion , webshell y escalada.</p>
+
+<h2 id="herramientas-y-recursos-usados">Herramientas y recursos usados</h2>
+
+<ul>
+  <li>nmap</li>
+  <li>dcode.fr</li>
+</ul>
+
+<h2 id="enumeracion">Enumeracion</h2>
+
+<p>Empezamos lanzando un nmap contra el objetivo .</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nmap <span class="nt">-p-</span> <span class="nt">-sS</span> <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">--min-rate</span><span class="o">=</span>5000 <span class="nt">-n</span> <span class="nt">-Pn</span> <span class="nt">-oX</span> picadilly 172.17.0.2  
+</code></pre></div></div>
+<p><a href="/reporte/picadilly.html" title="reportesnmap">Reporte nmap</a></p>
+
+<p>Como vemos en el reporte de namp nos muestra dos web una en puerto 80 y otra en el 443.
+Revisamos la del puerto 80 primero y nos lista un archivo txt.</p>
+
+<p><img src="assets/picadilly/nota.png" alt="txt" /></p>
+
+<h2 id="decodeando">Decodeando</h2>
+
+<p>De esa nota extraemos un posible usuario y un posible password el cual esta codificado , en este punto nos vamos a <a href="https://www.dcode.fr" title="dcode.fr">dcode</a></p>
+
+<p><img src="assets/picadilly/passmateo.png" alt="decodeado" /></p>
+
+<p>De  momento ya tenemos eso, para donde nos servira no tengo idea, asi que avanzamos hacia la web con ssl.</p>
+
+<h2 id="infiltracion">Infiltracion</h2>
+
+<p>Dandole un vistazo rapido veo que permite tambien la subida de archivos asi que le tiro una webshell.php y la sube sin problemas asi que nos vamos al directorio uploads y la cargamos y nos ponemos en escucha para recibir la revshell.</p>
+
+<p><img src="assets/picadilly/webshell.png" alt="webshell" /></p>
+
+<p>Una vez recibida la shell nos cambiamos rapidamente al usario maeto del cual obtuvimos el pass en dcode , hice todas posibles combinaciones y el unico resultado coherente  estaba mal ,hay que sacarle la x.</p>
+
+<p><img src="assets/picadilly/sudo.png" alt="sudo" /></p>
+
+<p>Con sudo podemos escalar privilegios.
+Por otro lado no se que utilidad tiene que el archivo post.txt tenga permisos de ejecucion para todos.
+Aprevechemos php.</p>
+
+<h2 id="escalada">Escalada</h2>
+
+<p><img src="assets/picadilly/root.png" alt="root" /></p>
+
+<p>Otra completa gracias por leer comenten dudas o errores que vean</p>
+
+<p>Saludos…</p>
+

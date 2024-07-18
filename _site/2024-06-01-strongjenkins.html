@@ -1,0 +1,140 @@
+<p><img src="assets/strong/portada.png" alt="portada" /></p>
+
+<p>En este reto de <a href="https://dockerlabs.es" title="DockerLabs">DockerLabs</a> aprendemos.</p>
+
+<ul>
+  <li>Scan de puertos</li>
+  <li>Fuerza bruta</li>
+  <li>Scripting con Groovy</li>
+  <li>Tratamiento de terminal</li>
+</ul>
+
+<h2 id="herramientas-y-recursos">Herramientas y recursos</h2>
+
+<ul>
+  <li>nmap</li>
+  <li>whatweb</li>
+  <li>feroxbuster</li>
+  <li>ffuf</li>
+</ul>
+
+<h2 id="enumeracion">Enumeracion</h2>
+
+<p>Lanzamos nmap con los parametros de costumbre en un ctf.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>nmap <span class="nt">-p-</span> <span class="nt">-sS</span> <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">--min-rate</span><span class="o">=</span>5000 <span class="nt">-n</span> <span class="nt">-Pn</span> <span class="nt">-oX</span> StrongJenkins 172.17.0.2
+</code></pre></div></div>
+
+<p><a href="/reporte/strongjenkiss.html">reporte</a></p>
+
+<p>Como nos indica nmap en este caso solo encontramos el puerto 8080 abierto y por el nombre de la maquina hay un jenkins corriendo , tambien vemos que encontro un archivo robots.txt.</p>
+
+<p>Veamos el robots.</p>
+
+<p><img src="assets/strong/robots.png" alt="robots" /></p>
+
+<p>No aporta mucho de momento pues lo iunico que dice es que no quiere que los robots sigan los enlaces de contruccion pero es un comentario no una directiva.</p>
+
+<p>Ahora pasemos a observar el jenkins. Fuzzeamos por si hubiese algo mas.
+He tirado de feroxbuster pero no encuentra nada excepto el jenkins y nada a lo que podamos tener acceso excepto las propias imagenes de la pagina de login , no queda otra que hacer fuerza bruta.</p>
+
+<p>Primero me lanzo whatweb para saber que version es e intentar con las credenciales por defecto.</p>
+
+<p><img src="assets/strong/whatweb.png" alt="what" /></p>
+
+<p>Buscamos en internet cuales son las credenciales por defecto, averiguamos que a partir de la v2.93 se dejan de usar las credenciales por defecto que eran <strong>admin/Jenkins</strong> y tambien que el password se guarda en <strong>.jenkins/secrets/initialAdminPassword</strong>.
+Por lo tanto si estamos en la version <strong>2.440.2</strong> ya sabemos que el user es admin , asi que con unos pocos datos mas podremos lanzar el ataque.</p>
+
+<p>Para poder realizar el ataque como pretendo necesito saber varios parametros.</p>
+
+<ol>
+  <li>Nombre del fichero contra el que autentifica</li>
+  <li>A donde nos redireciona cuando hay error</li>
+  <li>Nombre de los valores donde introducimos user y pass</li>
+  <li>El metodo que esta claro es post.</li>
+</ol>
+
+<p>Yo lo hago desde las herramientas de desarollador.</p>
+
+<p><img src="assets/strong/extractpayloads.png" alt="extract" /></p>
+
+<h2 id="fuerza-bruta">Fuerza bruta</h2>
+
+<p>Voy a usar ffuf pues no conocia el poder que puede llegar a tener esta herramienta , probe hydra y no puede dar con el parametro que me mostrase cual el payload correto peso a que lo encontraba porque se veia claramente que la redireccion no era hacia <strong>loginError</strong></p>
+
+<h3 id="comandos-de-hydra-sin-exito">Comandos de hydra sin exito</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hydra <span class="nt">-l</span> admin <span class="nt">-P</span> /home/quino/Maquinas_hack/Dockerlabs.es/Strongjenkins/dict.txt 172.17.0.2 <span class="nt">-s</span> 8080 http-post-form <span class="s2">"/j_spring_security_check:j_username=^USER^&amp;j_password=^PASS^&amp;from=%2F&amp;Submit=Login:Invalid username or password"</span> <span class="nt">-v</span> 
+</code></pre></div></div>
+
+<p><img src="assets/strong/errorhydra.png" alt="hydra" /></p>
+
+<h3 id="paso-para-ffuf">Paso para ffuf</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ffuf <span class="nt">-u</span> http://172.17.0.2:8080/j_spring_security_check <span class="nt">-r</span> <span class="nt">-c</span> <span class="nt">-w</span> /home/quino/rockyou.txt <span class="nt">-X</span> POST <span class="nt">-d</span> <span class="s1">'j_username=admin&amp;j_password=FUZZ&amp;from=%2F&amp;Submit=LoginError'</span> <span class="nt">-H</span> <span class="s1">'Content-Type: application/x-www-form-urlencoded'</span> <span class="nt">-fl</span> 9 
+</code></pre></div></div>
+
+<p><img src="assets/strong/ffuf.png" alt="ffuf" /></p>
+
+<blockquote class="prompt-info">
+  <p>La perseverancia nos ayuda a lograr nuestros objetivos.</p>
+</blockquote>
+
+<h2 id="infiltracion">Infiltracion</h2>
+
+<p>Ahora ya podemos logearnos y ver como nos mandamos un shell reversa.</p>
+
+<p>Una vez logueado nos trasladamos a administrar jenkins y abajo del todo tenemos la consala de scripts.</p>
+
+<p><img src="assets/strong/consolegroovy.png" alt="consola" /></p>
+
+<p>Si leemos nos dice que son groovy script , debe ser algo de java y como no tengo idea me voy a <a href="https://www.revshells.com/" title="Revshells">revshells</a> en busca de ayuda.</p>
+
+<p>Primero nc a la escucha como de costumbre.</p>
+
+<p>Pasteamos el codigo que nos dio revshells</p>
+
+<p><img src="assets/strong/pasted.png" alt="groovy" /></p>
+
+<p>Ni idea pq lo metio en one-liner , pero me conecto sin problemas.</p>
+
+<p><img src="assets/strong/ncok.png" alt="nc" /></p>
+
+<h2 id="tratamiento-tty">Tratamiento tty</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>script /dev/null <span class="nt">-c</span> bash
+crtl 
+<span class="nb">stty </span>raw <span class="nt">-echo</span><span class="p">;</span> <span class="nb">fg
+</span>reset xterm
+<span class="nb">export </span><span class="nv">TERM</span><span class="o">=</span>xterm
+<span class="nb">export </span><span class="nv">SHELL</span><span class="o">=</span>bash
+</code></pre></div></div>
+
+<p>Dependiendo de como siga la escalada nos convendria setear tambien nuestros rows y columns.</p>
+
+<p>Como podemos ver en la imagen de abajo realizo varias comprobaciones y tengo exito con el comando <strong>find</strong></p>
+
+<p><img src="assets/strong/find.png" alt="find" /></p>
+
+<p>Nos han dejado de regalo python3.10 con privilegios suid.
+Recomiendo instalar searchbins es increible mas rapido que navegar hasta gtofbins.</p>
+
+<p><img src="assets/strong/search.png" alt="searc" /></p>
+
+<h2 id="escalada-final">Escalada final</h2>
+
+<p>Ejecutamos como nos indica y nos convertimos en root.</p>
+
+<p>En la siguiente imagen podeis ver lo que sucede cuando no se ajustan la rows y la columms en nuestra terminal.</p>
+
+<p><img src="assets/strong/errorterm.png" alt="errorterm" /></p>
+
+<p>No obstante nos convertimos en root.</p>
+
+<p><img src="assets/strong/root.png" alt="root" /></p>
+
+<p>Gracias por llegar hasta aqui.</p>
+
+<blockquote class="prompt-warning">
+  <p>Si saben como hacer brute force contra jenkins con hydra comenten.</p>
+</blockquote>

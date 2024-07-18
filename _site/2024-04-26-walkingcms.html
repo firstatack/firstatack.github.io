@@ -1,0 +1,80 @@
+<p>En este reto nos encontramos con escaneo de puertos para buscar una entrada al sistema , fuzzing , fuerza bruta y escalada.</p>
+
+<h2 id="herramientas-y-recursos-usados">Herramientas y recursos usados</h2>
+
+<ul>
+  <li>nmap</li>
+  <li>feroxbuster</li>
+  <li>wpscan</li>
+  <li>searchbins</li>
+</ul>
+
+<h2 id="enumeracion">Enumeracion</h2>
+
+<p>Empezamos lanzando un nmap contra el objetivo , el cual nos devuelve que solo se encuentra el 80 abierto , podemos ver la web mientras hacemos fuzzing de directorios.</p>
+
+<p><a href="/reporte/walkingcms_nmap.html">Reporte nmap</a></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>feroxbuster <span class="nt">-t</span> 200 <span class="nt">-x</span> php,txt,html <span class="nt">-u</span> http://172.17.0.2 
+</code></pre></div></div>
+
+<p><img src="assets/walkingcms/feroxbuster.png" alt="salidaferox" /></p>
+
+<p>En el root del 80 solo vemos la web por defecpo de apache , pero el feroxbuster nos encuentra que estamos frente a un wordpress.
+Revisemos mas a fondo ese wordpress lo primero que se me ocurre es el xmlrcp.php , pero vamos de a poco tirando wpscan.
+Realizamos enumeracion de usuarios y versiones de plugins.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wpscan <span class="nt">--url</span> http://172.17.0.2/wordpress/ <span class="nt">--enumerate</span> u,vp
+</code></pre></div></div>
+
+<p><img src="assets/walkingcms/userwpscan.png" alt="wpscanuser" /></p>
+
+<p>Como vemos tenemos un usuario y nos indica que podemos seguir por el theme una vez hallemos la contraseña para el user mario.
+Desde este punto nos encontramos con distintas formas de proceder.</p>
+
+<p>Una de ellas es con uso de scripts que puedes crear tu mismo o buscar por github , yo me decanto en este punto por msfconsole.
+ya dentro de msf ejecutamos lo siguiente.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>search xmlrpc
+use 9
+<span class="nb">set </span>PASS_FILE /home/quino/rockyou.txt
+<span class="nb">set </span>USERNAME mario
+<span class="nb">set </span>RHOST http://172.17.0.2
+<span class="nb">set </span>TARGETURI wordpress/xmlrpc.php
+run
+</code></pre></div></div>
+
+<p><img src="assets/walkingcms/passmsf.png" alt="passmsf" /></p>
+
+<h2 id="infiltracion">Infiltracion</h2>
+
+<p>Ahora ya con el user y el pass nos vamos al login y empezamos a trabajar el theme susceptible.
+Vamos a theme editor y buscamos el index , en ese index le colocamos el codigo de una webshell yo tiro con  webshell por probar.
+Una vez modificado, guardo el index y podemos ir a cargarlo en la web.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://172.17.0.2/wordpress/wp-content/themes/twentytwentytwo/index.php
+</code></pre></div></div>
+<p><img src="assets/walkingcms/webshell.png" alt="webshell" /></p>
+
+<p>Llegados a este punto nos ponemos a la escucha con nc y nos mandamos una revshell desde la webshell.</p>
+
+<p><img src="assets/walkingcms/recepcionnc.png" alt="recepcionrevshell" /></p>
+
+<p>Recibida la revshell empezamos a averiguar como escalar privilegios, lanzamos sudo , find para empezar.
+Sudo no esta y con find obtenemos resultados.</p>
+
+<p><img src="assets/walkingcms/find.png" alt="resultafind" /></p>
+
+<p>Tenemos env al lio.</p>
+
+<p><img src="assets/walkingcms/searchbins.png" alt="searchbins" /></p>
+
+<p>Ejecutamos como nos indica</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">env</span> /bin/sh <span class="nt">-p</span>
+</code></pre></div></div>
+<p><img src="assets/walkingcms/root.png" alt="root" /></p>
+
+<p>Gracias por leer.
+Dudas o cuestiones en los comentarios.
+Saludos</p>

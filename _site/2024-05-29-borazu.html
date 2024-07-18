@@ -1,0 +1,55 @@
+<p><img src="assets/borazu/presentacion.png" alt="logodocker" w="300" h="300" /></p>
+
+<p>En este reto de <a href="https://dockerlabs.es" title="dockerlabs">DockerLabs</a>  nos encontramos una maquina sencilla ideal para los primeros pasos de quien este aprendiendo.</p>
+
+<h2 id="herramientas-y-recursos-usados">Herramientas y recursos usados</h2>
+
+<ul>
+  <li>Nmap</li>
+  <li>feroxbuster</li>
+  <li>exiftool</li>
+  <li>hydra</li>
+</ul>
+
+<h2 id="enumeracion">Enumeracion</h2>
+
+<p>Como siempre lanzamos nmap.</p>
+
+<p><a href="/reporte/buzako.html">reporte</a></p>
+
+<p>Nos muestra que solo tenemos el 22 de ssh y el 80 con apache.</p>
+
+<p>Primero revisamos la web.</p>
+
+<p><img src="assets/borazu/webimage.png" alt="web" /></p>
+
+<p>Vemos que solo hay una imagen y no hay comentarios ni nada asi que descargamos la imagen por si esconde algo.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>exiftool imagen.jpeg
+</code></pre></div></div>
+
+<p><a href="assets/borazu/exif.png">exif</a></p>
+
+<p>Genial escondia un nombre de usuario , ahora con ese nombre de usuario podemos lanzar hydra , recondemos que esta el 22 abierto.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hydra <span class="nt">-l</span> borazuwarah <span class="nt">-P</span> /home/quino/Descargas/rockyou/rockyou.txt ssh://172.17.0.2 <span class="nt">-t</span> 4 
+</code></pre></div></div>
+
+<p><img src="assets/borazu/hydra.png" alt="hydra" /></p>
+
+<p>No tarda nada en devolvernos un password , pasamos a conectar por ssh.</p>
+
+<p>Una vez conectados buscamos como escalar yo siempre ejecutao sudo -l primero.</p>
+
+<p><img src="assets/borazu/sudol.png" alt="sudol" /></p>
+
+<p>Como vemos podemos ejecutar bash con permisos elevados.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>bash
+</code></pre></div></div>
+<p><img src="assets/borazu/root.png" alt="root" /></p>
+
+<p>Llegamos al final somos root , maquina ideal para dar los primeros pasos.</p>
+
+<p>Gracias por leer.</p>
+

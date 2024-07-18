@@ -1,0 +1,81 @@
+<p><img src="assets/logo-dockerlabs.png" alt="logodocker" w="200" h="200" /></p>
+
+<p>En este reto de <a href="https://dockerlabs.es" title="dockerlabs">DockerLabs</a>  encontramos con escaneo de puertos para buscar una entrada al sistema, steganografia en imagenes y otros ficheros, decodificacion.</p>
+
+<h2 id="herramientas-y-recursos-usados">Herramientas y recursos usados</h2>
+
+<ul>
+  <li>Nmap</li>
+  <li>stegseek</li>
+</ul>
+
+<h2 id="enumeracion">Enumeracion</h2>
+
+<p>Empezamos lanzando un nmap contra el objetivo .</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nmap <span class="nt">-p</span> 22,80 <span class="nt">-sCV</span> <span class="nt">-n</span> <span class="nt">-oX</span> amor 172.17.0.2
+</code></pre></div></div>
+<p><a href="/reporte/amor_nmap.html" title="reportesnmap">Reporte nmap</a></p>
+
+<p>Como podemos extraer del reporte de nmap disponemos de servicio apache y ssh.
+Empezemos revisando la web.</p>
+
+<p><img src="assets/amor/users.png" alt="userweb" /></p>
+
+<p>Estamos de suerte nos indica dos usarios ese mensaje.Espero que si juan fue despedido haya eliminado sus accesos, asi que hago fuerza bruta contra carlota.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hydra <span class="nt">-l</span> carlota <span class="nt">-P</span> ../../../../rockyou.txt ssh://172.17.0.2 <span class="nt">-t</span> 4<span class="sb">```</span>
+
+<span class="o">![</span>hydra]<span class="o">(</span>assets/amor/hydra.png<span class="o">)</span> 
+
+<span class="c">## Infiltracion</span>
+
+Hacemos login con Carlota <span class="s2">"ojo con la password de la de ciberseguridad"</span> casa de herrero ...
+
+
+<span class="o">![</span>login]<span class="o">(</span>assets/amor/ls.png<span class="o">)</span>
+
+Como vemos no tiene <span class="nb">sudo </span>pero encontramos una carpeta con una imagen asi que la descargamos.
+
+Como por suerte en esta puso python lo hacemos sin mucho problemaUna vez tengamos la imagen ejecutamos.
+
+<span class="c">## Esteganografia</span>
+
+<span class="sb">```</span>bash
+stegseek imagen.jpg ../../../../rockyou.txt
+</code></pre></div></div>
+
+<p><img src="assets/amor/stegseek.png" alt="stegseek" /></p>
+
+<p>Como vemos nos proporciona un archivo con un password codeado en bas64.</p>
+
+<p>Lo decodeamos</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="s1">'ZXNsYWNhc2FkZXBpbnlwb24='</span> | <span class="nb">base64</span> <span class="nt">-d</span>
+</code></pre></div></div>
+
+<h2 id="movimiento-lateral">Movimiento lateral</h2>
+
+<p>Obtenemos una password y probamos a hacer login con oscar.
+Como vemos en la imagen de abajo los del departamento si eliminaron a Juan .</p>
+
+<p><img src="assets/amor/passwd.png" alt="passwd" /></p>
+
+<p>Una vez logeados comprobamos lo tipico.</p>
+
+<p><img src="assets/amor/sudooscar.png" alt="sudo" /></p>
+
+<p>Como vemos podemos hacer uso de <strong>ruby</strong> para hacernos root.</p>
+
+<p><img src="assets/amor/search.png" alt="searchbins" /></p>
+
+<h2 id="escalada-final">Escalada final</h2>
+
+<p>Ejecutamos ….</p>
+
+<p><img src="assets/amor/root.png" alt="root" /></p>
+
+<p>Llego al final esta maquinita</p>
+
+<p>Gracias por leer compartan ,muchas gracias.</p>
+

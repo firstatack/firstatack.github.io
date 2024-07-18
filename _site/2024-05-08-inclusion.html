@@ -1,0 +1,102 @@
+<p><img src="assets/logo-dockerlabs.png" alt="logodocker" w="200" h="200" /></p>
+
+<p>En este reto de <a href="https://dockerlabs.es" title="dockerlabs">DockerLabs</a>  nos encontramos con escaneo de puertos , path traversal , fuerza bruta y escalada final.</p>
+
+<h2 id="herramientas-y-recursos-usados">Herramientas y recursos usados</h2>
+
+<ul>
+  <li>nmap</li>
+  <li>Path traversal</li>
+  <li>hydra</li>
+  <li>Movimiento lateral</li>
+  <li>searchbins</li>
+</ul>
+
+<h2 id="enumeracion">Enumeracion</h2>
+
+<p>Empezamos lanzando un nmap contra el objetivo .</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>nmap <span class="nt">-p-</span> <span class="nt">-sS</span> <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">--min-rate</span><span class="o">=</span>5000 <span class="nt">-n</span> <span class="nt">-vvv</span> 172.17.0.2 <span class="nt">-oX</span> inclusion
+</code></pre></div></div>
+
+<p><a href="/reporte/inclusionnmap.html" title="reportesnmap">Reporte nmap</a></p>
+
+<p>Nmap nos indica que tenemos el 22 y el 80 revisamos la web a ver que encontramos, mientras miramos , lanzamos gosbuster</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gobuster <span class="nt">-q</span> <span class="nb">dir</span> <span class="nt">-w</span> /usr/share/dirbuster/directory-list-2.3-medium.txt <span class="nt">-x</span> html,htm,php,txt,xml <span class="nt">-u</span> http://172.17.0.2/cmsms <span class="nt">--exclude-length</span> 3690
+</code></pre></div></div>
+
+<p><img src="assets/inclusion/gobuster.png" alt="gobuster" /></p>
+
+<p>El output nos dice que encontro el directorio shop asi que a mirar y revisar el codigo , vuelvo a lanzar gobuster contra shop pero no hay nada mas.</p>
+
+<p>En la web principal encontramos el siguente error que nos da una pista</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s2">"Error de Sistema: (</span><span class="nv">$_GET</span><span class="s2">['archivo']"</span><span class="o">)</span><span class="p">;</span> 
+</code></pre></div></div>
+
+<p>Nos dice que la url espera la carga de un parametro a traves de archivo intentemos leer ficheros</p>
+
+<p><img src="assets/inclusion/pathtraversal.png" alt="path traversal" /></p>
+
+<p>Tenemos path traversal , intente cargar algunos logs sin exito para convertir el path traversal en un rce a traves de un log poisoning sin exito.
+Asi que vamos a lo tipico buscar usuarios o passwords para realizar fuerza bruta.</p>
+
+<h2 id="infiltracion">Infiltracion</h2>
+
+<p>Podemos leer passwd y encontramos dos usuarios asi que fuerza bruta.</p>
+
+<p><img src="assets/inclusion/usuarios.png" alt="usuarios" /></p>
+
+<p><img src="assets/inclusion/selleruser.png" alt="seller" /></p>
+
+<p>Contra seller se demoraba una eternidad y no es cuestion asi que probe el otro y en 10 segundos la obtuvo .</p>
+
+<p><img src="assets/inclusion/manchiuser.png" alt="manchi" /></p>
+
+<p>A conectarnos con mancho por ssh.</p>
+
+<p><img src="assets/inclusion/sudomanchi.png" alt="sudo" /></p>
+
+<p>Como vemos no tenemos nada ni con sudo , ni con find , nada en cron ni con ps aux asi que imagino sera como la otra maquina en la que habia que hacer fuerza bruta contra contra el usario localmente y para ello nos traeremos unas pocas cosas hacia la maquina victima.</p>
+
+<ul>
+  <li>rockyou</li>
+  <li>script para hacer fuera bruta “busca el del creador de DockerLabs”</li>
+  <li>pspy “por paranoia mia no es necesario”</li>
+</ul>
+
+<p><img src="assets/inclusion/transferencia.png" alt="trans" /></p>
+
+<p><img src="assets/inclusion/recibidos.png" alt="recpecion" /></p>
+
+<h2 id="movimiento-lateral">Movimiento lateral</h2>
+
+<p>Con todo en la maquina victima lanzamos el ataque como indica el script.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo</span> ./Linux-Su-Force.sh usario diccionario
+</code></pre></div></div>
+
+<p><img src="assets/inclusion/passseller.png" alt="passseller" /></p>
+
+<p>Nos pasamos a seller, esto entiendo que seria un movimiento lateral.</p>
+
+<p>Ya en seller ejcecutamos lo tipico sudo y demas para intentar averiguar como va la escalada final.</p>
+
+<p><img src="assets/inclusion/sudoseller.png" alt="sudoseller" /></p>
+
+<h2 id="escalada-final">Escalada final</h2>
+
+<p>Searchbins recomiendo instalarla.</p>
+
+<p><img src="assets/inclusion/searchbins.png" alt="search" /></p>
+
+<p>Lo que hacemos con este comando en crear una variable llamada cmd que es /bin/sh y con sudo como root decimos que php llame a cmd.</p>
+
+<p>Como vemos tenemos php y con searchbins como realizarlo.
+A convertirnos en root.</p>
+
+<p><img src="assets/inclusion/root.png" alt="root" /></p>
+
+<p>Saludos y muchas gracias por leer, pueden comentar dudas o comentar como la han resuelto.</p>
+

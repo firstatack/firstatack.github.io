@@ -1,0 +1,116 @@
+<p>En esta maquina en teoría sencilla nos encontramos los siguientes  retos y complicaciones</p>
+
+<ul>
+  <li>Averiguar ip victima.</li>
+  <li>Enumeracion</li>
+  <li>Remote code execution</li>
+  <li>Escalada de privelegios</li>
+</ul>
+
+<p><img src="assets/method/titulo.png" alt="retos" /></p>
+
+<h2 id="herramientes-usadas">Herramientes usadas:</h2>
+
+<ul>
+  <li>arp-scan</li>
+  <li>nmap</li>
+  <li>wfuzz , dirbuster ,wfuzz</li>
+  <li>ssh</li>
+  <li>sudo</li>
+</ul>
+
+<p>Lo primero como siempre averiguar la ip de la victima para ello ejecutamos</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	arp-scan <span class="nt">--localnet</span>
+</code></pre></div></div>
+
+<p>Una vez tenemos clara la ip  lanzamos nmap .</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	nmap <span class="nt">-T4</span> <span class="nt">-sCSV</span> <span class="nt">-p-</span> 192.168.0.104
+</code></pre></div></div>
+
+<p>Como podemos observar nos muestra el puerto 22 y el 80 abierto.</p>
+
+<p><img src="assets/method/nmap.png" alt="nmap" /></p>
+
+<p>Es momento de investigar manualmente la pagina que corre en el servidor http , para ganar algo de tiempo mientras revisamos la web lanzamos dirb y gobuster que son dos programas para fuzzing.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	gobuster <span class="nt">-q</span> <span class="nb">dir</span> <span class="nt">-w</span> /usr/share/dirbuster/directory-list-2.3-small.txt <span class="nt">-x</span> html,htm,php,txt,xml <span class="nt">-u</span> http://192.168.0.104 <span class="nt">--exclude-length</span> 3690
+</code></pre></div></div>
+
+<p>Lo primero que nos encontramos es el index por defecto del servidor nginx , no hay nada en el codigo de ese .html
+Observamos los resultados tanto de dirb como gobuster e investigamos los links que nos a proporcionado.
+Responden a las siguientes rutas.</p>
+
+<p><img src="assets/method/gobuster.png" alt="gobuster" /></p>
+
+<ul>
+  <li>index.htm</li>
+  <li>sitemap.xml</li>
+  <li>note.txt</li>
+  <li>secret.php</li>
+</ul>
+
+<p>El index htm nos lleva a una web con una imagen , observando el codigo fuente vemos que nos muestra la misma ruta que nos dio gobuster /secret.php.</p>
+
+<p><img src="assets/method/indexhtm.png" alt="indexhtm" /></p>
+
+<p>El sitemap.xml nos indica una ruta que no existe.</p>
+
+<p>El txt nos indica que el secreto de esta maquina esta en la enumeración.</p>
+
+<p><img src="assets/method/notetxt.png" alt="notetxt" /></p>
+
+<p>Y por ultimo la ruta hacia secret.php nos redirecciona a una imagen externa (Un cahondo el tipo que creo el reto, nos dice que usemos el cerebro )</p>
+
+<p>En el codigo de index.htm vemos que hay un form escondido debemos de inetentar llegar a el , construimos la url con los datos que aparecen en el form .</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	http://192.168.0.104/secret.php?HackMyVM
+</code></pre></div></div>
+
+<p><img src="assets/method/otrometodo.png" alt="otro" /></p>
+
+<p>Como podemos observar es el sitio correcto pero la manera incorrecta pues nos dice que probemos otro método , lo único que se me ocurre es como se tramita la petición de esa web , las partes visibles son GET y las ocultas POST  por resumirlo de esta manera burda y probablemente poco acertada.</p>
+
+<p>Después de una par de horas investigando y buscando la forma de poder modificar la petición me instalo la extensión de firefox http request maker.</p>
+
+<p><img src="assets/method/encontrada.png" alt="encontrada" /></p>
+
+<blockquote>
+  <p>Se debe de poder hacer con curl , burpsuite e imagino que wget</p>
+</blockquote>
+
+<p>El unico fichero que nos falta por revisar el codigo es secret.php asi que vamos ello .</p>
+
+<p><img src="assets/method/catsecret.png" alt="catsecret" /></p>
+
+<p>Como vemos es un script que lo que hace es que cuando la solicitud no va por post nos redirecciona a otro lugar y cuando la realizas por post y y usas HackMyVM te prensenta la posibilidad de ejecutar comandos.</p>
+
+<p><img src="assets/method/outsecret.png" alt="outsecret" /></p>
+
+<p>Yo pensaba en una revshell pero al final del todo encontramos  un user y una pass , recordemos que el 22 esta abierto y sin mas vamos a probar.</p>
+
+<p>Entramos con ese user y pass</p>
+
+<p><img src="assets/method/ssh.png" alt="ssh" /></p>
+
+<p>Ahora como siempre lo primero sudo y luego find buscando permisos setiud.</p>
+
+<p><img src="assets/method/sudol.png" alt="sudo" /></p>
+
+<p>Con sudo -l tenemos suerte nos vamos como siempre a gtfobins y buscamos “ip” seguimos los pasos del punto b que son los que a mi me han funcionado y nos olvidamos de find.
+En el momento que ejecutamos los dos comandos nos convertimos en root.</p>
+
+<p><img src="assets/method/escalada.png" alt="escalada" /></p>
+
+<blockquote>
+  <p>Estos ultimos comandos no se que hacian y decidi que me lo explicara la puta IA.</p>
+  <ol>
+    <li>sudo ip netns add foo: Este comando crea un nuevo espacio de nombres de red llamado “foo”. Los espacios de nombres de red proporcionan entornos de red aislados, lo que significa que los procesos que se ejecutan en un espacio de nombres de red no pueden ver ni comunicarse con los procesos que se ejecutan en otros espacios de nombres de red.</li>
+    <li>sudo ip netfs exec foo /bin/sh :Este ejcuta bin sh dentro del espacio de red foo , lo cual hace que nos lancemos una shell de root.</li>
+  </ol>
+</blockquote>
+
+<p>Muchas gracias por leer. 
+Acabe tan harto de leer sobre las peticiones que al final no me acorde de la flag de root .</p>
+
