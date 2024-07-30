@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2024-07-18T20:23:02-03:00</updated>
+  <updated>2024-07-30T14:06:11-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,68 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>Wallet , DockerLabs</title>
+    <link href="http://localhost:4000/posts/wallet/" rel="alternate" type="text/html" title="Wallet , DockerLabs" />
+    <published>2024-07-14T00:00:00-03:00</published>
+  
+    <updated>2024-07-14T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/wallet/</id>
+    <content src="http://localhost:4000/posts/wallet/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+En este reto de DockerLabs practicamos.
+
+
+  Scan de puertos
+  Intercepcion con burpsuite
+  Reconocimiento directorios
+
+
+Herramientas y recursos
+
+
+  nmap
+  feroxbuster
+  burpsuite
+  Embeb server php
+
+
+Reconocimiento y enumeracion
+
+Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.
+
+sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX wallet  172.17.0.2
+
+
+reporte
+
+En es...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -264,62 +326,6 @@ sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX nodeclimb  172.17.0.2
 reporte
 
 En este caso nos encontramos solo ...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Master , DockerLabs</title>
-    <link href="http://localhost:4000/posts/master/" rel="alternate" type="text/html" title="Master , DockerLabs" />
-    <published>2024-07-02T00:00:00-03:00</published>
-  
-    <updated>2024-07-02T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/master/</id>
-    <content src="http://localhost:4000/posts/master/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-En este reto de DockerLabs practicamos.
-
-
-  Scan de puertos
-  Busqueda de vulnerabilidad en wordpress
-  wp-automatic 3.92 ultima vulnerable
-  Inyeccion de comandos a script de bash
-
-
-Herramientas y recursos
-
-
-  nmap
-  sudo
-
-
-Reconocimiento y enumeracion
-
-Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.
-
-sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX master 172...
     </summary>
   
 
