@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2024-07-30T16:01:52-03:00</updated>
+  <updated>2024-07-30T19:50:52-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,69 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>Cachopo, DockerLabs</title>
+    <link href="http://localhost:4000/posts/cachopo/" rel="alternate" type="text/html" title="Cachopo, DockerLabs" />
+    <published>2024-07-30T00:00:00-03:00</published>
+  
+    <updated>2024-07-30T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/cachopo/</id>
+    <content src="http://localhost:4000/posts/cachopo/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+En este reto de DockerLabs practicamos.
+
+
+  Scan de puertos
+  Proxy burpsuite
+  rce
+  SHA_Decrypt
+
+
+Herramientas y recursos
+
+
+  nmap
+  feroxbuster
+  Burpsuite
+  SHA_Decrypt
+
+
+Reconocimiento y enumeracion
+
+Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.
+
+sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX cachopo 172.17.0.2
+
+
+reporte
+
+Como podemos ver disponemos de...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -46,35 +109,27 @@
 
 
 
-      
+      ![portada](assets/mybb/portada.png)
 
-En este reto de DockerLabs practicamos.
+En este reto de [DockerLabs](https://dockerlabs.es "DockerLabs") practicamos.
 
+- Scan de puertos
+- Intercepcion con burpsuite
+- Reconocimiento directorios
 
-  Scan de puertos
-  Intercepcion con burpsuite
-  Reconocimiento directorios
+## Herramientas y recursos
 
+- nmap
+- feroxbuster
+- burpsuite
+- Embeb server php
 
-Herramientas y recursos
-
-
-  nmap
-  feroxbuster
-  burpsuite
-  Embeb server php
-
-
-Reconocimiento y enumeracion
+## Reconocimiento y enumeracion
 
 Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.
 
-sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX wallet  172.17.0.2
-
-
-reporte
-
-En es...
+```bash
+sudo ...
     </summary>
   
 
@@ -108,35 +163,26 @@ En es...
 
 
 
-      
+      ![portada](assets/els40lladres/portada.png)
 
-En este reto de DockerLabs practicamos.
+En este reto de [DockerLabs](https://dockerlabs.es "DockerLabs") practicamos.
 
+- Scan de puertos
+- rce
+- Reverse shell
+- Enumeracion ficheros y directorios
+- Crack con john BCRYPT
 
-  Scan de puertos
-  rce
-  Reverse shell
-  Enumeracion ficheros y directorios
-  Crack con john BCRYPT
+## Herramientas y recursos
 
+- nmap
+- feroxbuster
+- john
+- ssh
 
-Herramientas y recursos
+## Reconocimiento y enumeracion
 
-
-  nmap
-  feroxbuster
-  john
-  ssh
-
-
-Reconocimiento y enumeracion
-
-Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.
-
-sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX comida  172.17.0.2
-
-
-reporte...
+Lo primero como siempre le tiramos un nmap con los parámetros de costumbre....
     </summary>
   
 
@@ -170,37 +216,28 @@ reporte...
 
 
 
-      
+      ![portada](assets/els40lladres/portada.png)
 
-En este reto de DockerLabs practicamos.
+En este reto de [DockerLabs](https://dockerlabs.es "DockerLabs") practicamos.
 
+- Scan de puertos
+- Reverse shell
+- nano
+- bash Scripting
+- Hacking con docker
 
-  Scan de puertos
-  Reverse shell
-  nano
-  bash Scripting
-  Hacking con docker
+## Herramientas y recursos
 
+- nmap
+- feroxbuster
+- Scripting bash
+- Docker 
 
-Herramientas y recursos
-
-
-  nmap
-  feroxbuster
-  Scripting bash
-  Docker
-
-
-Reconocimiento y enumeracion
+## Reconocimiento y enumeracion
 
 Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.
 
-sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX practicas  172.17.0.2
-
-
-reporte
-
-Como...
+```bas...
     </summary>
   
 
@@ -234,98 +271,29 @@ Como...
 
 
 
-      
+      ![portada](assets/els40lladres/portada.png)
 
-En este reto de DockerLabs practicamos.
+En este reto de [DockerLabs](https://dockerlabs.es "DockerLabs") practicamos.
 
+- Scan de puertos
+- Brute Force
+- Abusar MOTD
+- RFI
+- Path hijacking
 
-  Scan de puertos
-  Brute Force
-  Abusar MOTD
-  RFI
-  Path hijacking
+## Herramientas y recursos
 
+- nmap
+- feroxbuster
+- john the ripper
+- Scripting bash
 
-Herramientas y recursos
-
-
-  nmap
-  feroxbuster
-  john the ripper
-  Scripting bash
-
-
-Reconocimiento y enumeracion
+## Reconocimiento y enumeracion
 
 Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.
 
-sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX practicas  172.17.0.2
-
-
-reporte
-
-En es...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>NodeClimb , DockerLabs</title>
-    <link href="http://localhost:4000/posts/nodeclimb/" rel="alternate" type="text/html" title="NodeClimb , DockerLabs" />
-    <published>2024-07-05T00:00:00-03:00</published>
-  
-    <updated>2024-07-05T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/nodeclimb/</id>
-    <content src="http://localhost:4000/posts/nodeclimb/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-En este reto de DockerLabs practicamos.
-
-
-  Scan de puertos
-  Cracking password zip
-  Re0vshell node
-
-
-Herramientas y recursos
-
-
-  nmap
-  John the ripper
-  Revshells
-
-
-Reconocimiento y enumeracion
-
-Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.
-
-sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX nodeclimb  172.17.0.2
-
-
-reporte
-
-En este caso nos encontramos solo ...
+```bash
+...
     </summary>
   
 
