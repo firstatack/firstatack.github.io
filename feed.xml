@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2024-07-30T19:50:52-03:00</updated>
+  <updated>2024-08-03T10:26:15-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,44 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>Raspberrypi 1b en 2024 sirve de algo.</title>
+    <link href="http://localhost:4000/posts/raspberry-all/" rel="alternate" type="text/html" title="Raspberrypi 1b en 2024 sirve de algo." />
+    <published>2024-08-01T00:00:00-03:00</published>
+  
+    <updated>2024-08-01T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/raspberry-all/</id>
+    <content src="http://localhost:4000/posts/raspberry-all/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="Offtopic" />
+    
+    <category term="Raspberrypi" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      En este post vamos a dar luz en torno a lo que puede hacer una raspberry pi 1b en pleno 2024 y la verdad es que lo que hacia alla por 2018 se puede seguir realizando y con mas funcionalidad.
+
+Voy a tratar de explicar todos los servicios que corro en la pequeña raspi desde un cliente bittorrent , gestor de descargas , servidor de archivos ,liberar dumps de juegos ps3 , servidor para juegos de ps...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -109,27 +147,35 @@ Como podemos ver disponemos de...
 
 
 
-      ![portada](assets/mybb/portada.png)
+      
 
-En este reto de [DockerLabs](https://dockerlabs.es "DockerLabs") practicamos.
+En este reto de DockerLabs practicamos.
 
-- Scan de puertos
-- Intercepcion con burpsuite
-- Reconocimiento directorios
 
-## Herramientas y recursos
+  Scan de puertos
+  Intercepcion con burpsuite
+  Reconocimiento directorios
 
-- nmap
-- feroxbuster
-- burpsuite
-- Embeb server php
 
-## Reconocimiento y enumeracion
+Herramientas y recursos
+
+
+  nmap
+  feroxbuster
+  burpsuite
+  Embeb server php
+
+
+Reconocimiento y enumeracion
 
 Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.
 
-```bash
-sudo ...
+sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX wallet  172.17.0.2
+
+
+reporte
+
+En es...
     </summary>
   
 
@@ -163,26 +209,35 @@ sudo ...
 
 
 
-      ![portada](assets/els40lladres/portada.png)
+      
 
-En este reto de [DockerLabs](https://dockerlabs.es "DockerLabs") practicamos.
+En este reto de DockerLabs practicamos.
 
-- Scan de puertos
-- rce
-- Reverse shell
-- Enumeracion ficheros y directorios
-- Crack con john BCRYPT
 
-## Herramientas y recursos
+  Scan de puertos
+  rce
+  Reverse shell
+  Enumeracion ficheros y directorios
+  Crack con john BCRYPT
 
-- nmap
-- feroxbuster
-- john
-- ssh
 
-## Reconocimiento y enumeracion
+Herramientas y recursos
 
-Lo primero como siempre le tiramos un nmap con los parámetros de costumbre....
+
+  nmap
+  feroxbuster
+  john
+  ssh
+
+
+Reconocimiento y enumeracion
+
+Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.
+
+sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX comida  172.17.0.2
+
+
+reporte...
     </summary>
   
 
@@ -216,84 +271,37 @@ Lo primero como siempre le tiramos un nmap con los parámetros de costumbre....
 
 
 
-      ![portada](assets/els40lladres/portada.png)
-
-En este reto de [DockerLabs](https://dockerlabs.es "DockerLabs") practicamos.
-
-- Scan de puertos
-- Reverse shell
-- nano
-- bash Scripting
-- Hacking con docker
-
-## Herramientas y recursos
-
-- nmap
-- feroxbuster
-- Scripting bash
-- Docker 
-
-## Reconocimiento y enumeracion
-
-Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.
-
-```bas...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Rutas , DockerLabs</title>
-    <link href="http://localhost:4000/posts/rutas/" rel="alternate" type="text/html" title="Rutas , DockerLabs" />
-    <published>2024-07-11T00:00:00-03:00</published>
-  
-    <updated>2024-07-11T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/rutas/</id>
-    <content src="http://localhost:4000/posts/rutas/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
       
 
+En este reto de DockerLabs practicamos.
 
 
+  Scan de puertos
+  Reverse shell
+  nano
+  bash Scripting
+  Hacking con docker
 
 
-      ![portada](assets/els40lladres/portada.png)
+Herramientas y recursos
 
-En este reto de [DockerLabs](https://dockerlabs.es "DockerLabs") practicamos.
 
-- Scan de puertos
-- Brute Force
-- Abusar MOTD
-- RFI
-- Path hijacking
+  nmap
+  feroxbuster
+  Scripting bash
+  Docker
 
-## Herramientas y recursos
 
-- nmap
-- feroxbuster
-- john the ripper
-- Scripting bash
-
-## Reconocimiento y enumeracion
+Reconocimiento y enumeracion
 
 Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.
 
-```bash
-...
+sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX practicas  172.17.0.2
+
+
+reporte
+
+Como...
     </summary>
   
 
