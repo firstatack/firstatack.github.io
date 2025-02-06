@@ -1,6 +1,23 @@
 [
   
   {
+    "title": "Sites , DockerLabs",
+    "url": "/posts/sites/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico, fuzzing, lfi, brute force, wfuzz, feroxbuster",
+    "date": "2025-02-05 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "En este reto de DockerLabs practicamos.  Scan de puertos  Listado de ficheros y directorios  Fuzzing de parametros  Escalada con sedHerramientas y recursos  nmap  feroxbuster  wfuzzReconocimiento y...",
+    "content": "En este reto de DockerLabs practicamos.  Scan de puertos  Listado de ficheros y directorios  Fuzzing de parametros  Escalada con sedHerramientas y recursos  nmap  feroxbuster  wfuzzReconocimiento y enumeracionLo primero como siempre le tiramos un nmap con los parámetros de costumbre.sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX sites 172.17.0.2reporteComo vemos en el reporte disponemos del http 80 y del ssh en el 22Vamos a empezar revisando la web a ver que nos encontramos con una web que nos da bastantes pistas dado que nos habla de LFI (local file inclusion) si es asi debemos encontrar una ruta con algun fichero que nos permita añadir un parametro para realizar la llamada a otro fichero que nos dara alguna pista como podria ser el tipico /etc/passwd.Ahora pasamos  a fuzzear tanto archivos como directorios ocultos por si hubiese algo mas y esteo fuera una jugada del pinguino     :-)Estamos de suerte nos encuentra una web llamada vulnerable.php asi que accedemos y observamos que ya nos da una pista mas el posible parametro  que puede ser page o username cosa que tambien podriamos fuzzear pero vamos a mano primero.Probando las dos opciones que nos da comprobamos que la correcta es page y lo probamos contra el que casi nunca falla /etc/passwdObtenemos respuesta positiva pero de poca ayuda aunque podriamos hacer fuerza bruta contra el user chocolate , mi otra idea era transformarlo el un log poisoning pero ningun fichero se presta.Lo unico me quedaria seria comprobar las rutas que nos ofrece como ejemplos en la web si no fuerza bruta contra ssh aunque no deben ir por los tiros.He tenido suerte y se puede acceder a leer el fichero sito.conf mencionado en la webVamos a ver que nos dejo mario en ese ficheroComo muy bien explica nos dejo una password y habiendo leido lo que pone al final habra fuerza bruta aunque en passwd solo esta el user chocolate y root.IntrusionPues no hay fuerza bruta entro directo con el user la pass proporcionadas.Una vez dentro hacemos lo primordial en esta maquinas.Escalada’'’bashsudo -l‘’’Nos deja el binario sed y procedemos como nos indica searchbins herramienta super recomdable para estos casos.Hasta aqui llego esta dudas o opiniones contacten por X.Gracias por leer"
+  },
+  
+  {
     "title": "File , Dockerlabs",
     "url": "/posts/file/",
     "categories": "Dockerlabs",

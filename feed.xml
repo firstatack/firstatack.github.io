@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2025-01-08T14:51:45-03:00</updated>
+  <updated>2025-02-06T09:15:14-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,68 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>Sites , DockerLabs</title>
+    <link href="http://localhost:4000/posts/sites/" rel="alternate" type="text/html" title="Sites , DockerLabs" />
+    <published>2025-02-05T00:00:00-03:00</published>
+  
+    <updated>2025-02-05T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/sites/</id>
+    <content src="http://localhost:4000/posts/sites/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+En este reto de DockerLabs practicamos.
+
+
+  Scan de puertos
+  Listado de ficheros y directorios
+  Fuzzing de parametros
+  Escalada con sed
+
+
+Herramientas y recursos
+
+
+  nmap
+  feroxbuster
+  wfuzz
+
+
+Reconocimiento y enumeracion
+
+Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.
+
+sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX sites 172.17.0.2
+
+
+reporte
+
+Como vemo...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -227,68 +289,6 @@ sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX cachopo 172.17.0.2
 reporte
 
 Como podemos ver disponemos de...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Wallet , DockerLabs</title>
-    <link href="http://localhost:4000/posts/wallet/" rel="alternate" type="text/html" title="Wallet , DockerLabs" />
-    <published>2024-07-14T00:00:00-03:00</published>
-  
-    <updated>2024-07-14T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/wallet/</id>
-    <content src="http://localhost:4000/posts/wallet/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-En este reto de DockerLabs practicamos.
-
-
-  Scan de puertos
-  Intercepcion con burpsuite
-  Reconocimiento directorios
-
-
-Herramientas y recursos
-
-
-  nmap
-  feroxbuster
-  burpsuite
-  Embeb server php
-
-
-Reconocimiento y enumeracion
-
-Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.
-
-sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX wallet  172.17.0.2
-
-
-reporte
-
-En es...
     </summary>
   
 
