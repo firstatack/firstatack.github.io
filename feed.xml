@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2025-02-09T14:27:40-03:00</updated>
+  <updated>2025-03-04T17:31:55-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,48 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>Modulos para polybar</title>
+    <link href="http://localhost:4000/posts/Polybar_modules/" rel="alternate" type="text/html" title="Modulos para polybar" />
+    <published>2025-03-04T00:00:00-03:00</published>
+  
+    <updated>2025-03-04T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/Polybar_modules/</id>
+    <content src="http://localhost:4000/posts/Polybar_modules/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="Software" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      Haciendo la vida mas facil
+
+Me estoy poniendo al dia con tareas que tenia retrasadas y a mitad hacer entre ellas la automatizacion de dos tonterias , si tonterias pero eso nos permite conocer mejor el funcionamiento de nuestro entorno:
+
+1- Amplificar el volumen de mi laptop.
+
+2- Manejar los coleres del teclado rgb de mi laptop.
+
+Estos dos modulos son los que se encargan de hacerlo , estan listo...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -226,69 +268,6 @@ sudo nmap -p- -sS -sC -sV --min-rat...
       En este post vamos a dar luz en torno a lo que puede hacer una raspberry pi 1b en pleno 2024 y la verdad es que lo que hacia alla por 2018 se puede seguir realizando y con mas funcionalidad.
 
 Voy a tratar de explicar todos los servicios que corro en la pequeña raspi desde un cliente bittorrent , gestor de descargas , servidor de archivos ,liberar dumps de juegos ps3 , servidor para juegos de ps...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Cachopo, DockerLabs</title>
-    <link href="http://localhost:4000/posts/cachopo/" rel="alternate" type="text/html" title="Cachopo, DockerLabs" />
-    <published>2024-07-30T00:00:00-03:00</published>
-  
-    <updated>2024-07-30T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/cachopo/</id>
-    <content src="http://localhost:4000/posts/cachopo/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-En este reto de DockerLabs practicamos.
-
-
-  Scan de puertos
-  Proxy burpsuite
-  rce
-  SHA_Decrypt
-
-
-Herramientas y recursos
-
-
-  nmap
-  feroxbuster
-  Burpsuite
-  SHA_Decrypt
-
-
-Reconocimiento y enumeracion
-
-Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.
-
-sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX cachopo 172.17.0.2
-
-
-reporte
-
-Como podemos ver disponemos de...
     </summary>
   
 
