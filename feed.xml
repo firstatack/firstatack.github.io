@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2025-03-04T17:31:55-03:00</updated>
+  <updated>2025-03-15T12:34:13-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,80 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>Gitea, DockerLabs</title>
+    <link href="http://localhost:4000/posts/gitea/" rel="alternate" type="text/html" title="Gitea, DockerLabs" />
+    <published>2025-03-14T00:00:00-03:00</published>
+  
+    <updated>2025-03-14T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/gitea/</id>
+    <content src="http://localhost:4000/posts/gitea/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+Herramientas y recursos
+
+En este reto de DockerLabs practicamos.
+
+
+  
+    
+      Autor
+      Tecnicas
+      Herramientas
+    
+  
+  
+    
+      Dise0
+       
+       
+    
+    
+       
+      scan de puertos
+      nmap
+    
+    
+       
+      fuzzing web
+      feroxbuster
+    
+    
+       
+      local file inclusion
+      curl
+    
+  
+
+
+Reconocimiento y enumeracion
+
+Lo primero como siempre le ti...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -230,44 +304,6 @@ Reconocimiento y enumeracion
 Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.
 
 sudo nmap -p- -sS -sC -sV --min-rat...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Raspberrypi 1b en 2024 sirve de algo.</title>
-    <link href="http://localhost:4000/posts/raspberry-all/" rel="alternate" type="text/html" title="Raspberrypi 1b en 2024 sirve de algo." />
-    <published>2024-08-01T00:00:00-03:00</published>
-  
-    <updated>2024-08-01T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/raspberry-all/</id>
-    <content src="http://localhost:4000/posts/raspberry-all/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="Offtopic" />
-    
-    <category term="Raspberrypi" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      En este post vamos a dar luz en torno a lo que puede hacer una raspberry pi 1b en pleno 2024 y la verdad es que lo que hacia alla por 2018 se puede seguir realizando y con mas funcionalidad.
-
-Voy a tratar de explicar todos los servicios que corro en la pequeña raspi desde un cliente bittorrent , gestor de descargas , servidor de archivos ,liberar dumps de juegos ps3 , servidor para juegos de ps...
     </summary>
   
 
