@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2025-03-15T12:34:13-03:00</updated>
+  <updated>2025-03-16T17:35:01-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,75 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>Apiroot, DockerLabs</title>
+    <link href="http://localhost:4000/posts/apiroot/" rel="alternate" type="text/html" title="Apiroot, DockerLabs" />
+    <published>2025-03-16T00:00:00-03:00</published>
+  
+    <updated>2025-03-16T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/apiroot/</id>
+    <content src="http://localhost:4000/posts/apiroot/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+Herramientas y recursos
+
+En este reto de DockerLabs practicamos.
+
+
+  
+    
+      Tecnicas
+      Herramientas
+    
+  
+  
+    
+      scan de puertos
+      nmap
+    
+    
+      fuzzing de directorios
+      feroxbuster
+    
+    
+      fuzzing de parametro o password
+      ffuf
+    
+    
+      fuerza bruta ssh
+      hydra
+    
+    
+      escalada python
+      - que basico
+    
+    
+      escalada ...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -244,66 +313,6 @@ Herramientas y recursos empleados
   feroxbuster
   Script sudo brute (revisenn el github de el pinguino de mario)
   escalada de privileg...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Showtime , DockerLabs</title>
-    <link href="http://localhost:4000/posts/showtime/" rel="alternate" type="text/html" title="Showtime , DockerLabs" />
-    <published>2024-08-02T00:00:00-03:00</published>
-  
-    <updated>2024-08-02T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/showtime/</id>
-    <content src="http://localhost:4000/posts/showtime/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-En este reto de DockerLabs practicamos.
-
-
-  Scan de puertos
-  Listado de ficheros y derectorios
-  Burp intruder
-  sqlmap para el volcado de bbdd
-  Terminal de python
-
-
-Herramientas y recursos
-
-
-  nmap
-  feroxbuster
-  payloads sqli
-  sqlmap
-  revshell
-
-
-Reconocimiento y enumeracion
-
-Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.
-
-sudo nmap -p- -sS -sC -sV --min-rat...
     </summary>
   
 
