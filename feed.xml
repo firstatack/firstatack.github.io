@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2025-03-19T10:04:17-03:00</updated>
+  <updated>2025-03-22T17:58:03-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,72 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>Bad Plugin - DockerLabs</title>
+    <link href="http://localhost:4000/posts/badplugin/" rel="alternate" type="text/html" title="Bad Plugin - DockerLabs" />
+    <published>2025-03-17T00:00:00-03:00</published>
+  
+    <updated>2025-03-17T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/badplugin/</id>
+    <content src="http://localhost:4000/posts/badplugin/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+Herramientas y recursos
+
+En este reto de DockerLabs practicamos.
+
+
+  
+    
+      Tecnicas
+      Herramientas
+    
+  
+  
+    
+      scan de puertos
+      nmap
+    
+    
+      fuzzing de directorios
+      feroxbuster
+    
+    
+      descubrimiento de tecnologias
+      whatweb y wapalyzer
+    
+    
+      fuerza bruta login wordpress
+      hydra
+    
+    
+      gawk
+      Manejando ficheros desde...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -260,59 +326,6 @@ sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX sites 172.17.0.2
 reporte
 
 Como vemo...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>File , Dockerlabs</title>
-    <link href="http://localhost:4000/posts/file/" rel="alternate" type="text/html" title="File , Dockerlabs" />
-    <published>2025-01-07T00:00:00-03:00</published>
-  
-    <updated>2025-01-07T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/file/</id>
-    <content src="http://localhost:4000/posts/file/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="Dockerlabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-En este reto de Dockerlabs nos encontraremos con las siguientes pruebas a superar:
-
-
-  Escaneo de puertos
-  Fuzzing de directorios y archivos
-  Reverse shell
-  Transferencia de archivos mediante python
-  Fuerza bruta local
-  Escalada de privilegios
-
-
-Herramientas y recursos empleados
-
-
-  nmap
-  feroxbuster
-  Script sudo brute (revisenn el github de el pinguino de mario)
-  escalada de privileg...
     </summary>
   
 
