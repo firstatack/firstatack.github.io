@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2025-03-22T17:58:03-03:00</updated>
+  <updated>2025-03-23T10:57:54-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,77 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>Walking Dead, DockerLabs</title>
+    <link href="http://localhost:4000/posts/walkingdead/" rel="alternate" type="text/html" title="Walking Dead, DockerLabs" />
+    <published>2025-03-23T00:00:00-03:00</published>
+  
+    <updated>2025-03-23T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/walkingdead/</id>
+    <content src="http://localhost:4000/posts/walkingdead/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+Herramientas y recursos
+
+En este reto de DockerLabs practicamos.
+
+
+  
+    
+      Tecnicas
+      Herramientas
+    
+  
+  
+    
+      scan de puertos
+      nmap
+    
+    
+      fuzzing de parametro
+      ffuf
+    
+    
+      reverse shell
+      urlencodeada
+    
+    
+      escalada de privilegios
+      python
+    
+    
+      escalada de privilegios
+      searchbins
+    
+  
+
+
+Reconocimiento y enu...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -264,68 +335,6 @@ Me estoy poniendo al dia con tareas que tenia retrasadas y a mitad hacer entre e
 2- Manejar los coleres del teclado rgb de mi laptop.
 
 Estos dos modulos son los que se encargan de hacerlo , estan listo...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Sites , DockerLabs</title>
-    <link href="http://localhost:4000/posts/sites/" rel="alternate" type="text/html" title="Sites , DockerLabs" />
-    <published>2025-02-05T00:00:00-03:00</published>
-  
-    <updated>2025-02-05T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/sites/</id>
-    <content src="http://localhost:4000/posts/sites/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-En este reto de DockerLabs practicamos.
-
-
-  Scan de puertos
-  Listado de ficheros y directorios
-  Fuzzing de parametros
-  Escalada con sed
-
-
-Herramientas y recursos
-
-
-  nmap
-  feroxbuster
-  wfuzz
-
-
-Reconocimiento y enumeracion
-
-Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.
-
-sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX sites 172.17.0.2
-
-
-reporte
-
-Como vemo...
     </summary>
   
 

