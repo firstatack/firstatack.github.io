@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2025-03-23T11:06:42-03:00</updated>
+  <updated>2025-04-06T11:09:15-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,50 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>Recuperar el digispark attiny85</title>
+    <link href="http://localhost:4000/posts/bricked-digispark85/" rel="alternate" type="text/html" title="Recuperar el digispark attiny85" />
+    <published>2025-04-06T00:00:00-03:00</published>
+  
+    <updated>2025-04-06T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/bricked-digispark85/</id>
+    <content src="http://localhost:4000/posts/bricked-digispark85/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="Hardware" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+Hardware necesario
+
+En mi caso y con lo que tengo en casa he usado un arduino nano como programador isp , el digispark attiny85 brickeado ,unos cables dupont y un condensador electrolitico de 10uf y 50v.
+
+Version actual de micronucleus.
+
+Situacion
+
+Despues de estar trasteando y jugando un buen rato y cargando distintos sketchs a traves del arduino ide se ha corrompido el bootloader y el pc no...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -293,48 +337,6 @@ En este reto de DockerLabs practicamos.
 Reconocimiento y enumeracion
 
 Lo primero como siempre le ti...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Modulos para polybar</title>
-    <link href="http://localhost:4000/posts/Polybar_modules/" rel="alternate" type="text/html" title="Modulos para polybar" />
-    <published>2025-03-04T00:00:00-03:00</published>
-  
-    <updated>2025-03-04T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/Polybar_modules/</id>
-    <content src="http://localhost:4000/posts/Polybar_modules/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="Software" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      Haciendo la vida mas facil
-
-Me estoy poniendo al dia con tareas que tenia retrasadas y a mitad hacer entre ellas la automatizacion de dos tonterias , si tonterias pero eso nos permite conocer mejor el funcionamiento de nuestro entorno:
-
-1- Amplificar el volumen de mi laptop.
-
-2- Manejar los coleres del teclado rgb de mi laptop.
-
-Estos dos modulos son los que se encargan de hacerlo , estan listo...
     </summary>
   
 
