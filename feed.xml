@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2025-04-06T11:09:15-03:00</updated>
+  <updated>2025-04-12T10:22:09-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,75 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>Chocoping, Dockerlabs</title>
+    <link href="http://localhost:4000/posts/chocoping/" rel="alternate" type="text/html" title="Chocoping, Dockerlabs" />
+    <published>2025-04-11T00:00:00-03:00</published>
+  
+    <updated>2025-04-11T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/chocoping/</id>
+    <content src="http://localhost:4000/posts/chocoping/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+Herramientas y recursos
+
+En este reto de DockerLabs practicamos.
+
+
+  
+    
+      Tecnicas
+      Herramientas
+    
+  
+  
+    
+      scan de puertos
+      nmap
+    
+    
+      fuzzing de archivos y carpetas
+      feroxbuster
+    
+    
+      fuzzing de parametro
+      ffuf
+    
+    
+      reverse shell
+      urlencodeada
+    
+    
+      escalada de privilegios
+      man
+    
+    
+      cracking ...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -263,80 +332,6 @@ En este reto de DockerLabs practicamos.
     
     
       escalada ...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Gitea, DockerLabs</title>
-    <link href="http://localhost:4000/posts/gitea/" rel="alternate" type="text/html" title="Gitea, DockerLabs" />
-    <published>2025-03-14T00:00:00-03:00</published>
-  
-    <updated>2025-03-14T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/gitea/</id>
-    <content src="http://localhost:4000/posts/gitea/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-Herramientas y recursos
-
-En este reto de DockerLabs practicamos.
-
-
-  
-    
-      Autor
-      Tecnicas
-      Herramientas
-    
-  
-  
-    
-      Dise0
-       
-       
-    
-    
-       
-      scan de puertos
-      nmap
-    
-    
-       
-      fuzzing web
-      feroxbuster
-    
-    
-       
-      local file inclusion
-      curl
-    
-  
-
-
-Reconocimiento y enumeracion
-
-Lo primero como siempre le ti...
     </summary>
   
 
