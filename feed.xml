@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2025-04-12T10:22:09-03:00</updated>
+  <updated>2025-05-02T15:44:20-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,75 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>Balufood, DockerLabs</title>
+    <link href="http://localhost:4000/posts/balufood/" rel="alternate" type="text/html" title="Balufood, DockerLabs" />
+    <published>2025-05-02T00:00:00-03:00</published>
+  
+    <updated>2025-05-02T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/balufood/</id>
+    <content src="http://localhost:4000/posts/balufood/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+Herramientas y recursos
+
+En este reto de DockerLabs practicamos.
+
+
+  
+    
+      Tecnicas
+      Herramientas
+    
+  
+  
+    
+      scan de puertos
+      nmap
+    
+    
+      Escano de directorios
+      feroxbuster
+    
+    
+      Brute force login http
+      Hydra
+    
+    
+      escalada de privilegio
+      informacion expuesta
+    
+  
+
+
+Reconocimiento y enumeracion
+
+Lo primero como siempre ...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -263,75 +332,6 @@ En este reto de DockerLabs practicamos.
     
       gawk
       Manejando ficheros desde...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Apiroot, DockerLabs</title>
-    <link href="http://localhost:4000/posts/apiroot/" rel="alternate" type="text/html" title="Apiroot, DockerLabs" />
-    <published>2025-03-16T00:00:00-03:00</published>
-  
-    <updated>2025-03-16T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/apiroot/</id>
-    <content src="http://localhost:4000/posts/apiroot/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-Herramientas y recursos
-
-En este reto de DockerLabs practicamos.
-
-
-  
-    
-      Tecnicas
-      Herramientas
-    
-  
-  
-    
-      scan de puertos
-      nmap
-    
-    
-      fuzzing de directorios
-      feroxbuster
-    
-    
-      fuzzing de parametro o password
-      ffuf
-    
-    
-      fuerza bruta ssh
-      hydra
-    
-    
-      escalada python
-      - que basico
-    
-    
-      escalada ...
     </summary>
   
 
