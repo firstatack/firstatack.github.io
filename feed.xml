@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2025-05-11T12:20:48-03:00</updated>
+  <updated>2025-05-16T16:17:11-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,77 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>Galeria, DockerLabs</title>
+    <link href="http://localhost:4000/posts/galeria/" rel="alternate" type="text/html" title="Galeria, DockerLabs" />
+    <published>2025-05-16T00:00:00-03:00</published>
+  
+    <updated>2025-05-16T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/galeria/</id>
+    <content src="http://localhost:4000/posts/galeria/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+Herramientas y recursos
+
+En este reto de DockerLabs practicamos.
+
+
+  
+    
+      Tecnicas
+      Herramientas
+    
+  
+  
+    
+      scan de puertos
+      nmap
+    
+    
+      fuzzing directorios y ficheros
+      feroxbuster
+    
+    
+      revshell
+      bash
+    
+    
+      escalada de privilegios
+      nano
+    
+    
+      Pahthijacking
+      creacion de script
+    
+  
+
+
+Reconocimiento y enu...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -265,77 +336,6 @@ Version actual de micronucleus.
 Situacion
 
 Despues de estar trasteando y jugando un buen rato y cargando distintos sketchs a traves del arduino ide se ha corrompido el bootloader y el pc no...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Walking-Dead, DockerLabs</title>
-    <link href="http://localhost:4000/posts/walkingdead/" rel="alternate" type="text/html" title="Walking-Dead, DockerLabs" />
-    <published>2025-03-22T00:00:00-03:00</published>
-  
-    <updated>2025-03-22T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/walkingdead/</id>
-    <content src="http://localhost:4000/posts/walkingdead/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-Herramientas y recursos
-
-En este reto de DockerLabs practicamos.
-
-
-  
-    
-      Tecnicas
-      Herramientas
-    
-  
-  
-    
-      scan de puertos
-      nmap
-    
-    
-      fuzzing de parametro
-      ffuf
-    
-    
-      reverse shell
-      urlencodeada
-    
-    
-      escalada de privilegios
-      python
-    
-    
-      escalada de privilegios
-      searchbins
-    
-  
-
-
-Reconocimiento y enu...
     </summary>
   
 
