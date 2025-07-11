@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2025-06-17T10:50:02-03:00</updated>
+  <updated>2025-07-11T11:19:32-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -12,11 +12,89 @@
   <link rel="self" type="application/atom+xml" href="http://localhost:4000/feed.xml"/>
   <link rel="alternate" type="text/html" hreflang="es"
     href="http://localhost:4000/"/>
-  <generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator>
+  <generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator>
   <rights> © 2025 first_atack </rights>
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>Instalar Digistump attinny85 BADUSB en linux y arduino 2</title>
+    <link href="http://localhost:4000/posts/Configurando-attiny85-digispark/" rel="alternate" type="text/html" title="Instalar Digistump attinny85 BADUSB en linux y arduino 2" />
+    <published>2025-06-22T00:00:00-03:00</published>
+  
+    <updated>2025-06-22T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/Configurando-attiny85-digispark/</id>
+    <content src="http://localhost:4000/posts/Configurando-attiny85-digispark/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="Hardware" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+Que es el attiny85
+
+El Digispark ATtiny85 USB es una placa de desarrollo compacta y de bajo costo, basada en el microcontrolador ATtiny85 de Atmel, que se puede programar utilizando el entorno de desarrollo integrado (IDE) de Arduino , en nuestro caso solo lo vamos a emplear como un BADUSB, el cual puede sernos util en diversas situaciones , exfiltracion de datos , envio de revshells , infecc...
+    </summary>
+  
+
+  </entry>
+
+  
+  <entry>
+    <title>Metodos de pivoting y herramientas</title>
+    <link href="http://localhost:4000/posts/Pivoting_metodos_herramientas/" rel="alternate" type="text/html" title="Metodos de pivoting y herramientas" />
+    <published>2025-06-18T00:00:00-03:00</published>
+  
+    <updated>2025-06-18T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/Pivoting_metodos_herramientas/</id>
+    <content src="http://localhost:4000/posts/Pivoting_metodos_herramientas/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="Software" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+Que es el pivoting
+
+El pivoting es una técnica utilizada en el ámbito de la seguridad informática y el hacking ético que permite a un atacante o a un pentester acceder a redes o sistemas que de otro modo estarían fuera de su alcance. Esto se logra aprovechando un sistema comprometido para redirigir el tráfico hacia otros sistemas dentro de la misma red o hacia redes internas.
+
+Metodos de pivo...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -196,147 +274,6 @@ En este reto de DockerLabs practicamos.
     
     
       escalada de privilegios...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Galeria, DockerLabs</title>
-    <link href="http://localhost:4000/posts/galeria/" rel="alternate" type="text/html" title="Galeria, DockerLabs" />
-    <published>2025-05-16T00:00:00-03:00</published>
-  
-    <updated>2025-05-16T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/galeria/</id>
-    <content src="http://localhost:4000/posts/galeria/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-Herramientas y recursos
-
-En este reto de DockerLabs practicamos.
-
-
-  
-    
-      Tecnicas
-      Herramientas
-    
-  
-  
-    
-      scan de puertos
-      nmap
-    
-    
-      fuzzing directorios y ficheros
-      feroxbuster
-    
-    
-      revshell
-      bash
-    
-    
-      escalada de privilegios
-      nano
-    
-    
-      Pahthijacking
-      creacion de script
-    
-  
-
-
-Reconocimiento y enu...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>TheDog , DockerLabs</title>
-    <link href="http://localhost:4000/posts/thedog/" rel="alternate" type="text/html" title="TheDog , DockerLabs" />
-    <published>2025-05-03T00:00:00-03:00</published>
-  
-    <updated>2025-05-03T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/thedog/</id>
-    <content src="http://localhost:4000/posts/thedog/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-Herramientas y recursos
-
-En este reto de DockerLabs practicamos.
-
-
-  
-    
-      Tecnicas
-      Herramientas
-    
-  
-  
-    
-      scan de puertos
-      nmap
-    
-    
-      fuzzing de ficheros
-      feroxbuster
-    
-    
-      reverse cgi
-      CVE-2021-41773
-    
-    
-      transferncia de ficheros
-      ping
-    
-    
-      codificacion hexadecimal
-      xxd
-    
-    
-      scripting
-     ...
     </summary>
   
 
