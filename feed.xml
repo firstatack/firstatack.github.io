@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2025-07-11T11:19:32-03:00</updated>
+  <updated>2025-08-13T17:44:30-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,73 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>Pingctf, DockerLabs</title>
+    <link href="http://localhost:4000/posts/pingctf/" rel="alternate" type="text/html" title="Pingctf, DockerLabs" />
+    <published>2025-08-13T00:00:00-03:00</published>
+  
+    <updated>2025-08-13T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/pingctf/</id>
+    <content src="http://localhost:4000/posts/pingctf/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+Herramientas y recursos
+
+En este reto de DockerLabs practicamos.
+
+
+  
+    
+      Tecnicas
+      Herramientas
+    
+  
+  
+    
+      scan de puertos
+      nmap
+    
+    
+      revshell
+      pentestmonkey
+    
+    
+      vim.basic
+      gtfobins
+    
+  
+
+
+Reconocimiento y enumeracion
+
+Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.
+
+sudo nmap -p- -sS -sC -sV --min-ra...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -205,75 +272,6 @@ Requisitos
   Un router DSR-250N
   Un ordenador con acceso a internet
   Obtener el fir...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>LittlePivoting, DockerLabs</title>
-    <link href="http://localhost:4000/posts/littlepivoting/" rel="alternate" type="text/html" title="LittlePivoting, DockerLabs" />
-    <published>2025-06-08T00:00:00-03:00</published>
-  
-    <updated>2025-06-08T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/littlepivoting/</id>
-    <content src="http://localhost:4000/posts/littlepivoting/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-Herramientas y recursos
-
-En este reto de DockerLabs practicamos.
-
-
-  
-    
-      Tecnicas
-      Herramientas
-    
-  
-  
-    
-      scan de puertos
-      nmap
-    
-    
-      reverse shell
-      urlencodeada
-    
-    
-      tratamiento de tty
-      script, stty, reset
-    
-    
-      pivoting
-      chisel socat
-    
-    
-      tunneling
-      proxychains
-    
-    
-      escalada de privilegios...
     </summary>
   
 

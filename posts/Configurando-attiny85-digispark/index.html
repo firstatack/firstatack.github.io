@@ -6,6 +6,20 @@
 
 
 
+<!--
+  The GA snippet
+-->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script defer src="https://www.googletagmanager.com/gtag/js?id=G-VWDB9X2WGN"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+
+    gtag('js', new Date());
+    gtag('config', 'G-VWDB9X2WGN');
+  });
+</script>
 
 
 
@@ -772,7 +786,7 @@
   class="readtime"
   data-bs-toggle="tooltip"
   data-bs-placement="bottom"
-  title="516 words"
+  title="507 words"
 >
   <em>2 min</em> read</span>
 
@@ -811,23 +825,17 @@ Asi que manos a la obra para modificar el a ttiny y usarlo como badusb</p>
 <p>1º-Al descomprimir DigistumpArduino nos aparecen tres carpetas de esas nos interesan solo dos en nuestro caso <strong>tools y digistump-avr</strong>.</p>
 
 <p>La carpeta digistump-avr debe ir en la siguiente ruta:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="code-header">
-        <span data-label-text="Plaintext"><i class="fas fa-code fa-fw small"></i></span>
+<div class="language-bash highlighter-rouge"><div class="code-header">
+        <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span>
       <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-</pre></td><td class="rouge-code"><pre>```bash
-~/.arduino15/packages/arduino/hardware/digistump-avr
-``` Debe de quedar exacta la ruta para ambas carpetas y ahora la tools que incluye un launcher y el propio micronucleus.
+</pre></td><td class="rouge-code"><pre>~/.arduino15/packages/arduino/hardware/digistump-avr
+</pre></td></tr></tbody></table></code></div></div>
+<p>Debe de quedar exacta la ruta para ambas carpetas y ahora la tools que incluye un launcher y el propio micronucleus.</p>
 
-```bash
-/home/firstatack/.arduino15/packages/digistump/tools/micronucleus/2.0a4/
-```
+<div class="language-bash highlighter-rouge"><div class="code-header">
+        <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span>
+      <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>/home/firstatack/.arduino15/packages/digistump/tools/micronucleus/2.0a4/
 </pre></td></tr></tbody></table></code></div></div>
 
 <p>Con esos dos pasos ya deberiamos de poder seleccionar la plaquita en nuetro ide pero falta los permisos de escritura para udev.rules , paso necesario en archlinux.</p>
@@ -1020,6 +1028,13 @@ Asi que manos a la obra para modificar el a ttiny y usarlo como badusb</p>
         
         
         <li class="text-truncate lh-lg">
+          <a href="/posts/pingctf/">Pingctf, DockerLabs</a>
+        </li>
+      
+        
+        
+        
+        <li class="text-truncate lh-lg">
           <a href="/posts/Configurando-attiny85-digispark/">Instalar Digistump attinny85 BADUSB en linux y arduino 2</a>
         </li>
       
@@ -1042,13 +1057,6 @@ Asi que manos a la obra para modificar el a ttiny y usarlo como badusb</p>
         
         <li class="text-truncate lh-lg">
           <a href="/posts/dsr250n/">Actualizando dsr250 n</a>
-        </li>
-      
-        
-        
-        
-        <li class="text-truncate lh-lg">
-          <a href="/posts/littlepivoting/">LittlePivoting, DockerLabs</a>
         </li>
       
     </ul>
@@ -2897,9 +2905,13 @@ En este post vamos a ver como actualizar el firmware de un router DSR-250N de D-
   
 
   
-    <div class="btn btn-outline-primary disabled" aria-label="Newer">
-      <p>-</p>
-    </div>
+    <a
+      href="/posts/pingctf/"
+      class="btn btn-outline-primary"
+      aria-label="Newer"
+    >
+      <p>Pingctf, DockerLabs</p>
+    </a>
   
 </nav>
 
