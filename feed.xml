@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2025-08-13T17:44:30-03:00</updated>
+  <updated>2025-08-14T19:14:36-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,79 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>Grooti, DockerLabs</title>
+    <link href="http://localhost:4000/posts/grooti/" rel="alternate" type="text/html" title="Grooti, DockerLabs" />
+    <published>2025-08-14T00:00:00-03:00</published>
+  
+    <updated>2025-08-14T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/grooti/</id>
+    <content src="http://localhost:4000/posts/grooti/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+Herramientas y recursos
+
+En este reto de DockerLabs practicamos.
+
+
+  
+    
+      Tecnicas
+      Herramientas
+    
+  
+  
+    
+      scan de puertos
+      nmap
+    
+    
+      fuzzing ficheros y dirs
+      feroxbuster
+    
+    
+      fuerza bruta
+      hydra
+    
+    
+      mysql
+      basico navegaciony seleccion
+    
+    
+      Crak zip
+      john
+    
+  
+
+
+Reconocimiento y enumeracion
+
+Lo pr...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -227,51 +300,6 @@ En este reto de DockerLabs practicamos.
 Reconocimiento y enumeracion
 
 Lo primero como siempre le tiramos un nmap con ...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Actualizando dsr250 n</title>
-    <link href="http://localhost:4000/posts/dsr250n/" rel="alternate" type="text/html" title="Actualizando dsr250 n" />
-    <published>2025-06-11T00:00:00-03:00</published>
-  
-    <updated>2025-06-11T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/dsr250n/</id>
-    <content src="http://localhost:4000/posts/dsr250n/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="Hardware" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-Actualizar router DSR-250N
-
-En este post vamos a ver como actualizar el firmware de un router DSR-250N de D-Link, que es un router que ya tiene unos años y que no soporta TLS 1.2 ni 1.3, por lo que es recomendable actualizarlo para mejorar la seguridad dado que versiones viejas tienen hasta conocidos rce.
-
-Requisitos
-
-
-  Un router DSR-250N
-  Un ordenador con acceso a internet
-  Obtener el fir...
     </summary>
   
 
