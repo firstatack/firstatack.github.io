@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2025-08-14T19:14:36-03:00</updated>
+  <updated>2025-09-08T19:49:12-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,62 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>Analizando un phising real</title>
+    <link href="http://localhost:4000/posts/Analizando_un_phising_real/" rel="alternate" type="text/html" title="Analizando un phising real" />
+    <published>2025-09-08T00:00:00-03:00</published>
+  
+    <updated>2025-09-08T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/Analizando_un_phising_real/</id>
+    <content src="http://localhost:4000/posts/Analizando_un_phising_real/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="Offtopic" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+Que es el phising
+
+Si a estas alturas no sabemos lo que es mal vamos , a google a buscar y aprender.
+
+un phising es esto:
+
+
+
+
+
+
+
+Analisis del correo
+
+Lo mas importante realmente es comprobar las cabeceras del mail para ello debemos descargarlas desde la web del proveedor de nuestro servicio de correo.
+
+Una vez descragadas buscamos los campos :
+
+
+  
+    Return-Path y Received-From → permiten v...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -231,75 +287,6 @@ Que es el pivoting
 El pivoting es una técnica utilizada en el ámbito de la seguridad informática y el hacking ético que permite a un atacante o a un pentester acceder a redes o sistemas que de otro modo estarían fuera de su alcance. Esto se logra aprovechando un sistema comprometido para redirigir el tráfico hacia otros sistemas dentro de la misma red o hacia redes internas.
 
 Metodos de pivo...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>PkgPoison, DockerLabs</title>
-    <link href="http://localhost:4000/posts/pkgpoison/" rel="alternate" type="text/html" title="PkgPoison, DockerLabs" />
-    <published>2025-06-17T00:00:00-03:00</published>
-  
-    <updated>2025-06-17T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/pkgpoison/</id>
-    <content src="http://localhost:4000/posts/pkgpoison/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-Herramientas y recursos
-
-En este reto de DockerLabs practicamos.
-
-
-  
-    
-      Tecnicas
-      Herramientas
-    
-  
-  
-    
-      scan de puertos
-      nmap
-    
-    
-      fuzzing ficheros y dirs
-      feroxbuster
-    
-    
-      fuerza bruta
-      hydra
-    
-    
-      escalada de privilegios
-      pip3
-    
-  
-
-
-Reconocimiento y enumeracion
-
-Lo primero como siempre le tiramos un nmap con ...
     </summary>
   
 
