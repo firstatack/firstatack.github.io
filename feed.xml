@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2025-09-13T11:04:38-03:00</updated>
+  <updated>2025-09-13T19:14:55-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -86,6 +86,71 @@ En este reto de DockerLabs practicamos.
 Reconocimiento y enumeracion
 
 Lo primero c...
+    </summary>
+  
+
+  </entry>
+
+  
+  <entry>
+    <title>WAR, Vulnyx</title>
+    <link href="http://localhost:4000/posts/WAR/" rel="alternate" type="text/html" title="WAR, Vulnyx" />
+    <published>2025-09-13T00:00:00-03:00</published>
+  
+    <updated>2025-09-13T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/WAR/</id>
+    <content src="http://localhost:4000/posts/WAR/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="Vulnyx" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+Herramientas y recursos
+
+En este reto de la plataforma  Vulnyx voy a empezar a aprender a explotar maquinas windows y esta es la maquina war.
+
+
+  
+    
+      Tecnicas
+      Herramientas
+    
+  
+  
+    
+      scan de puertos
+      nmap
+    
+    
+      msfvenom
+      crear payload
+    
+    
+      tomcat
+      upload .war
+    
+    
+      SeImpersonatePrivilege
+      printspoofer.exe
+    
+    
+  ...
     </summary>
   
 
@@ -282,73 +347,6 @@ En este reto de DockerLabs practicamos.
 Reconocimiento y enumeracion
 
 Lo pr...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Pingctf, DockerLabs</title>
-    <link href="http://localhost:4000/posts/pingctf/" rel="alternate" type="text/html" title="Pingctf, DockerLabs" />
-    <published>2025-08-13T00:00:00-03:00</published>
-  
-    <updated>2025-08-13T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/pingctf/</id>
-    <content src="http://localhost:4000/posts/pingctf/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-Herramientas y recursos
-
-En este reto de DockerLabs practicamos.
-
-
-  
-    
-      Tecnicas
-      Herramientas
-    
-  
-  
-    
-      scan de puertos
-      nmap
-    
-    
-      revshell
-      pentestmonkey
-    
-    
-      vim.basic
-      gtfobins
-    
-  
-
-
-Reconocimiento y enumeracion
-
-Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.
-
-sudo nmap -p- -sS -sC -sV --min-ra...
     </summary>
   
 
