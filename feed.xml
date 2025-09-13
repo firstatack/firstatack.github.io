@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2025-09-11T10:29:18-03:00</updated>
+  <updated>2025-09-13T11:04:38-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,79 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>SpiderRoot, DockerLabs</title>
+    <link href="http://localhost:4000/posts/spiderRoot/" rel="alternate" type="text/html" title="SpiderRoot, DockerLabs" />
+    <published>2025-09-13T00:00:00-03:00</published>
+  
+    <updated>2025-09-13T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/spiderRoot/</id>
+    <content src="http://localhost:4000/posts/spiderRoot/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+Herramientas y recursos
+
+En este reto de DockerLabs practicamos.
+
+
+  
+    
+      Tecnicas
+      Herramientas
+    
+  
+  
+    
+      scan de puertos
+      nmap
+    
+    
+      fuzzing ficheros y dirs
+      feroxbuster
+    
+    
+      waf bypass
+      manual
+    
+    
+      mysqli
+      payloads basicos
+    
+    
+      port forwading
+      SSH
+    
+  
+
+
+Reconocimiento y enumeracion
+
+Lo primero c...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -276,44 +349,6 @@ Reconocimiento y enumeracion
 Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.
 
 sudo nmap -p- -sS -sC -sV --min-ra...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Instalar Digistump attinny85 BADUSB en linux y arduino 2</title>
-    <link href="http://localhost:4000/posts/Configurando-attiny85-digispark/" rel="alternate" type="text/html" title="Instalar Digistump attinny85 BADUSB en linux y arduino 2" />
-    <published>2025-06-22T00:00:00-03:00</published>
-  
-    <updated>2025-06-22T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/Configurando-attiny85-digispark/</id>
-    <content src="http://localhost:4000/posts/Configurando-attiny85-digispark/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="Hardware" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-Que es el attiny85
-
-El Digispark ATtiny85 USB es una placa de desarrollo compacta y de bajo costo, basada en el microcontrolador ATtiny85 de Atmel, que se puede programar utilizando el entorno de desarrollo integrado (IDE) de Arduino , en nuestro caso solo lo vamos a emplear como un BADUSB, el cual puede sernos util en diversas situaciones , exfiltracion de datos , envio de revshells , infecc...
     </summary>
   
 
