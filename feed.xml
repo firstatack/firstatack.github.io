@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2025-09-13T19:14:55-03:00</updated>
+  <updated>2025-09-15T18:08:04-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,69 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>Admin , Vulnyx</title>
+    <link href="http://localhost:4000/posts/Admin/" rel="alternate" type="text/html" title="Admin , Vulnyx" />
+    <published>2025-09-14T00:00:00-03:00</published>
+  
+    <updated>2025-09-14T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/Admin/</id>
+    <content src="http://localhost:4000/posts/Admin/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="Vulnyx" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+Herramientas y recursos
+
+En este reto de la plataforma  Vulnyx vamos a seguir jodiendo (o intentandolo) maquinas windows y esta es la maquina Admin.
+
+
+  
+    
+      Tecnicas
+      Herramientas
+    
+  
+  
+    
+      scan de puertos
+      nmap
+    
+    
+      feroxbuster
+      dir y files
+    
+    
+      nxc
+      crack smb pass
+    
+    
+      evil-rm
+      conexion windows remote managment
+  ...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -274,79 +337,6 @@ Una vez descragadas buscamos los campos :
 
   
     Return-Path y Received-From → permiten v...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Grooti, DockerLabs</title>
-    <link href="http://localhost:4000/posts/grooti/" rel="alternate" type="text/html" title="Grooti, DockerLabs" />
-    <published>2025-08-14T00:00:00-03:00</published>
-  
-    <updated>2025-08-14T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/grooti/</id>
-    <content src="http://localhost:4000/posts/grooti/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-Herramientas y recursos
-
-En este reto de DockerLabs practicamos.
-
-
-  
-    
-      Tecnicas
-      Herramientas
-    
-  
-  
-    
-      scan de puertos
-      nmap
-    
-    
-      fuzzing ficheros y dirs
-      feroxbuster
-    
-    
-      fuerza bruta
-      hydra
-    
-    
-      mysql
-      basico navegaciony seleccion
-    
-    
-      Crak zip
-      john
-    
-  
-
-
-Reconocimiento y enumeracion
-
-Lo pr...
     </summary>
   
 
