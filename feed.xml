@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2025-09-15T18:08:04-03:00</updated>
+  <updated>2026-02-26T19:19:49-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -13,10 +13,83 @@
   <link rel="alternate" type="text/html" hreflang="es"
     href="http://localhost:4000/"/>
   <generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator>
-  <rights> © 2025 first_atack </rights>
+  <rights> © 2026 first_atack </rights>
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>Bola, DockerLabs</title>
+    <link href="http://localhost:4000/posts/bola/" rel="alternate" type="text/html" title="Bola, DockerLabs" />
+    <published>2026-02-22T00:00:00-03:00</published>
+  
+    <updated>2026-02-22T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/bola/</id>
+    <content src="http://localhost:4000/posts/bola/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+Herramientas y recursos
+
+En este reto de DockerLabs practicamos.
+
+
+  
+    
+      Tecnicas
+      Herramientas
+    
+  
+  
+    
+      scan de puertos
+      nmap
+    
+    
+      fuzzing directorios
+      feroxbuster
+    
+    
+      scripting
+      bash
+    
+    
+      mysql
+      navegacion basica
+    
+    
+      port forwading
+      SSH
+    
+  
+
+
+Reconocimiento y enumeracion
+
+Lo primero como sie...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -281,62 +354,6 @@ Reconocimiento y enumeracion
 Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.
 
 sudo nmap -p- -sS -sC ...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Analizando un phising real</title>
-    <link href="http://localhost:4000/posts/Analizando_un_phising_real/" rel="alternate" type="text/html" title="Analizando un phising real" />
-    <published>2025-09-08T00:00:00-03:00</published>
-  
-    <updated>2025-09-08T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/Analizando_un_phising_real/</id>
-    <content src="http://localhost:4000/posts/Analizando_un_phising_real/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="Offtopic" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-Que es el phising
-
-Si a estas alturas no sabemos lo que es mal vamos , a google a buscar y aprender.
-
-un phising es esto:
-
-
-
-
-
-
-
-Analisis del correo
-
-Lo mas importante realmente es comprobar las cabeceras del mail para ello debemos descargarlas desde la web del proveedor de nuestro servicio de correo.
-
-Una vez descragadas buscamos los campos :
-
-
-  
-    Return-Path y Received-From → permiten v...
     </summary>
   
 
