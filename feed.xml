@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2026-03-01T12:33:16-03:00</updated>
+  <updated>2026-03-02T17:57:26-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,73 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>Perrito magico, DockerLabs</title>
+    <link href="http://localhost:4000/posts/perrito_magico/" rel="alternate" type="text/html" title="Perrito magico, DockerLabs" />
+    <published>2026-03-02T00:00:00-03:00</published>
+  
+    <updated>2026-03-02T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/perrito_magico/</id>
+    <content src="http://localhost:4000/posts/perrito_magico/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+Herramientas y recursos
+
+En este reto de DockerLabs practicamos.
+
+
+  
+    
+      Tecnicas
+      Herramientas
+    
+  
+  
+    
+      scan de puertos
+      nmap
+    
+    
+      inyeccion xss
+      payloads
+    
+    
+      Abuso de sudo
+      Python Library Hijacking
+    
+  
+
+
+Reconocimiento y enumeracion
+
+Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.
+
+sudo nmap -p- ...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -285,69 +352,6 @@ En este reto de DockerLabs practicamos.
 Reconocimiento y enumeracion
 
 Lo primero como sie...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Admin , Vulnyx</title>
-    <link href="http://localhost:4000/posts/Admin/" rel="alternate" type="text/html" title="Admin , Vulnyx" />
-    <published>2025-09-14T00:00:00-03:00</published>
-  
-    <updated>2025-09-14T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/Admin/</id>
-    <content src="http://localhost:4000/posts/Admin/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="Vulnyx" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-Herramientas y recursos
-
-En este reto de la plataforma  Vulnyx vamos a seguir jodiendo (o intentandolo) maquinas windows y esta es la maquina Admin.
-
-
-  
-    
-      Tecnicas
-      Herramientas
-    
-  
-  
-    
-      scan de puertos
-      nmap
-    
-    
-      feroxbuster
-      dir y files
-    
-    
-      nxc
-      crack smb pass
-    
-    
-      evil-rm
-      conexion windows remote managment
-  ...
     </summary>
   
 

@@ -3,7 +3,7 @@
 {
   "name": "CTF's Linux Apuntes",
   "short_name": "CTF's Linux Apuntes",
-  "description": "Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell",
+  "description": "A minimal, responsive and feature-rich Jekyll theme for technical writing.",
   "icons": [
     {
       "src": "/assets/img/favicons/android-chrome-192x192.png",
