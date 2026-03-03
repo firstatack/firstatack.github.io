@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2026-03-02T17:57:26-03:00</updated>
+  <updated>2026-03-02T20:58:38-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -65,21 +65,92 @@ En este reto de DockerLabs practicamos.
       nmap
     
     
-      inyeccion xss
-      payloads
+      enumeracion
+      feroxbuster burpsuite
+    
+    
+      Arbitrary File Upload
+      abusando de api
     
     
       Abuso de sudo
-      Python Library Hijacking
+      nano
     
   
 
 
 Reconocimiento y enumeracion
 
-Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.
+Lo primero como siempre le tiramos un nm...
+    </summary>
+  
 
-sudo nmap -p- ...
+  </entry>
+
+  
+  <entry>
+    <title>Lower7, Vulnix</title>
+    <link href="http://localhost:4000/posts/lower7/" rel="alternate" type="text/html" title="Lower7, Vulnix" />
+    <published>2026-03-02T00:00:00-03:00</published>
+  
+    <updated>2026-03-02T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/lower7/</id>
+    <content src="http://localhost:4000/posts/lower7/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="Vulnix" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+Herramientas y recursos
+
+En este reto de vulnyx nos encontramos ante una maquina linux.
+
+
+  
+    
+      Tecnicas
+      Herramientas
+    
+  
+  
+    
+      scan de puertos
+      nmap
+    
+    
+      Fuerza bruta
+      hydra
+    
+    
+      Revshell
+      node js
+    
+    
+      fuerza bruta
+      john
+    
+  
+
+
+Reconocimiento y enumeracion
+
+Para empezar lanzamos un nmap para ver que puertos est...
     </summary>
   
 
@@ -279,79 +350,6 @@ En este reto de DockerLabs practicamos.
 Reconocimiento y enumeracion
 
 Lo primero como siempre le tiramos un nmap con los p...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Bola, DockerLabs</title>
-    <link href="http://localhost:4000/posts/bola/" rel="alternate" type="text/html" title="Bola, DockerLabs" />
-    <published>2026-02-22T00:00:00-03:00</published>
-  
-    <updated>2026-02-22T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/bola/</id>
-    <content src="http://localhost:4000/posts/bola/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-Herramientas y recursos
-
-En este reto de DockerLabs practicamos.
-
-
-  
-    
-      Tecnicas
-      Herramientas
-    
-  
-  
-    
-      scan de puertos
-      nmap
-    
-    
-      fuzzing directorios
-      feroxbuster
-    
-    
-      scripting
-      bash
-    
-    
-      mysql
-      navegacion basica
-    
-    
-      port forwading
-      SSH
-    
-  
-
-
-Reconocimiento y enumeracion
-
-Lo primero como sie...
     </summary>
   
 
