@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2026-03-02T20:58:38-03:00</updated>
+  <updated>2026-03-04T10:33:52-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,72 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>Build, Vulnix</title>
+    <link href="http://localhost:4000/posts/build/" rel="alternate" type="text/html" title="Build, Vulnix" />
+    <published>2026-03-02T00:00:00-03:00</published>
+  
+    <updated>2026-03-02T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/build/</id>
+    <content src="http://localhost:4000/posts/build/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="Vulnix" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+Herramientas y recursos
+
+En este reto de vulnyx nos encontramos ante una maquina windows.
+
+
+  
+    
+      Tecnicas
+      Herramientas
+    
+  
+  
+    
+      reconocimiento red
+      arpscan
+    
+    
+      scan de puertos
+      nmap
+    
+    
+      Fuerza bruta
+      creds por defecto misc configuration
+    
+    
+      jenkins script console
+      groovy script
+    
+    
+      exfiltracion
+   ...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -281,75 +347,6 @@ Reconocimiento y enumeracion
 Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.
 
 sudo nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX bola 172.17.0.3...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Internal, DockerLabs</title>
-    <link href="http://localhost:4000/posts/internal/" rel="alternate" type="text/html" title="Internal, DockerLabs" />
-    <published>2026-02-27T00:00:00-03:00</published>
-  
-    <updated>2026-02-27T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/internal/</id>
-    <content src="http://localhost:4000/posts/internal/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-Herramientas y recursos
-
-En este reto de DockerLabs practicamos.
-
-
-  
-    
-      Tecnicas
-      Herramientas
-    
-  
-  
-    
-      scan de puertos
-      nmap
-    
-    
-      busqueda de directorios
-      feroxbuster
-    
-    
-      Busqueda de subdomnios
-      ffuz
-    
-    
-      waf
-      bypass waf
-    
-  
-
-
-Reconocimiento y enumeracion
-
-Lo primero como siempre le tiramos un nmap con los p...
     </summary>
   
 
