@@ -1533,7 +1533,7 @@
   class="readtime"
   data-bs-toggle="tooltip"
   data-bs-placement="bottom"
-  title="837 words"
+  title="850 words"
 >
   <em>4 min</em> read</span>
 
@@ -1568,29 +1568,35 @@
     </tr>
     <tr>
       <td>Arbitrary File Upload</td>
-      <td>abusando de api</td>
+      <td>abuso de api</td>
     </tr>
     <tr>
       <td>Abuso de sudo</td>
       <td>nano</td>
+    </tr>
+    <tr>
+      <td>scripting</td>
+      <td>bash</td>
     </tr>
   </tbody>
 </table></div>
 
 <h2 id="reconocimiento-y-enumeracion"><span class="me-2">Reconocimiento y enumeracion</span><a href="#reconocimiento-y-enumeracion" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2>
 
+<p>Segun las indicadciones tenemos tres retos de <strong>race condition</strong> con distintas dificultades</p>
+
 <p>Lo primero como siempre le tiramos un nmap con los parámetros de costumbre.</p>
 
 <div class="language-bash highlighter-rouge"><div class="code-header">
         <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span>
       <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre><span class="nb">sudo </span>nmap <span class="nt">-p-</span> <span class="nt">-sS</span> <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">--min-rate</span><span class="o">=</span>5000 <span class="nt">-n</span> <span class="nt">-Pn</span> <span class="nt">-oX</span> bola 172.17.0.3
+</pre></td><td class="rouge-code"><pre><span class="nb">sudo </span>nmap <span class="nt">-p-</span> <span class="nt">-sS</span> <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">--min-rate</span><span class="o">=</span>5000 <span class="nt">-n</span> <span class="nt">-Pn</span> <span class="nt">-oX</span> perrito 172.17.0.3
 </pre></td></tr></tbody></table></code></div></div>
 <p><a href="/reporte/perrito.html">reporte</a></p>
 
 <p>En esta maquina hemos de ser capaces de cambiar la imagen de la maquina sin importar el rol que tengamos , por tanto hemos de ser capaces de obtener token y endpoints necesarios.</p>
 
-<p>Lo primero me abro el <strong>burpsuite</strong> para empezar a navegar por la web capturando para revisar posteriormente si algo nos es util , pongo el scope de ese modo todo lo que no sea el scope lo deja pasar sin problemas para poder realizar cualquier otra consulta de cualquier web que necesitemos.</p>
+<p>Lo primero me abro el burpsuite para empezar a navegar por la web capturando para revisar posteriormente si algo nos es util , pongo el scope de ese modo todo lo que no sea el scope lo deja pasar sin problemas para poder realizar cualquier otra consulta de cualquier web que necesitemos.</p>
 
 <p><a href="/assets/perrito_magico/scope.png" class="popup img-link  shimmer"><img src="/assets/perrito_magico/scope.png" alt="scope" loading="lazy"></a></p>
 
@@ -1604,7 +1610,7 @@
 
 <p><a href="/assets/perrito_magico/endpoint.png" class="popup img-link  shimmer"><img src="/assets/perrito_magico/endpoint.png" alt="endpoint" loading="lazy"></a></p>
 
-<p>Esta es la parte interesante donde vemos los parametros que necesitamos para modificar algo y arriba del todo nos indica que debemos estar registrados para ese endpoint <strong>/gestion-maquinas/upload-logo</strong>.Vamos a ver que tenemos con burpsuite despues de toquetear halla donde nos dejo, encuentro algo interesante en el endpoit <strong>/subir-flag</strong> el <strong>token</strong> y el <strong>csrf-token</strong> que pueden ser utiles para el endpoint que vimos en summary.</p>
+<p>Esta es la parte interesante donde vemos los parametros que necesitamos para modificar algo y arriba del todo nos indica que debemos estar registrados para ese endpoint <strong>/gestion-maquinas/upload-logo</strong>.Vamos a ver que tenemos con burpsuite despues de toquetear halla donde nos dejo, encuentro algo interesante en el endpoit <strong>/subir-flag el token session y el csrf-token</strong> que pueden ser utiles para el endpoint que vimos en summary.</p>
 
 <p><a href="/assets/perrito_magico/tokens.png" class="popup img-link  shimmer"><img src="/assets/perrito_magico/tokens.png" alt="tokens" loading="lazy"></a></p>
 
@@ -1650,13 +1656,13 @@ Connection: close
 
 <p>Mis dos primeras peticiones llegaron pero me dice datos invalidos aun habiendo cambiado el machineid , no creo que el machine id sea importante creo que es mas estricto el <strong>origin</strong> que podria ser cualquier cosa.</p>
 
-<p><a href="/assets/perrito_magico/dockerupload.png" class="popup img-link  shimmer"><img src="/assets/perrito_magico/dockerupload.png" alt="docker_upload" loading="lazy"></a></p>
+<p><a href="/assets/perrito_magico/dockerupload.png" class="popup img-link  shimmer"><img src="/assets/perrito_magico/dockerupload.png" alt="dockerupload" loading="lazy"></a></p>
 
-<p>El origin debe estar relacionado siempre o casi siempre con la infraestructura de la web o eso creo  asi que si <strong>ni dockerlabs ni bunkerlabs funciono pero docker si</strong> aunque no como esperaba solo queda probar <strong>bunker</strong> que ademas es el referer de la peticion de arriba si no con ayuda de ia un script que vaya probando distintos nombres.</p>
+<p>El origin debe estar relacionado siempre o casi siempre con la infraestructura de la web o eso creo asi que si ni dockerlabs ni bunkerlabs funciono pero docker si aunque no como esperaba solo queda probar bunker que ademas es el referer de la peticion de arriba si no con ayuda de ia un script que vaya probando distintos nombres.</p>
 
 <p><a href="/assets/perrito_magico/explotada.png" class="popup img-link  shimmer"><img src="/assets/perrito_magico/explotada.png" alt="explotada" loading="lazy"></a></p>
 
-<p>La peticion corrcta es con <strong>bunker</strong></p>
+<p>La peticion correcta es con <strong>bunker</strong>.</p>
 
 <p><a href="/assets/perrito_magico/petiok.png" class="popup img-link  shimmer"><img src="/assets/perrito_magico/petiok.png" alt="petiok" loading="lazy"></a></p>
 
@@ -1680,25 +1686,25 @@ Connection: close
   <span class="nt">-F</span> <span class="s1">'logo=@/home/firstatack/Documentos/Hacking_machines/dockerlabs/perrito_magico/skills/hackerlogo.jpg;type=image/jpeg'</span>
 </pre></td></tr></tbody></table></code></div></div>
 
-<p><a href="/assets/perrito_magico/imagen.png" class="popup img-link  shimmer"><img src="/assets/perrito_magico/imagen.png" alt="imagen" loading="lazy"></a></p>
+<p><a href="/assets/perrito_magico/imagen.png" class="popup img-link  shimmer"><img src="/assets/perrito_magico/imagen.png" alt="images" loading="lazy"></a></p>
 
 <h2 id="escalada"><span class="me-2">Escalada</span><a href="#escalada" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2>
 
-<p>Como vemos se nmos proporcionaron las credenciales para ssh entramos y con <strong>sudo -l</strong> vemos que nos ha dejado nano.</p>
+<p>Como vemos se nmos proporcionaron las credenciales para ssh entramos y con sudo -l vemos que nos ha dejado nano.</p>
 
 <p><a href="/assets/perrito_magico/search.png" class="popup img-link  shimmer"><img src="/assets/perrito_magico/search.png" alt="search" loading="lazy"></a></p>
 
-<p>Ejuctamos y somos root.</p>
+<p>Ejecutamos y somos root.</p>
 
 <p><a href="/assets/perrito_magico/root.png" class="popup img-link  shimmer"><img src="/assets/perrito_magico/root.png" alt="root" loading="lazy"></a></p>
 
 <p>Hasta aqui la maquinita, gracias por leer.</p>
 
-<blockquote class="prompt-info">
-  <p>Informacion para curiosos a partir de este punto</p>
+<blockquote class="promt-info">
+  <p>Info para curiosos a partir de aqui</p>
 </blockquote>
 
-<p>Aqui el script que pretendia usar para realizar fuerza bruta al parametro <strong>origin</strong></p>
+<p>Aqui el script que pretendia usar para realizar fuerza bruta al parametro origin</p>
 
 <div class="language-bash highlighter-rouge"><div class="code-header">
         <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span>
@@ -1737,7 +1743,6 @@ Connection: close
 33
 34
 35
-36
 </pre></td><td class="rouge-code"><pre><span class="c">#!/bin/bash</span>
 
 <span class="nv">wordlist</span><span class="o">=</span><span class="s2">"origins.txt"</span>
@@ -1773,45 +1778,15 @@ Connection: close
 
     </span><span class="nb">sleep </span>5
 <span class="k">done</span>
-
 </pre></td></tr></tbody></table></code></div></div>
+
 <p>El diccionario que cree contenia esta lista:</p>
 
-<p>dockerlabs
-local
-bunkerlabs
-production
-development
-staging
-web
-api
-testing
-default
-s3_storage
-vault
-proxy_pass
-direct_upload
-system_upload
-cloud_bunker
-nas_storage
-bunker
-docker
-bunker_api
-bunker_local
-bunker_node
-bunker_management
-bunkerserver
-perrito
-perritomagico
-magico
-magic_origin
-docker_node
-internal_bunker
-private_bunker</p>
+<p>dockerlabs local bunkerlabs production development staging web api testing default s3_storage vault proxy_pass direct_upload system_upload cloud_bunker nas_storage bunker docker bunker_api bunker_local bunker_node bunker_management bunkerserver perrito perritomagico magico magic_origin docker_node internal_bunker private_bunker</p>
 
-<p>No llegaban a 30 y como ven en el script hay un <strong>sleep de 5 segundos</strong> , la cuestion es que me preocupo porque con el sudo bruteforce de mario ya tenia que ajustar el tiempo entre solicitudes no tan exagerado como en este.</p>
+<p>No llegaban a 30 y como ven en el script hay un sleep de 5 segundos , la cuestion es que me preocupo porque con el sudo bruteforce de mario ya tenia que ajustar el tiempo entre solicitudes no tan exagerado como en este.</p>
 
-<p>Al mandar peticiones al principio cada 0.5 se podria estar afectando la estabilidad del backend  y al usar siempre la misma cookie y con palabras incorrectas “en este caso origin” el server puede atascarse devolviendo errores antes de mandar el nuevo valor , aparte es una api de entrono de laboratorio  no hay un gran server detras y tambien podria ignorar paquetes por saturacion.</p>
+<p>Al mandar peticiones al principio cada 0.5 se podria estar afectando la estabilidad del backend y al usar siempre la misma cookie y con palabras incorrectas “en este caso origin” el server puede atascarse devolviendo errores antes de mandar el nuevo valor , aparte es una api de entrono de laboratorio no hay un gran server detras y tambien podria ignorar paquetes por saturacion.</p>
 
 <p>Ahora si gracias por leer.</p>
 
@@ -1854,9 +1829,14 @@ private_bunker</p>
           >Bug bounty</a>
         
           <a
-            href="/tags/api/"
+            href="/tags/shell-script/"
             class="post-tag no-text-decoration"
-          >api</a>
+          >shell script</a>
+        
+          <a
+            href="/tags/bash/"
+            class="post-tag no-text-decoration"
+          >bash</a>
         
           <a
             href="/tags/arbitrary-file-upload/"
@@ -1966,6 +1946,13 @@ private_bunker</p>
         
         
         <li class="text-truncate lh-lg">
+          <a href="/posts/race/">Race, DockerLabs</a>
+        </li>
+      
+        
+        
+        
+        <li class="text-truncate lh-lg">
           <a href="/posts/lower7/">Lower7, Vulnix</a>
         </li>
       
@@ -1988,13 +1975,6 @@ private_bunker</p>
         
         <li class="text-truncate lh-lg">
           <a href="/posts/ekisese/">Ekisese, DockerLabs</a>
-        </li>
-      
-        
-        
-        
-        <li class="text-truncate lh-lg">
-          <a href="/posts/internal/">Internal, DockerLabs</a>
         </li>
       
     </ul>
@@ -3641,96 +3621,6 @@ private_bunker</p>
     
     
     
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
       
         
         
@@ -3769,7 +3659,7 @@ private_bunker</p>
         <a class="post-tag btn btn-outline-primary" href="/tags/revshell/">revshell</a>
       
         
-        <a class="post-tag btn btn-outline-primary" href="/tags/ffuf/">ffuf</a>
+        <a class="post-tag btn btn-outline-primary" href="/tags/bash/">bash</a>
       
     </div>
   </section>
@@ -3824,7 +3714,43 @@ private_bunker</p>
   
 
   
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
     
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
   
 
   
@@ -4728,6 +4654,117 @@ private_bunker</p>
     <nav class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4 mb-4">
       
         <article class="col">
+          <a href="/posts/race/" class="post-preview card h-100">
+            <div class="card-body">
+              <!--
+  Date format snippet
+  See: ${JS_ROOT}/utils/locale-dateime.js
+-->
+
+
+
+
+<time
+  
+  data-ts="1772593200"
+  data-df="ll"
+  
+>
+  Mar  4, 2026
+</time>
+
+              <h4 class="pt-0 my-2">Race, DockerLabs</h4>
+              <div class="text-muted">
+                <p>
+                  
+
+
+
+
+
+                  
+
+Herramientas y recursos
+
+En este reto de DockerLabs practicamos.
+
+
+  
+    
+      Tecnicas
+      Herramientas
+    
+  
+  
+    
+      scan de puertos
+      nmap
+    
+    
+      captura de peticiones...
+                </p>
+              </div>
+            </div>
+          </a>
+        </article>
+      
+        <article class="col">
+          <a href="/posts/bola/" class="post-preview card h-100">
+            <div class="card-body">
+              <!--
+  Date format snippet
+  See: ${JS_ROOT}/utils/locale-dateime.js
+-->
+
+
+
+
+<time
+  
+  data-ts="1771729200"
+  data-df="ll"
+  
+>
+  Feb 22, 2026
+</time>
+
+              <h4 class="pt-0 my-2">Bola, DockerLabs</h4>
+              <div class="text-muted">
+                <p>
+                  
+
+
+
+
+
+                  
+
+Herramientas y recursos
+
+En este reto de DockerLabs practicamos.
+
+
+  
+    
+      Tecnicas
+      Herramientas
+    
+  
+  
+    
+      scan de puertos
+      nmap
+    
+    
+      fuzzing directorios
+ ...
+                </p>
+              </div>
+            </div>
+          </a>
+        </article>
+      
+        <article class="col">
           <a href="/posts/ekisese/" class="post-preview card h-100">
             <div class="card-body">
               <!--
@@ -4777,105 +4814,6 @@ En este reto de DockerLabs practicamos.
     
       inyeccion xss
       p...
-                </p>
-              </div>
-            </div>
-          </a>
-        </article>
-      
-        <article class="col">
-          <a href="/posts/vivfytech/" class="post-preview card h-100">
-            <div class="card-body">
-              <!--
-  Date format snippet
-  See: ${JS_ROOT}/utils/locale-dateime.js
--->
-
-
-
-
-<time
-  
-  data-ts="1717038000"
-  data-df="ll"
-  
->
-  May 30, 2024
-</time>
-
-              <h4 class="pt-0 my-2">Vivifytech , HackMyVm</h4>
-              <div class="text-muted">
-                <p>
-                  
-
-
-
-
-
-                  
-
-Herramientas y recursos usados
-
-
-  Nmap
-  feroxbuster
-  wpscan
-
-
-Enumeracion
-
-Empezamos lanzando un nmap contra el objetivo .
-
-nmap -p- -sS -sC -sV --min-rate=5000 -n -Pn -oX vivfytech 192.168.0....
-                </p>
-              </div>
-            </div>
-          </a>
-        </article>
-      
-        <article class="col">
-          <a href="/posts/WAR/" class="post-preview card h-100">
-            <div class="card-body">
-              <!--
-  Date format snippet
-  See: ${JS_ROOT}/utils/locale-dateime.js
--->
-
-
-
-
-<time
-  
-  data-ts="1757732400"
-  data-df="ll"
-  
->
-  Sep 13, 2025
-</time>
-
-              <h4 class="pt-0 my-2">WAR, Vulnyx</h4>
-              <div class="text-muted">
-                <p>
-                  
-
-
-
-
-
-                  
-
-Herramientas y recursos
-
-En este reto de la plataforma  Vulnyx voy a empezar a aprender a explotar maquinas windows y esta es la maquina war.
-
-
-  
-    
-      Tecnicas
-      Herramientas
-    
-  
- ...
                 </p>
               </div>
             </div>
@@ -6652,96 +6590,6 @@ En este reto de la plataforma  Vulnyx voy a empezar a aprender a explotar maquin
     
     
     
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
       
         
         
@@ -6780,7 +6628,7 @@ En este reto de la plataforma  Vulnyx voy a empezar a aprender a explotar maquin
         <a class="post-tag btn btn-outline-primary" href="/tags/revshell/">revshell</a>
       
         
-        <a class="post-tag btn btn-outline-primary" href="/tags/ffuf/">ffuf</a>
+        <a class="post-tag btn btn-outline-primary" href="/tags/bash/">bash</a>
       
     </div>
   </section>
