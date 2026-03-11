@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2026-03-07T20:15:40-03:00</updated>
+  <updated>2026-03-11T19:02:16-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,67 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>Cuenta Atras, DockerLabs</title>
+    <link href="http://localhost:4000/posts/cuenta_atras/" rel="alternate" type="text/html" title="Cuenta Atras, DockerLabs" />
+    <published>2026-03-10T00:00:00-03:00</published>
+  
+    <updated>2026-03-10T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/cuenta_atras/</id>
+    <content src="http://localhost:4000/posts/cuenta_atras/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+Herramientas y recursos
+
+En este reto de DockerLabs vamos a explotar dos vulnerabilidades web una es un segundo factor de autenticacion y la otra una explotacion de wordpress.
+
+
+  
+    
+      Tecnicas
+      Herramientas
+    
+  
+  
+    
+      scan de puertos
+      nmap
+    
+    
+      Fuerza bruta automate
+      caido
+    
+    
+      Enumeracion Wordpress
+      wpscan
+    
+    
+      Subida de...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -280,75 +341,6 @@ En este reto de DockerLabs practicamos.
 Reconocimiento y enumeracion
 
 Segun ...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Lower7, Vulnix</title>
-    <link href="http://localhost:4000/posts/lower7/" rel="alternate" type="text/html" title="Lower7, Vulnix" />
-    <published>2026-03-02T00:00:00-03:00</published>
-  
-    <updated>2026-03-02T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/lower7/</id>
-    <content src="http://localhost:4000/posts/lower7/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="Vulnix" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-Herramientas y recursos
-
-En este reto de vulnyx nos encontramos ante una maquina linux.
-
-
-  
-    
-      Tecnicas
-      Herramientas
-    
-  
-  
-    
-      scan de puertos
-      nmap
-    
-    
-      Fuerza bruta
-      hydra
-    
-    
-      Revshell
-      node js
-    
-    
-      fuerza bruta
-      john
-    
-  
-
-
-Reconocimiento y enumeracion
-
-Para empezar lanzamos un nmap para ver que puertos est...
     </summary>
   
 
