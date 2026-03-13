@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2026-03-12T17:30:08-03:00</updated>
+  <updated>2026-03-13T12:45:25-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,74 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>Dance Samba, DockerLabs</title>
+    <link href="http://localhost:4000/posts/dance_samba/" rel="alternate" type="text/html" title="Dance Samba, DockerLabs" />
+    <published>2026-03-12T00:00:00-03:00</published>
+  
+    <updated>2026-03-12T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/dance_samba/</id>
+    <content src="http://localhost:4000/posts/dance_samba/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+Herramientas y recursos
+
+En este reto de DockerLabs explotaremos samba , usaremos ftp, escalada con …..
+
+
+  
+    
+      Tecnicas
+      Herramientas
+    
+  
+  
+    
+      scan de puertos
+      nmap
+    
+    
+      Acceso anonimo
+      ftp
+    
+    
+      Enumeracion samba
+      enum4linux
+    
+    
+      fuerza bruta
+      nxc
+    
+    
+      Autenticación SSH con claves
+      ssh-keygen
+    
+...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -264,72 +332,6 @@ Reconocimiento y enumeracion
 Segun las indicadciones tenemos tres retos de race condition con distintas dificultades
 
 Lo primero como siemp...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Build, Vulnix</title>
-    <link href="http://localhost:4000/posts/build/" rel="alternate" type="text/html" title="Build, Vulnix" />
-    <published>2026-03-02T00:00:00-03:00</published>
-  
-    <updated>2026-03-02T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/build/</id>
-    <content src="http://localhost:4000/posts/build/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="Vulnix" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-Herramientas y recursos
-
-En este reto de vulnyx nos encontramos ante una maquina windows.
-
-
-  
-    
-      Tecnicas
-      Herramientas
-    
-  
-  
-    
-      reconocimiento red
-      arpscan
-    
-    
-      scan de puertos
-      nmap
-    
-    
-      Fuerza bruta
-      creds por defecto misc configuration
-    
-    
-      jenkins script console
-      groovy script
-    
-    
-      exfiltracion
-   ...
     </summary>
   
 
