@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2026-03-13T12:45:25-03:00</updated>
+  <updated>2026-03-15T18:00:31-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,77 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>Mirame, DockerLabs</title>
+    <link href="http://localhost:4000/posts/mirame/" rel="alternate" type="text/html" title="Mirame, DockerLabs" />
+    <published>2026-03-12T00:00:00-03:00</published>
+  
+    <updated>2026-03-12T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/mirame/</id>
+    <content src="http://localhost:4000/posts/mirame/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+Herramientas y recursos
+
+En este reto de DockerLabs vamos que encontarmos a ciegas porque no tiene descripcion
+
+
+  
+    
+      Tecnicas
+      Herramientas
+    
+  
+  
+    
+      scan de puertos
+      nmap
+    
+    
+      msqli
+      manual
+    
+    
+      dump database
+      sqlmap
+    
+    
+      Esteganografia
+      steegseek
+    
+    
+      zip brute forcing
+      zip2john john
+    
+  
+
+
+Re...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -265,73 +336,6 @@ En este reto de DockerLabs vamos a explotar dos vulnerabilidades de JWT (jason w
     
     
       Weak HMAC Sec...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Race, DockerLabs</title>
-    <link href="http://localhost:4000/posts/race/" rel="alternate" type="text/html" title="Race, DockerLabs" />
-    <published>2026-03-04T00:00:00-03:00</published>
-  
-    <updated>2026-03-04T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/race/</id>
-    <content src="http://localhost:4000/posts/race/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-Herramientas y recursos
-
-En este reto de DockerLabs practicamos.
-
-
-  
-    
-      Tecnicas
-      Herramientas
-    
-  
-  
-    
-      scan de puertos
-      nmap
-    
-    
-      captura de peticiones
-      caido
-    
-    
-      scripting
-      bash
-    
-  
-
-
-Reconocimiento y enumeracion
-
-Segun las indicadciones tenemos tres retos de race condition con distintas dificultades
-
-Lo primero como siemp...
     </summary>
   
 
