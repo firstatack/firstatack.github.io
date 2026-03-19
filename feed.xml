@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2026-03-15T18:00:31-03:00</updated>
+  <updated>2026-03-18T22:14:50-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,62 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>Controler, Vulnyx</title>
+    <link href="http://localhost:4000/posts/controler/" rel="alternate" type="text/html" title="Controler, Vulnyx" />
+    <published>2026-03-15T00:00:00-03:00</published>
+  
+    <updated>2026-03-15T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/controler/</id>
+    <content src="http://localhost:4000/posts/controler/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="Vulnyx" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+Herramientas y recursos
+
+Hoy toca windows y pòr el nombre con un Active Directory , maquina Controler plataforma Vulnyx  asi que a volverse loco enumerando y dispuesto a aparender y compartir.
+
+
+  
+    
+      Tecnicas
+      Herramientas
+      objetivo
+    
+  
+  
+    
+      scan de puertos
+      nmap
+      Descubrimiento de servicios expuestos
+    
+    
+      enumeracio usuarios
+      kerbrute...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -275,67 +331,6 @@ En este reto de DockerLabs vamos a explotar dos vulnerabilidades web una es un s
     
     
       Subida de...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Jason, DockerLabs</title>
-    <link href="http://localhost:4000/posts/jason/" rel="alternate" type="text/html" title="Jason, DockerLabs" />
-    <published>2026-03-05T00:00:00-03:00</published>
-  
-    <updated>2026-03-05T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/jason/</id>
-    <content src="http://localhost:4000/posts/jason/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-Herramientas y recursos
-
-En este reto de DockerLabs vamos a explotar dos vulnerabilidades de JWT (jason web token).
-
-
-  
-    
-      Tecnicas
-      Herramientas
-    
-  
-  
-    
-      scan de puertos
-      nmap
-    
-    
-      JWT Decoding &amp;amp; Claims Analysis
-      jwt.io token.dev
-    
-    
-      Algorithm Confusion Attack (RS256 to HS256)
-      jwt.io token.dev
-    
-    
-      Weak HMAC Sec...
     </summary>
   
 
