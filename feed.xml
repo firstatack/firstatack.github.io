@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2026-03-18T22:32:00-03:00</updated>
+  <updated>2026-03-22T11:57:02-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,118 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>SECorNOTsec, DockerLabs</title>
+    <link href="http://localhost:4000/posts/secornotsec/" rel="alternate" type="text/html" title="SECorNOTsec, DockerLabs" />
+    <published>2026-03-21T00:00:00-03:00</published>
+  
+    <updated>2026-03-21T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/secornotsec/</id>
+    <content src="http://localhost:4000/posts/secornotsec/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="Dockerlabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+Maquina SECorNOTsec de DockerLabs en ella deberemos manipular una cookie , buscar info leakeada , bypasear un waf he inyectar comando, movimieto lateral y elevar privilegios con  sudo.
+
+Herramientas y recursos
+
+
+  
+    
+      Tecnicas
+      Herramientas
+      objetivo
+    
+  
+  
+    
+      scan de puertos
+      nmap
+      Descubrimiento de servicios expuestos
+    
+    
+      Busqueda de direc...
+    </summary>
+  
+
+  </entry>
+
+  
+  <entry>
+    <title>Flasky, DockerLabs</title>
+    <link href="http://localhost:4000/posts/flasky/" rel="alternate" type="text/html" title="Flasky, DockerLabs" />
+    <published>2026-03-20T00:00:00-03:00</published>
+  
+    <updated>2026-03-20T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/flasky/</id>
+    <content src="http://localhost:4000/posts/flasky/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="Dockerlabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+Maquina flasky de DockerLabs calificada como dificultad media , segun descripcion nos aprovecharemos de una cookie de flask y escalada lateral hacia root.
+
+Herramientas y recursos
+
+
+  
+    
+      Tecnicas
+      Herramientas
+      objetivo
+    
+  
+  
+    
+      scan de puertos
+      nmap
+      Descubrimiento de servicios expuestos
+    
+    
+      Cookie Brute Forcing
+      flask-unsign
+      O...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -208,129 +320,6 @@ En este reto de DockerLabs explotaremos samba , usaremos ftp, escalada con …..
       ssh-keygen
     
 ...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Psicho, DockerLabs</title>
-    <link href="http://localhost:4000/posts/psicho/" rel="alternate" type="text/html" title="Psicho, DockerLabs" />
-    <published>2026-03-11T00:00:00-03:00</published>
-  
-    <updated>2026-03-11T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/psicho/</id>
-    <content src="http://localhost:4000/posts/psicho/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-Herramientas y recursos
-
-En este reto de DockerLabs calificado como facil vamos a enumerar , localizar un file inclussion , abuso de sudo .
-
-
-  
-    
-      Tecnicas
-      Herramientas
-    
-  
-  
-    
-      scan de puertos
-      nmap
-    
-    
-      Busqueda de parametro
-      ffuf
-    
-    
-      Local File inclusion
-      curl , brave
-    
-    
-      abuso de sudo
-      GTFObins , searchbins...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Cuenta Atras, DockerLabs</title>
-    <link href="http://localhost:4000/posts/cuenta_atras/" rel="alternate" type="text/html" title="Cuenta Atras, DockerLabs" />
-    <published>2026-03-10T00:00:00-03:00</published>
-  
-    <updated>2026-03-10T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/cuenta_atras/</id>
-    <content src="http://localhost:4000/posts/cuenta_atras/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-Herramientas y recursos
-
-En este reto de DockerLabs vamos a explotar dos vulnerabilidades web una es un segundo factor de autenticacion y la otra una explotacion de wordpress.
-
-
-  
-    
-      Tecnicas
-      Herramientas
-    
-  
-  
-    
-      scan de puertos
-      nmap
-    
-    
-      Fuerza bruta automate
-      caido
-    
-    
-      Enumeracion Wordpress
-      wpscan
-    
-    
-      Subida de...
     </summary>
   
 
