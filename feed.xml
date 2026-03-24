@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2026-03-24T12:37:16-03:00</updated>
+  <updated>2026-03-24T12:41:49-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -34,7 +34,7 @@
 
   
     
-    <category term="Dockerlabs" />
+    <category term="DockerLabs" />
     
   
 
@@ -94,7 +94,7 @@ Herramientas y recursos
 
   
     
-    <category term="Dockerlabs" />
+    <category term="DockerLabs" />
     
   
 
@@ -149,7 +149,7 @@ Herramientas y recursos
 
   
     
-    <category term="Dockerlabs" />
+    <category term="DockerLabs" />
     
   
 

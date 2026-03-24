@@ -3,7 +3,7 @@
   {
     "title": "BigWear, DockerLabs",
     "url": "/posts/bigwear/",
-    "categories": "Dockerlabs",
+    "categories": "DockerLabs",
     "tags": "ctf, hacking, etico, wpscan, msqli, sqlmap, msfconsole",
     "date": "2026-03-24 00:00:00 -0300",
     
@@ -20,7 +20,7 @@
   {
     "title": "SECorNOTsec, DockerLabs",
     "url": "/posts/secornotsec/",
-    "categories": "Dockerlabs",
+    "categories": "DockerLabs",
     "tags": "ctf, hacking, etico, flask-unsign, cookies",
     "date": "2026-03-21 00:00:00 -0300",
     
@@ -37,7 +37,7 @@
   {
     "title": "Flasky, DockerLabs",
     "url": "/posts/flasky/",
-    "categories": "Dockerlabs",
+    "categories": "DockerLabs",
     "tags": "ctf, hacking, etico, flask-unsign, cookies",
     "date": "2026-03-20 00:00:00 -0300",
     
