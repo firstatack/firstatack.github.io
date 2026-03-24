@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2026-03-22T12:49:33-03:00</updated>
+  <updated>2026-03-24T12:37:16-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,66 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>BigWear, DockerLabs</title>
+    <link href="http://localhost:4000/posts/bigwear/" rel="alternate" type="text/html" title="BigWear, DockerLabs" />
+    <published>2026-03-24T00:00:00-03:00</published>
+  
+    <updated>2026-03-24T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/bigwear/</id>
+    <content src="http://localhost:4000/posts/bigwear/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="Dockerlabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+Maquina bigwear de DockerLabs en la descripccion nos habla de varias vulnerabilidades web asi que vamos a buscarlas.
+
+Herramientas y recursos
+
+
+  
+    
+      Tecnicas
+      Herramientas
+      objetivo
+    
+  
+  
+    
+      scan de puertos
+      nmap
+      Descubrimiento de servicios expuestos
+    
+    
+      Enumeracion de WP
+      wpscan
+      localizar vulnerabilidades y usuario
+    
+    
+ ...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -252,74 +312,6 @@ En este reto de DockerLabs vamos que encontarmos a ciegas porque no tiene descri
 
 
 Re...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Dance Samba, DockerLabs</title>
-    <link href="http://localhost:4000/posts/dance_samba/" rel="alternate" type="text/html" title="Dance Samba, DockerLabs" />
-    <published>2026-03-12T00:00:00-03:00</published>
-  
-    <updated>2026-03-12T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/dance_samba/</id>
-    <content src="http://localhost:4000/posts/dance_samba/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-Herramientas y recursos
-
-En este reto de DockerLabs explotaremos samba , usaremos ftp, escalada con …..
-
-
-  
-    
-      Tecnicas
-      Herramientas
-    
-  
-  
-    
-      scan de puertos
-      nmap
-    
-    
-      Acceso anonimo
-      ftp
-    
-    
-      Enumeracion samba
-      enum4linux
-    
-    
-      fuerza bruta
-      nxc
-    
-    
-      Autenticación SSH con claves
-      ssh-keygen
-    
-...
     </summary>
   
 
