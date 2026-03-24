@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2026-03-24T12:41:49-03:00</updated>
+  <updated>2026-03-24T16:47:47-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,69 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>Pequeñas mentirosas, DockerLabs</title>
+    <link href="http://localhost:4000/posts/peque%C3%B1as_mentirosas/" rel="alternate" type="text/html" title="Pequeñas mentirosas, DockerLabs" />
+    <published>2026-03-24T00:00:00-03:00</published>
+  
+    <updated>2026-03-24T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/peque%C3%B1as_mentirosas/</id>
+    <content src="http://localhost:4000/posts/peque%C3%B1as_mentirosas/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+Maquina pequeñas mentirosas de DockerLabs clasificada como facil.
+
+Herramientas y recursos
+
+
+  
+    
+      Tecnicas
+      Herramientas
+      objetivo
+    
+  
+  
+    
+      scan de puertos
+      nmap
+      Descubrimiento de servicios expuestos
+    
+    
+      Fuzzing
+      feroxbuster
+      Busqueda de directorios y archivos
+    
+    
+      Fuerza bruta ssh
+      hydra
+      Obtener password
+ ...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -241,77 +304,6 @@ Hoy toca windows y pòr el nombre con un Active Directory , maquina Controler pl
     
       enumeracio usuarios
       kerbrute...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Mirame, DockerLabs</title>
-    <link href="http://localhost:4000/posts/mirame/" rel="alternate" type="text/html" title="Mirame, DockerLabs" />
-    <published>2026-03-12T00:00:00-03:00</published>
-  
-    <updated>2026-03-12T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/mirame/</id>
-    <content src="http://localhost:4000/posts/mirame/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-Herramientas y recursos
-
-En este reto de DockerLabs vamos que encontarmos a ciegas porque no tiene descripcion
-
-
-  
-    
-      Tecnicas
-      Herramientas
-    
-  
-  
-    
-      scan de puertos
-      nmap
-    
-    
-      msqli
-      manual
-    
-    
-      dump database
-      sqlmap
-    
-    
-      Esteganografia
-      steegseek
-    
-    
-      zip brute forcing
-      zip2john john
-    
-  
-
-
-Re...
     </summary>
   
 
