@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2026-03-26T09:48:18-03:00</updated>
+  <updated>2026-03-27T15:46:35-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,58 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>Status, DockerLabs</title>
+    <link href="http://localhost:4000/posts/status/" rel="alternate" type="text/html" title="Status, DockerLabs" />
+    <published>2026-03-25T00:00:00-03:00</published>
+  
+    <updated>2026-03-25T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/status/</id>
+    <content src="http://localhost:4000/posts/status/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+Maquina Status de DockerLabs clasificada como media , despues de hacerla decir que esta bien esta maquina , tiene de todo un poco , bypass 403 , escaneo interno de puertos , lfi , lfi2rce, wrappers php que desconocia y un final sencillo con unzip y sudo
+
+Herramientas y recursos
+
+
+  
+    
+      Tecnicas
+      Herramientas
+      objetivo
+    
+  
+  
+    
+      scan de puertos
+      nmap
+      De...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -265,61 +317,6 @@ Herramientas y recursos
     
     
  ...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>SECorNOTsec, DockerLabs</title>
-    <link href="http://localhost:4000/posts/secornotsec/" rel="alternate" type="text/html" title="SECorNOTsec, DockerLabs" />
-    <published>2026-03-21T00:00:00-03:00</published>
-  
-    <updated>2026-03-21T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/secornotsec/</id>
-    <content src="http://localhost:4000/posts/secornotsec/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-Maquina SECorNOTsec de DockerLabs en ella deberemos manipular una cookie , buscar info leakeada , bypasear un waf he inyectar comando, movimieto lateral y elevar privilegios con  sudo.
-
-Herramientas y recursos
-
-
-  
-    
-      Tecnicas
-      Herramientas
-      objetivo
-    
-  
-  
-    
-      scan de puertos
-      nmap
-      Descubrimiento de servicios expuestos
-    
-    
-      Busqueda de direc...
     </summary>
   
 
