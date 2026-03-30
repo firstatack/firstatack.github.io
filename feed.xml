@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>CTF's Linux Apuntes</title>
   <subtitle>Blog dedicado a la resolucion de maquinas CTF, la ciberseguridad, temas de linux. hydra feroxbuster nmap chisel nc y algun oftopic. hacking pentesting manuales writeups tutorial python bash reverse shell</subtitle>
-  <updated>2026-03-27T15:46:35-03:00</updated>
+  <updated>2026-03-30T19:15:07-03:00</updated>
   <author>
     <name>first_atack</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,65 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>NightBlade, DockerLabs</title>
+    <link href="http://localhost:4000/posts/nigthblade/" rel="alternate" type="text/html" title="NightBlade, DockerLabs" />
+    <published>2026-03-29T00:00:00-03:00</published>
+  
+    <updated>2026-03-29T00:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/nigthblade/</id>
+    <content src="http://localhost:4000/posts/nigthblade/" />
+    <author>
+      <name>first_atack</name>
+    </author>
+
+  
+    
+    <category term="DockerLabs" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+Maquina Nightblade de DockerLabs clasificada como media con pivoting que sepamos de momento, despues de hacerla
+
+Herramientas y recursos
+
+
+  
+    
+      Tecnicas
+      Herramientas
+      objetivo
+    
+  
+  
+    
+      scan de puertos
+      nmap
+      Descubrimiento de servicios expuestos
+    
+    
+      Fuzzing Web
+      feroxbuster
+      Enumeración de directorios y archivos ocultos
+    
+   ...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -256,66 +315,6 @@ Herramientas y recursos
       Fuerza bruta ssh
       hydra
       Obtener password
- ...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>BigWear, DockerLabs</title>
-    <link href="http://localhost:4000/posts/bigwear/" rel="alternate" type="text/html" title="BigWear, DockerLabs" />
-    <published>2026-03-24T00:00:00-03:00</published>
-  
-    <updated>2026-03-24T00:00:00-03:00</updated>
-  
-    <id>http://localhost:4000/posts/bigwear/</id>
-    <content src="http://localhost:4000/posts/bigwear/" />
-    <author>
-      <name>first_atack</name>
-    </author>
-
-  
-    
-    <category term="DockerLabs" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      
-
-Maquina bigwear de DockerLabs en la descripccion nos habla de varias vulnerabilidades web asi que vamos a buscarlas.
-
-Herramientas y recursos
-
-
-  
-    
-      Tecnicas
-      Herramientas
-      objetivo
-    
-  
-  
-    
-      scan de puertos
-      nmap
-      Descubrimiento de servicios expuestos
-    
-    
-      Enumeracion de WP
-      wpscan
-      localizar vulnerabilidades y usuario
-    
-    
  ...
     </summary>
   
